@@ -1,6 +1,7 @@
-EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.5)
+EAGLE'S NEST RESORT — LIVE SITE (site live 1.6)
 ==================================================================
-A cut-down version, ready to put live today.
+The version that goes on the live domain. Pages are switched on
+as they are finished.
 
 
 WHAT TO UPLOAD
@@ -10,8 +11,8 @@ keeping the structure as it is:
 
     index.html            The home page — the real thing
     lodge.html            A gallery of the property
-    hosts.html            Your Hosts — the finished page
-    getting-here.html     "Coming soon"
+    hosts.html            Your Hosts — finished
+    getting-here.html     Getting Here — finished
     things-to-do.html     "Coming soon"
     hosts.html            "Coming soon"
 
@@ -40,9 +41,13 @@ HOW IT BEHAVES
 - YOUR HOSTS is the finished page: Diane, Murray and Oliver, and
   the two guest reviews.
 
-- The two remaining nav items each open a real page saying that
-  section is on its way, with your phone number, email address and
-  address on it. Nobody hits a dead link or a 404.
+- GETTING HERE is the finished page: the four ways in, the aerial
+  of the property, the float plane at the dock, and the contact
+  and arrival details.
+
+- THINGS TO DO is the one page still to come. It opens a real page
+  saying so, with your phone number, email address and address on
+  it. Nobody hits a dead link or a 404.
 
 - BOOKING goes straight to your Booking.com listing, in a new tab.
   Every Booking link does this: the header button, the buttons on
@@ -81,12 +86,11 @@ and replace the whole href. They all open in a new tab via
 target="_blank" rel="noopener noreferrer" — keep those attributes.
 
 
-TURNING THE FULL PAGES ON LATER
+TURNING THE LAST PAGE ON
 ------------------------------------------------------------------
-The complete versions of The Lodge, Getting Here, Things To Do and
-Your Hosts already exist in the full build. When you're ready,
-replace the "coming soon" files with the real ones and upload the
-extra images they need.
+The finished Things To Do page already exists in the full build.
+When you want it live, replace things-to-do.html with the real one
+and upload the extra images it needs.
 
 Do not mix the two builds halfway. The full Lodge page depends on
 a lodge/ folder of accommodation pages and a much larger images
@@ -98,7 +102,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site simple 1.5 -->
+    <!-- Eagle's Nest Resort — site live 1.6 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
