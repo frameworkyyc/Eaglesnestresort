@@ -1,0 +1,21 @@
+# Cache rules for Netlify.
+# Harmless on other hosts — they will simply ignore this file.
+
+# Pages and code: always check with the server before reusing.
+# Without this a browser can serve a stylesheet from days ago and it looks
+# like your changes never deployed.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Photographs change rarely, so let browsers keep them for a day.
+/images/*
+  Cache-Control: public, max-age=86400
