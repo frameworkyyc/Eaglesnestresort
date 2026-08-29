@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.4)
+EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.5)
 ==================================================================
 A cut-down version, ready to put live today.
 
@@ -10,6 +10,7 @@ keeping the structure as it is:
 
     index.html            The home page — the real thing
     lodge.html            A gallery of the property
+    hosts.html            Your Hosts — the finished page
     getting-here.html     "Coming soon"
     things-to-do.html     "Coming soon"
     hosts.html            "Coming soon"
@@ -36,7 +37,10 @@ HOW IT BEHAVES
   short note that rooms and rates are still to come, with the
   phone number and email address.
 
-- The three other nav items each open a real page saying that
+- YOUR HOSTS is the finished page: Diane, Murray and Oliver, and
+  the two guest reviews.
+
+- The two remaining nav items each open a real page saying that
   section is on its way, with your phone number, email address and
   address on it. Nobody hits a dead link or a 404.
 
@@ -94,7 +98,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site simple 1.4 -->
+    <!-- Eagle's Nest Resort — site simple 1.5 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
