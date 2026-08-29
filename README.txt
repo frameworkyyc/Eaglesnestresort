@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.3)
+EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.4)
 ==================================================================
 A cut-down version, ready to put live today.
 
@@ -9,7 +9,7 @@ Upload everything in this folder to the root of your web host,
 keeping the structure as it is:
 
     index.html            The home page — the real thing
-    lodge.html            "Coming soon"
+    lodge.html            A gallery of the property
     getting-here.html     "Coming soon"
     things-to-do.html     "Coming soon"
     hosts.html            "Coming soon"
@@ -17,9 +17,11 @@ keeping the structure as it is:
     css/site.css
     js/site.js
     images/               11 files
+    images/gal/           34 gallery thumbnails
+    images/lg/            34 larger versions for the viewer
     _headers              cache rules (Netlify; harmless elsewhere)
 
-2.5 MB in total. Delete this README before going live if you like.
+11 MB in total. Delete this README before going live if you like.
 
 
 HOW IT BEHAVES
@@ -28,13 +30,40 @@ HOW IT BEHAVES
   carousel, the hosts introduction, the two guest reviews, and the
   closing call to action.
 
-- The four other nav items each open a real page saying that
+- THE LODGE is a gallery: 34 photographs of the property in a
+  grid, any of which opens larger. Arrow keys and swipe move
+  between them, Escape or a downward swipe closes. Under it, a
+  short note that rooms and rates are still to come, with the
+  phone number and email address.
+
+- The three other nav items each open a real page saying that
   section is on its way, with your phone number, email address and
   address on it. Nobody hits a dead link or a 404.
 
 - BOOKING goes straight to your Booking.com listing, in a new tab.
   Every Booking link does this: the header button, the buttons on
   the home page, and the footer link.
+
+
+ADDING OR REMOVING GALLERY PHOTOS
+------------------------------------------------------------------
+Each photo needs two files:
+
+  images/gal/<name>.jpg   680px wide, shown in the grid
+  images/lg/<name>.jpg    1100px wide, opens when tapped
+
+Then copy one of the button blocks in lodge.html:
+
+    <button class="gitem" type="button">
+      <img src="images/gal/YOUR-PHOTO.jpg"
+           data-full="images/lg/YOUR-PHOTO.jpg"
+           loading="lazy" decoding="async"
+           alt="Describe what is in the photo.">
+      <span class="cap">Caption</span>
+    </button>
+
+To remove one, delete its block. Update the count in the line
+below the grid if you want it exact.
 
 
 CHANGING THE BOOKING LINK
@@ -65,7 +94,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site simple 1.3 -->
+    <!-- Eagle's Nest Resort — site simple 1.4 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
