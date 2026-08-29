@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.1)
+EAGLE'S NEST RESORT — SIMPLE SITE (site simple 1.3)
 ==================================================================
 A cut-down version, ready to put live today.
 
@@ -65,19 +65,9 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site simple 1.1 -->
+    <!-- Eagle's Nest Resort — site simple 1.3 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
 <head> and at the foot of all five pages, or returning visitors
 will keep seeing the old styling.
-
-
-A NOTE ON THE NETLIFY DRAFT TOOLBAR
-------------------------------------------------------------------
-While a Netlify site is still unpublished, Netlify injects its own
-floating bar into the page (the dark pill reading Private / Share /
-Pre-launch tools / Make public). That bar is not part of this site
-and disappears once the site is published. If you see unexplained
-space below the footer on a draft URL, check it again on the
-published site or in a private browsing window first.

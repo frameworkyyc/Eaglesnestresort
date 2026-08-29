@@ -232,9 +232,15 @@ section:has(+ .ridge.tall){padding-bottom:calc(var(--gap) + clamp(74px,11.5vw,16
 .stop small{display:block;font-family:var(--label);font-size:.72rem;color:var(--muted);letter-spacing:.09em;margin-top:.3rem;text-transform:uppercase}
 .road-note{font-family:var(--label);font-size:.78rem;color:var(--muted);margin-top:2rem;letter-spacing:.05em}
 @media (max-width:660px){
-  .road-line{left:6px;right:auto;top:1.6rem;bottom:1rem;height:auto;width:0;
-    border-top:0;border-left:2px dashed var(--rule)}
-  .road-stops{grid-template-columns:1fr;gap:1.9rem}
+  /* Stacked, the connector has to run dot-to-dot. Spanning the whole block
+     ran it past Bella Coola and down through the note underneath, so each
+     stop now draws its own segment to the next one and the last draws none. */
+  .road-line{display:none}
+  .road-stops{--rg:1.9rem;grid-template-columns:1fr;gap:var(--rg)}
+  .stop::after{content:"";position:absolute;left:6px;top:18px;
+    height:calc(100% + var(--rg) - 13px);
+    border-left:2px dashed var(--rule)}
+  .stop:last-child::after{content:none}
   .stop{padding:0 0 0 2.2rem;text-align:left!important}
   .stop::before{left:0!important;right:auto!important;top:4px;transform:none!important}
   .stop:nth-child(2)::before{left:-3px!important;top:2px}
