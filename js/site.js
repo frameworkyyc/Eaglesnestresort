@@ -324,3 +324,78 @@
     sync();
   });
 })();
+
+
+/* ---- Enquiry form ----
+   Cloudflare Pages serves static files; it does not process form posts. So
+   unless an endpoint has been configured on the form, submitting composes a
+   pre-filled email instead of silently throwing the message away. Set
+   data-endpoint on the form to POST to a real service later. */
+(function(){
+  "use strict";
+  var form = document.getElementById("enquiry");
+  if (!form) return;
+
+  var msg  = document.getElementById("form-msg");
+  var mail = form.getAttribute("data-mailto");
+
+  function say(html, bad) {
+    msg.innerHTML = html;
+    msg.classList.toggle("bad", !!bad);
+    msg.hidden = false;
+    msg.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+
+  var FIELDS = ["name", "email", "phone", "dates", "guests", "message"];
+  var LABELS = { name:"Name", email:"Email", phone:"Phone",
+                 dates:"Dates", guests:"Guests", message:"Message" };
+
+  function asEmail(fd) {
+    var lines = [];
+    FIELDS.forEach(function (k) {
+      var v = (fd.get(k) || "").toString().trim();
+      if (v) lines.push(LABELS[k] + ": " + v);
+    });
+    return "mailto:" + mail +
+           "?subject=" + encodeURIComponent("Booking enquiry — Eagle's Nest Resort") +
+           "&body=" + encodeURIComponent(lines.join("\n\n"));
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    var fd = new FormData(form);
+    if ((fd.get("company") || "").toString().trim()) return;   // honeypot tripped
+
+    // read at submit time, so the endpoint can be set without touching the script
+    var endpoint = (form.getAttribute("data-endpoint") || "").trim();
+
+    if (!endpoint) {
+      window.location.href = asEmail(fd);
+      say("<b>Nearly there</b>Your email app should have opened with the details filled in &mdash; press send and it reaches us. If nothing opened, email <a href=\"mailto:" + mail + "\">" + mail + "</a> or ring 250-742-3707.");
+      return;
+    }
+
+    var btn = form.querySelector("button[type=submit]");
+    var label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Sending\u2026";
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(fd).toString()
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      say("<b>Thank you</b>We&rsquo;ve got your message and will come back to you shortly. If it&rsquo;s urgent, ring us on 250-742-3707.");
+    }).catch(function () {
+      say("<b>That didn&rsquo;t send</b>We&rsquo;ve opened an email with your details instead &mdash; press send and it reaches us. Or ring 250-742-3707.", true);
+      window.location.href = asEmail(fd);
+    }).then(function () {
+      btn.disabled = false;
+      btn.textContent = label;
+    });
+  });
+})();

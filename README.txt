@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 1.6)
+EAGLE'S NEST RESORT — LIVE SITE (site live 1.7)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -12,6 +12,7 @@ keeping the structure as it is:
     index.html            The home page — the real thing
     lodge.html            A gallery of the property
     hosts.html            Your Hosts — finished
+    booking.html          Booking — contact form and options
     getting-here.html     Getting Here — finished
     things-to-do.html     "Coming soon"
     hosts.html            "Coming soon"
@@ -49,9 +50,10 @@ HOW IT BEHAVES
   saying so, with your phone number, email address and address on
   it. Nobody hits a dead link or a 404.
 
-- BOOKING goes straight to your Booking.com listing, in a new tab.
-  Every Booking link does this: the header button, the buttons on
-  the home page, and the footer link.
+- BOOKING is a page of its own now: phone and email, an enquiry
+  form, and the online options. The Booking.com listing links out
+  in a new tab. Expedia is a labelled placeholder until you send
+  me that URL.
 
 
 ADDING OR REMOVING GALLERY PHOTOS
@@ -75,6 +77,36 @@ To remove one, delete its block. Update the count in the line
 below the grid if you want it exact.
 
 
+HOW THE ENQUIRY FORM WORKS
+------------------------------------------------------------------
+Cloudflare Pages serves files; it does not process form posts. So
+by default, pressing Send opens the visitor's email app with all
+their answers already written into a message addressed to you.
+They press send there and it arrives as a normal email. This needs
+no account, no keys and no backend, and it works on every host.
+
+The form says so plainly underneath, so nobody is misled into
+thinking they have sent something when they have not.
+
+IMPORTANT: it sends to info@eaglesnest-resort.com. That address
+was never confirmed. Check it works before this page goes live —
+if it is wrong, every enquiry bounces. Search booking.html for
+data-mailto to change it.
+
+WANT PROPER FORM SUBMISSIONS INSTEAD?
+Sign up for a form service that accepts posts from a static site
+(Web3Forms and Formspree both have free tiers), then in
+booking.html find:
+
+    data-endpoint=""
+
+and paste your endpoint URL between the quotes. That is the only
+change needed. The form will then post directly, show a thank-you
+message in the page, and clear itself — and if the service is ever
+down it falls back to the email method rather than losing the
+message. A hidden anti-spam field is already in place.
+
+
 CHANGING THE BOOKING LINK
 ------------------------------------------------------------------
 The Booking.com URL appears several times. To change it, search
@@ -82,7 +114,7 @@ every .html file for:
 
     booking.com/hotel/ca/anahim-lake
 
-and replace the whole href. They all open in a new tab via
+and replace the whole href. It opens in a new tab via
 target="_blank" rel="noopener noreferrer" — keep those attributes.
 
 
@@ -102,7 +134,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 1.6 -->
+    <!-- Eagle's Nest Resort — site live 1.7 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
