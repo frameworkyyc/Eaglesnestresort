@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 1.7)
+EAGLE'S NEST RESORT — LIVE SITE (site live 2.1)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -10,7 +10,8 @@ Upload everything in this folder to the root of your web host,
 keeping the structure as it is:
 
     index.html            The home page — the real thing
-    lodge.html            A gallery of the property
+    lodge.html            Accommodations + resort gallery
+    lodge/                11 accommodation pages
     hosts.html            Your Hosts — finished
     booking.html          Booking — contact form and options
     getting-here.html     Getting Here — finished
@@ -33,11 +34,19 @@ HOW IT BEHAVES
   carousel, the hosts introduction, the two guest reviews, and the
   closing call to action.
 
-- THE LODGE is a gallery: 34 photographs of the property in a
-  grid, any of which opens larger. Arrow keys and swipe move
-  between them, Escape or a downward swipe closes. Under it, a
-  short note that rooms and rates are still to come, with the
-  phone number and email address.
+- THE LODGE now offers two paths at the top: view the resort
+  (jumps to the gallery and opens it) or find a place to stay
+  (jumps to the accommodations).
+
+  WHERE TO STAY lists 12 entries — 7 suites, 4 cabins and
+  camping — filterable by guests, type and power. Each card links
+  to its own page at lodge/<name>.html.
+
+  No prices are shown anywhere public. The rates are still in the
+  data (build/stays_live.py) for when you want them back.
+
+  The resort gallery sits below, collapsed to 8 photographs on
+  desktop and 6 on mobile, with VIEW FULL GALLERY to open all 34.
 
 - YOUR HOSTS is the finished page: Diane, Murray and Oliver, and
   the two guest reviews.
@@ -51,9 +60,40 @@ HOW IT BEHAVES
   it. Nobody hits a dead link or a 404.
 
 - BOOKING is a page of its own now: phone and email, an enquiry
-  form, and the online options. The Booking.com listing links out
-  in a new tab. Expedia is a labelled placeholder until you send
-  me that URL.
+  form, and the online options. Both the Expedia and Booking.com
+  listings link out in a new tab.
+
+
+ADDING PHOTOGRAPHS TO AN ACCOMMODATION
+------------------------------------------------------------------
+Nine of the eleven accommodations have no photographs yet and show
+a neutral "photographs coming" placeholder. NO accommodation
+borrows another one's photographs — that is deliberate.
+
+Send me a batch and say which suite or cabin it belongs to, and it
+gets attached to that one only: card, hero and its own gallery.
+
+Note on the heritage photographs already on the site: they were
+supplied as "the heritage cabins" together and never identified as
+Heritage 1 or Heritage 2 individually. They are in the resort
+gallery but not on either cabin page. Tell me which is which and
+they will be assigned.
+
+
+STILL TO CONFIRM
+------------------------------------------------------------------
+  - TV. The old site copy claimed satellite TV for "suites" as a
+    group, but the owners have confirmed Pine and Pelican have
+    none. That makes the old group claim unreliable, so no TV is
+    listed for ANY accommodation. Tell me which of Den, Chilcotin,
+    Tucson, Blue Heron and Green actually have one.
+  - Camping: number of sites, hookups, facilities, occupancy and
+    whether trailers are welcome. One Camping entry exists with a
+    photograph and no invented detail.
+  - Whether the cabins have Wi-Fi. Only the suites are listed
+    with it, as instructed.
+  - Descriptions for the seven suites.
+  - info@eaglesnest-resort.com — still unverified.
 
 
 ADDING OR REMOVING GALLERY PHOTOS
@@ -107,15 +147,20 @@ down it falls back to the email method rather than losing the
 message. A hidden anti-spam field is already in place.
 
 
-CHANGING THE BOOKING LINK
+CHANGING THE LISTING LINKS
 ------------------------------------------------------------------
-The Booking.com URL appears several times. To change it, search
-every .html file for:
+Both live on booking.html only. Search it for:
 
+    expedia.ca/Anahim-Lake-Hotels
     booking.com/hotel/ca/anahim-lake
 
-and replace the whole href. It opens in a new tab via
+and replace the whole href. Both open in a new tab via
 target="_blank" rel="noopener noreferrer" — keep those attributes.
+
+Use the plain listing address, not a link copied out of a search
+results page. Those carry the dates you happened to search for and
+a pile of tracking parameters, which would pin every visitor to
+your search instead of their own.
 
 
 TURNING THE LAST PAGE ON
@@ -134,7 +179,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 1.7 -->
+    <!-- Eagle's Nest Resort — site live 2.1 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
