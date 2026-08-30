@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 2.5
+Current release: site live 2.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 This note exists so a new conversation can pick up exactly where
@@ -48,10 +48,11 @@ ACCOMMODATION PHOTOGRAPHY — WHERE IT STANDS
 ------------------------------------------------------------------
 DONE (photographs supplied and attributed by the owner):
     Den Suite, Chilcotin, Tucson, Pine, Pelican, Blue Heron,
-    The Cottage, Eagle Cabin, Camping
+    Green, The Cottage, Eagle Cabin, Heritage 1, Heritage 2,
+    Camping
 
 STILL NEEDED:
-    Green, Heritage 1, Heritage 2
+    Nothing. All twelve now have their own photographs.
 
 THE RULE, which matters more than filling empty slots:
 A photograph belongs ONLY to the accommodation the owner names
@@ -73,10 +74,40 @@ Neither has been reassigned. They are simply waiting on a decision
 from the owner. Ask before publishing either.
 
 THE HERITAGE PHOTOGRAPHS
-There are heritage cabin photographs in the resort gallery, but
-they were supplied as "the heritage cabins" collectively and never
-attributed to Heritage 1 or Heritage 2 individually. Neither cabin
-page claims them. Ask which is which.
+Heritage 1 now has its own three photographs, two of which carry
+the HERITAGE 1 sign on the door.
+
+The third, the lakefront cabin at golden hour, is the same frame
+already in the resort gallery as heritage-lakefront. It was
+originally supplied as "the heritage cabins" collectively and
+carries no sign, so which of the two cabins it shows was never
+established. It is published on the Heritage 1 page because the
+owner sent it in the Heritage 1 batch. If it is in fact Heritage 2
+seen from the water, say so and it moves.
+
+Heritage 2 now has its own photographs too, and they settle one of
+the old collective frames: heritage-cabin in the resort gallery is
+the same cabin, from the same side, as the Heritage 2 batch. So
+that frame is Heritage 2.
+
+The lakefront frame remains the one genuine doubt. See above.
+
+SHARED FACILITIES ON ACCOMMODATION PAGES
+Heritage 1's gallery also carries the wash cabin, the fire pit and
+picnic tables, and the lake out front. These are shared facilities
+rather than photographs of the cabin itself, and the owner asked
+for them there so a guest can see what comes with the stay. Two of
+them (wash-cabin, heritage-firepit) are the same files already in
+the resort gallery, referenced rather than duplicated.
+
+Heritage 2 carries the same four. The Cottage and Eagle Cabin use
+the wash cabin too and would suit them — not done, ask first.
+
+Note on the Heritage 2 card: it is a summer frame, brighter and
+greener than the autumn evening photographs around it, and at
+1448px rather than the 8000px of the others. It was supplied that
+way and has not been altered. It is the only frame showing the
+cabin whole in open light, which is why it takes the card.
 
 
 OPEN QUESTIONS FOR THE OWNER
@@ -106,8 +137,11 @@ OPEN QUESTIONS FOR THE OWNER
 
 7. Do the cabins have Wi-Fi? Only the suites are listed with it.
 
-8. Descriptions for Green (the only suite without one written from
-   its photographs).
+8. Green's screened porch. One of the four Green photographs shows a
+   screened porch over the lake. Green's written specification does
+   not list a deck, while Chilcotin's and Tucson's do. The photograph
+   is in Green's gallery with a neutral caption, but no deck is
+   claimed in its facts or amenities until confirmed.
 
 9. info@eaglesnest-resort.com has never been verified. The booking
    form composes mail to it. If it is wrong, every enquiry

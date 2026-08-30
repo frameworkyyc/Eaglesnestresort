@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 2.5)
+EAGLE'S NEST RESORT — LIVE SITE (site live 2.7)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -42,8 +42,8 @@ HOW IT BEHAVES
   camping — filterable by guests, type and power. Each card links
   to its own page at lodge/<name>.html.
 
-  Nine of the twelve now have their own photographs. Green,
-  Heritage 1 and Heritage 2 still show a neutral placeholder.
+  All twelve now have their own photographs. No placeholders
+  remain.
 
   No prices are shown anywhere public. The rates are still in the
   data (build/stays_live.py) for when you want them back.
@@ -70,8 +70,8 @@ HOW IT BEHAVES
 
 ADDING PHOTOGRAPHS TO AN ACCOMMODATION
 ------------------------------------------------------------------
-Nine of the eleven accommodations have no photographs yet and show
-a neutral "photographs coming" placeholder. NO accommodation
+Every accommodation now has its own photographs. No placeholders
+remain. NO accommodation
 borrows another one's photographs — that is deliberate.
 
 Send me a batch and say which suite or cabin it belongs to, and it
@@ -86,7 +86,6 @@ they will be assigned.
 
 STILL TO CONFIRM
 ------------------------------------------------------------------
-  - PHOTOGRAPHS STILL NEEDED: Green, Heritage 1, Heritage 2.
   - TWO HELD PHOTOGRAPHS. One from the Pine batch and one from the
     Pelican batch were not published because they contradict the
     written specification (see HANDOVER.txt). They have not been
@@ -101,7 +100,6 @@ STILL TO CONFIRM
     photograph and no invented detail.
   - Whether the cabins have Wi-Fi. Only the suites are listed
     with it, as instructed.
-  - Descriptions for the seven suites.
   - info@eaglesnest-resort.com — still unverified.
 
 
@@ -210,7 +208,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 2.5 -->
+    <!-- Eagle's Nest Resort — site live 2.7 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
