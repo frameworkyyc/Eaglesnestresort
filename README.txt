@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 2.2)
+EAGLE'S NEST RESORT — LIVE SITE (site live 2.5)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -42,6 +42,9 @@ HOW IT BEHAVES
   camping — filterable by guests, type and power. Each card links
   to its own page at lodge/<name>.html.
 
+  Nine of the twelve now have their own photographs. Green,
+  Heritage 1 and Heritage 2 still show a neutral placeholder.
+
   No prices are shown anywhere public. The rates are still in the
   data (build/stays_live.py) for when you want them back.
 
@@ -83,6 +86,11 @@ they will be assigned.
 
 STILL TO CONFIRM
 ------------------------------------------------------------------
+  - PHOTOGRAPHS STILL NEEDED: Green, Heritage 1, Heritage 2.
+  - TWO HELD PHOTOGRAPHS. One from the Pine batch and one from the
+    Pelican batch were not published because they contradict the
+    written specification (see HANDOVER.txt). They have not been
+    assigned to any other room.
   - TV. The old site copy claimed satellite TV for "suites" as a
     group, but the owners have confirmed Pine and Pelican have
     none. That makes the old group claim unreliable, so no TV is
@@ -202,7 +210,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 2.2 -->
+    <!-- Eagle's Nest Resort — site live 2.5 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
