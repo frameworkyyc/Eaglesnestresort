@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<!-- Eagle's Nest Resort — site live 2.2 -->
+<!-- Eagle's Nest Resort — site live 2.5 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pine — Eagle's Nest Resort, Anahim Lake</title>
-<meta name="description" content="A single room with a private bathroom just along the hall.">
+<meta name="description" content="A single room with a twin bed and a private bathroom along the hall.">
 
 <meta property="og:title" content="Pine — Eagle's Nest Resort, Anahim Lake">
-<meta property="og:description" content="A single room with a private bathroom just along the hall.">
+<meta property="og:description" content="A single room with a twin bed and a private bathroom along the hall.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.eaglesnest-resort.com/">
 <meta property="og:image" content="https://www.eaglesnest-resort.com/images/hero-engraving.jpg">
@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bevan&family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/site.css?v=live-2.2">
+<link rel="stylesheet" href="../css/site.css?v=ffe03361">
 
 <script type="application/ld+json">
 {
@@ -54,12 +54,12 @@
 </nav>
 
 <header class="stay-hero">
-  <figure class="holder"><div><svg class="glyph" viewBox="0 0 64 28" width="54" height="24" aria-hidden="true"><path d="M2 26 L15 7 L25 19 L36 3 L47 17 L54 11 L62 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Pine &mdash; photographs coming</span></div></figure>
+  <img src="../images/pine.jpg" width="1448" height="1086" fetchpriority="high" alt="The Pine room: a twin bed with a floral quilt against patterned wallpaper, a lamp lit on the bedside table and a robe hanging on the door.">
   <div class="stay-hero-in">
     <div class="wrap">
       <p class="eyebrow">Suite</p>
       <h1>Pine</h1>
-      <p class="lede">A single room with a private bathroom just along the hall.</p>
+      <p class="lede">A single room with a twin bed and a private bathroom along the hall.</p>
     </div>
   </div>
 </header>
@@ -80,7 +80,7 @@
       <div>
         <p class="eyebrow">About</p>
         <h2>Pine</h2>
-        <p>A room in the main lodge with a twin bed and Wi-Fi.</p>
+        <p>A twin bed with a floral quilt, a bedside table and a lamp, and a robe on the back of the door. Wi-Fi throughout.</p>
         <p>The bathroom is yours alone, but it is in the common hall rather than in the room itself. There is no fridge in Pine.</p>
       </div>
       <div>
@@ -109,10 +109,18 @@
   <div class="wrap rv">
     <p class="eyebrow">Photographs</p>
     <h2>Pine</h2>
-    <!-- PHOTOGRAPHS PENDING for Pine. When they arrive, add .gitem
-         buttons here following the pattern on the cabin pages. Do not borrow
-         photographs from another accommodation. -->
-    <figure class="holder" style="margin-top:2.4rem"><div><svg class="glyph" viewBox="0 0 64 28" width="54" height="24" aria-hidden="true"><path d="M2 26 L15 7 L25 19 L36 3 L47 17 L54 11 L62 26 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Photographs of Pine coming</span></div></figure>
+    <div class="masonry" data-gallery>
+        <button class="gitem" type="button">
+          <img src="../images/gal/pine.jpg" data-full="../images/lg/pine.jpg"
+               loading="lazy" decoding="async" alt="The room at Eagle&#39;s Nest Resort.">
+          <span class="cap">The room</span>
+        </button>
+        <button class="gitem" type="button">
+          <img src="../images/gal/pine-bathroom.jpg" data-full="../images/lg/pine-bathroom.jpg"
+               loading="lazy" decoding="async" alt="The bathroom at Eagle&#39;s Nest Resort.">
+          <span class="cap">The bathroom</span>
+        </button>
+    </div>
   </div>
 </section>
 
@@ -176,6 +184,6 @@
   <p class="lb-count" id="lb-count"></p>
 </div>
 
-<script src="../js/site.js?v=live-2.2"></script>
+<script src="../js/site.js?v=ffe03361"></script>
 </body>
 </html>
