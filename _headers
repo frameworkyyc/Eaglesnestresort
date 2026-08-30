@@ -1,5 +1,5 @@
-# Cache rules for Netlify.
-# Harmless on other hosts — they will simply ignore this file.
+# Cache rules. Cloudflare Pages and Netlify both read this file;
+# other hosts ignore it harmlessly.
 
 # Pages and code: always check with the server before reusing.
 # Without this a browser can serve a stylesheet from days ago and it looks

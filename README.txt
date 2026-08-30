@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 2.1)
+EAGLE'S NEST RESORT — LIVE SITE (site live 2.2)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -45,8 +45,9 @@ HOW IT BEHAVES
   No prices are shown anywhere public. The rates are still in the
   data (build/stays_live.py) for when you want them back.
 
-  The resort gallery sits below, collapsed to 8 photographs on
-  desktop and 6 on mobile, with VIEW FULL GALLERY to open all 34.
+  The resort gallery sits below, collapsed to 6 photographs on
+  desktop and 4 on mobile — under one screenful — with VIEW FULL
+  GALLERY to open all 34.
 
 - YOUR HOSTS is the finished page: Diane, Murray and Oliver, and
   the two guest reviews.
@@ -175,11 +176,33 @@ folder; dropping in the full lodge.html on its own would give you
 broken links and missing photographs.
 
 
+IF THE SITE LOOKS UNSTYLED AFTER A DEPLOY
+------------------------------------------------------------------
+That is almost always an old stylesheet still being served, not
+broken CSS. To check:
+
+1. View source on the live page and find the line:
+       <link rel="stylesheet" href="css/site.css?v=live-2.2">
+   The number must match the version comment on line 2.
+2. Open that css URL directly in the browser and search it for
+       .accom
+   If it is not there, the stylesheet on the server is out of date
+   and css/site.css did not upload.
+
+Upload the WHOLE folder every time, not just the .html files. The
+css, js and images folders must go up together.
+
+The ?v= number now tracks this build, so every release changes the
+address of the stylesheet and browsers are forced to fetch it
+fresh. _headers also tells Cloudflare to revalidate css and js on
+every request.
+
+
 VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 2.1 -->
+    <!-- Eagle's Nest Resort — site live 2.2 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
