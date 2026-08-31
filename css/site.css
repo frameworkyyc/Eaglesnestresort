@@ -919,13 +919,49 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* ============================================================
    COLLAPSIBLE RESORT GALLERY
    ============================================================ */
-/* Collapsed, the gallery is a taste of the place, not a scroll of its own:
-   roughly one and a half rows on desktop, one on mobile. */
-.masonry.collapsed{columns:3 220px}
-.masonry.collapsed .gitem:nth-child(n+7){display:none}
-@media (min-width:1100px){.masonry.collapsed{columns:4 260px}}
-@media (max-width:700px){
-  .masonry.collapsed{columns:2 150px}
-  .masonry.collapsed .gitem:nth-child(n+5){display:none}
+/* Collapsed, the gallery is one deliberate band rather than a masonry grid cut
+   off part-way down. The columns are cancelled and the frames become a flex
+   row of equal height, cropped to fill; widths still vary so it keeps some
+   editorial rhythm instead of reading as a filmstrip of identical tiles. A
+   soft gradient at the foot hints that more sits below.
+
+   The gradient's start colour must track --paper. It is written out in rgba
+   because a var() hex cannot be given an alpha in plain CSS, and fading to
+   `transparent` tints grey in older Safari. */
+.masonry.collapsed{
+  columns:auto;
+  display:flex;
+  gap:var(--mg);
+  position:relative;
+  height:clamp(148px,32vw,200px);
+  overflow:hidden}
+.masonry.collapsed .gitem{flex:1 1 0;min-width:0;height:100%;margin:0}
+.masonry.collapsed .gitem img{width:100%;height:100%;object-fit:cover}
+/* captions belong to the full gallery and the viewer; six of them stacked
+   under the fade would only clutter the preview */
+.masonry.collapsed .gitem .cap{display:none}
+.masonry.collapsed .gitem:nth-child(2){flex-grow:1.5}
+.masonry.collapsed .gitem:nth-child(n+4){display:none}
+
+.masonry.collapsed::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;
+  height:54%;pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(243,238,225,0) 0%, rgba(243,238,225,.55) 55%, var(--paper) 100%)}
+
+@media (min-width:700px){
+  .masonry.collapsed{height:clamp(190px,22vw,240px)}
+  .masonry.collapsed .gitem:nth-child(n+4):not([hidden]){display:block}
+  .masonry.collapsed .gitem:nth-child(n+6){display:none}
 }
+@media (min-width:1100px){
+  .masonry.collapsed{height:clamp(220px,18vw,270px)}
+  .masonry.collapsed .gitem:nth-child(n+6):not([hidden]){display:block}
+  .masonry.collapsed .gitem:nth-child(n+7){display:none}
+  .masonry.collapsed .gitem:nth-child(5){flex-grow:1.35}
+}
+
+/* the control sits just under the fade, so preview and button read as one */
+.masonry.collapsed + .gal-toggle{margin-top:1.1rem}
+
 .gal-toggle{margin-top:2rem;display:flex;justify-content:center}
