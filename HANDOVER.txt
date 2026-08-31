@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 2.8
+Current release: site live 2.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -48,6 +48,25 @@ PAGES
   lodge/  den-suite, chilcotin, tucson, pine, pelican, blue-heron,
           green, the-cottage, eagle-cabin, heritage-1, heritage-2,
           camping
+
+
+COLLAPSED GALLERY PREVIEW
+-------------------------------------------------------------------
+The collapsed resort gallery is no longer a truncated masonry grid.
+While .collapsed is on #resort-gallery the columns are cancelled and
+the frames become a single flex row of equal height, cropped with
+object-fit, clipped to a fixed height, with a gradient at the foot
+and the button directly beneath. Three frames on mobile, five from
+700px, six from 1100px. Captions are suppressed in the preview.
+
+All of it is CSS. site.js was not touched — it still only toggles
+the .collapsed class, so expanding restores the masonry, the
+captions and the lightbox exactly as before.
+
+The gradient hard-codes --paper as rgba(243,238,225,...). If the
+gallery section ever moves onto a different band colour, that
+gradient needs a matching override or the fade will show as a
+pale block.
 
 
 EAGLE CABIN BED CONFIGURATION
