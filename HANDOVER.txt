@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.3
+Current release: site live 3.4
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -49,6 +49,38 @@ PAGES
   lodge/  den-suite, chilcotin, tucson, pine, pelican, blue-heron,
           green, the-cottage, eagle-cabin, heritage-1, heritage-2,
           camping
+
+
+SCROLL FURNITURE ON THINGS TO DO
+-------------------------------------------------------------------
+Two extra skyline transitions, both using the existing .ridge
+component rather than a new mechanism — same two-layer far/near
+paths, same --near/--far colour hooks, same negative-margin overlap.
+Only the path data is new.
+
+  after the dock section    a conifer treeline, with a bear
+  after the waterfalls      mountain peaks, with a deer
+
+The animals cannot live inside those SVGs: the skylines use
+preserveAspectRatio="none" so they stretch to any width, and a
+silhouette would stretch with them. Each sits on top instead, as a
+.ridge-fig span with its own aspect ratio. Both offsets are
+percentages, and since the skyline geometry scales proportionally
+in both axes, a figure placed on a valley floor stays on that
+valley floor at every viewport width.
+
+The treeline carries a deliberate clearing between x=150 and x=330
+of its 1440 viewBox. That is where the bear stands, so it reads
+against the far trees instead of disappearing into the near ones.
+If the bear moves, the clearing has to move with it.
+
+A tent and a campfire sit under the After Dark copy, in .ttd-camp,
+gold at half opacity.
+
+All five silhouettes were rasterised and looked at before shipping.
+Worth doing: the first bear read as a pig, and an early extraction
+bug had leaked Python comment text into the SVG markup, which would
+have rendered as visible words on the page.
 
 
 THINGS TO DO
