@@ -1,7 +1,13 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 2.7
+Current release: site live 2.8
 Host: Cloudflare Pages, deployed from GitHub.
+
+Uploads are incremental: only changed files go to GitHub. The
+"site live 2.x" comment on line 2 of each page is therefore frozen
+at 2.7 and is no longer bumped per release, because bumping it
+rewrites all 18 pages and turns every small edit into a full
+re-upload. The release number lives here instead.
 
 This note exists so a new conversation can pick up exactly where
 the last one left off. It records what is finished, what is
@@ -42,6 +48,18 @@ PAGES
   lodge/  den-suite, chilcotin, tucson, pine, pelican, blue-heron,
           green, the-cottage, eagle-cabin, heritage-1, heritage-2,
           camping
+
+
+EAGLE CABIN BED CONFIGURATION
+-------------------------------------------------------------------
+Corrected by the owner: 1 queen bed and 2 double beds. This
+replaces the earlier "2 beds and a pullout couch", which came from
+the original specification and never named the bed sizes.
+
+Three beds sleeping two each accounts for the stated occupancy of
+six on its own, so the pullout couch has been dropped rather than
+carried alongside. If the couch is still in the cabin as extra
+bedding, it needs adding back — ask before assuming either way.
 
 
 ACCOMMODATION PHOTOGRAPHY — WHERE IT STANDS
