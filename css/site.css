@@ -919,49 +919,38 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* ============================================================
    COLLAPSIBLE RESORT GALLERY
    ============================================================ */
-/* Collapsed, the gallery is one deliberate band rather than a masonry grid cut
-   off part-way down. The columns are cancelled and the frames become a flex
-   row of equal height, cropped to fill; widths still vary so it keeps some
-   editorial rhythm instead of reading as a filmstrip of identical tiles. A
-   soft gradient at the foot hints that more sits below.
+/* Collapsed, the gallery is the real gallery — same masonry, same column
+   widths, same image sizes — simply cropped after roughly its first row, with
+   a gradient easing the cut into the page.
+
+   The height has to sit on this wrapper rather than on .masonry itself. A
+   multi-column box given a fixed height does not crop: it fragments, spilling
+   the overflow into further columns sideways, so you would get the whole
+   gallery in thin columns rather than the top of it. Constraining a plain
+   block parent avoids that entirely — the masonry inside lays out at its full
+   natural height and the parent hides what falls below.
 
    The gradient's start colour must track --paper. It is written out in rgba
    because a var() hex cannot be given an alpha in plain CSS, and fading to
    `transparent` tints grey in older Safari. */
-.masonry.collapsed{
-  columns:auto;
-  display:flex;
-  gap:var(--mg);
-  position:relative;
-  height:clamp(148px,32vw,200px);
-  overflow:hidden}
-.masonry.collapsed .gitem{flex:1 1 0;min-width:0;height:100%;margin:0}
-.masonry.collapsed .gitem img{width:100%;height:100%;object-fit:cover}
-/* captions belong to the full gallery and the viewer; six of them stacked
-   under the fade would only clutter the preview */
-.masonry.collapsed .gitem .cap{display:none}
-.masonry.collapsed .gitem:nth-child(2){flex-grow:1.5}
-.masonry.collapsed .gitem:nth-child(n+4){display:none}
+.gal-clip{position:relative;margin-top:2.4rem}
+.gal-clip > .masonry{margin-top:0}
+.gal-clip.collapsed{max-height:clamp(240px,58vw,320px);overflow:hidden}
 
-.masonry.collapsed::after{
+.gal-clip.collapsed::after{
   content:"";position:absolute;left:0;right:0;bottom:0;
-  height:54%;pointer-events:none;
+  height:clamp(88px,15vh,150px);pointer-events:none;
   background:linear-gradient(to bottom,
-    rgba(243,238,225,0) 0%, rgba(243,238,225,.55) 55%, var(--paper) 100%)}
+    rgba(243,238,225,0) 0%, rgba(243,238,225,.6) 52%, var(--paper) 100%)}
 
 @media (min-width:700px){
-  .masonry.collapsed{height:clamp(190px,22vw,240px)}
-  .masonry.collapsed .gitem:nth-child(n+4):not([hidden]){display:block}
-  .masonry.collapsed .gitem:nth-child(n+6){display:none}
+  .gal-clip.collapsed{max-height:clamp(300px,40vw,400px)}
 }
 @media (min-width:1100px){
-  .masonry.collapsed{height:clamp(220px,18vw,270px)}
-  .masonry.collapsed .gitem:nth-child(n+6):not([hidden]){display:block}
-  .masonry.collapsed .gitem:nth-child(n+7){display:none}
-  .masonry.collapsed .gitem:nth-child(5){flex-grow:1.35}
+  .gal-clip.collapsed{max-height:clamp(340px,32vw,460px)}
 }
 
 /* the control sits just under the fade, so preview and button read as one */
-.masonry.collapsed + .gal-toggle{margin-top:1.1rem}
+.gal-clip.collapsed + .gal-toggle{margin-top:1.1rem}
 
 .gal-toggle{margin-top:2rem;display:flex;justify-content:center}

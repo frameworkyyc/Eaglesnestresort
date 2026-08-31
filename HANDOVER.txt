@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 2.9
+Current release: site live 3.0
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -52,21 +52,49 @@ PAGES
 
 COLLAPSED GALLERY PREVIEW
 -------------------------------------------------------------------
-The collapsed resort gallery is no longer a truncated masonry grid.
-While .collapsed is on #resort-gallery the columns are cancelled and
-the frames become a single flex row of equal height, cropped with
-object-fit, clipped to a fixed height, with a gradient at the foot
-and the button directly beneath. Three frames on mobile, five from
-700px, six from 1100px. Captions are suppressed in the preview.
+The collapsed resort gallery is the real gallery, cropped. The
+masonry is untouched — same columns, same widths, same image sizes,
+captions intact. A wrapper div.gal-clip around it carries the
+.collapsed class, a max-height and overflow:hidden, plus a gradient
+::after easing the cut into the page. Expanding lifts the crop.
 
-All of it is CSS. site.js was not touched — it still only toggles
-the .collapsed class, so expanding restores the masonry, the
-captions and the lightbox exactly as before.
+The height must sit on that wrapper, not on .masonry. A multi-column
+box given a fixed height does not crop, it fragments: the overflow
+spills into further columns sideways and you get the whole gallery
+in thin strips instead of the top of it. This was tried and was
+wrong. Constrain a plain block parent instead.
+
+Preview heights: 240-320px mobile, 300-400px from 700px, 340-460px
+from 1100px. Tune these to taste; nothing else depends on them.
+
+site.js was not touched. It reads getElementById("resort-gallery"),
+which is now the wrapper rather than the masonry, and toggles the
+class on it. aria-controls still resolves.
 
 The gradient hard-codes --paper as rgba(243,238,225,...). If the
 gallery section ever moves onto a different band colour, that
 gradient needs a matching override or the fade will show as a
 pale block.
+
+Cost of cropping rather than hiding: all 34 thumbnails now lay out
+and load, where the old collapsed state used display:none and
+fetched only the visible few. Roughly 2 MB on a page visit. Hiding
+the far-below items would fix it but would also reshuffle the
+masonry balance and change which photographs appear in the visible
+row, so it has not been done.
+
+
+ACCOMMODATION COPY
+-------------------------------------------------------------------
+All twelve short descriptions and About sections were replaced with
+owner-approved copy. Short description lives in three places per
+accommodation: the card blurb on lodge.html, the hero lede, and the
+meta/og description, which are kept identical.
+
+Two things that copy retired: camping's italic "full details still
+to come" line, and the porch sentence on Heritage 2. Neither is a
+factual loss — camping's quick facts still say details are coming,
+and Heritage 2's porch is still in its gallery.
 
 
 EAGLE CABIN BED CONFIGURATION

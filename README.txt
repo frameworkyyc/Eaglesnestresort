@@ -20,12 +20,12 @@ keeping the structure as it is:
 
     css/site.css
     js/site.js
-    images/               11 files
-    images/gal/           34 gallery thumbnails
-    images/lg/            34 larger versions for the viewer
+    images/               25 files
+    images/gal/           67 gallery thumbnails
+    images/lg/            67 larger versions for the viewer
     _headers              cache rules (Netlify; harmless elsewhere)
 
-11 MB in total. Delete this README before going live if you like.
+21 MB in total. Delete this README before going live if you like.
 
 
 HOW IT BEHAVES
@@ -48,9 +48,10 @@ HOW IT BEHAVES
   No prices are shown anywhere public. The rates are still in the
   data (build/stays_live.py) for when you want them back.
 
-  The resort gallery sits below, collapsed to 6 photographs on
-  desktop and 4 on mobile — under one screenful — with VIEW FULL
-  GALLERY to open all 34.
+  The resort gallery sits below. Collapsed, it is the full masonry
+  gallery at its normal size, simply cropped after roughly its
+  first row by a wrapper (.gal-clip) with a gradient easing the
+  cut. VIEW FULL GALLERY lifts the crop to show all 34.
 
 - YOUR HOSTS is the finished page: Diane, Murray and Oliver, and
   the two guest reviews.
@@ -78,10 +79,9 @@ Send me a batch and say which suite or cabin it belongs to, and it
 gets attached to that one only: card, hero and its own gallery.
 
 Note on the heritage photographs already on the site: they were
-supplied as "the heritage cabins" together and never identified as
-Heritage 1 or Heritage 2 individually. They are in the resort
-gallery but not on either cabin page. Tell me which is which and
-they will be assigned.
+supplied as "the heritage cabins" together. Most are now placed —
+heritage-cabin is Heritage 2, matched to its own batch. The
+lakefront frame is the one still in doubt; see HANDOVER.txt.
 
 
 STILL TO CONFIRM
