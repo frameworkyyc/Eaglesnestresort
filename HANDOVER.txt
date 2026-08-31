@@ -1,13 +1,14 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.0
+Current release: site live 3.1
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
-"site live 2.x" comment on line 2 of each page is therefore frozen
-at 2.7 and is no longer bumped per release, because bumping it
-rewrites all 18 pages and turns every small edit into a full
-re-upload. The release number lives here instead.
+"site live 3.x" comment on line 2 of each page is therefore not
+bumped on every release — doing so rewrites all 18 pages and turns
+a one-line edit into a full re-upload. It is re-synced only on a
+full export, so it reads as "the release at which this page was
+last fully shipped". The true release number lives here.
 
 This note exists so a new conversation can pick up exactly where
 the last one left off. It records what is finished, what is
@@ -48,6 +49,56 @@ PAGES
   lodge/  den-suite, chilcotin, tucson, pine, pelican, blue-heron,
           green, the-cottage, eagle-cabin, heritage-1, heritage-2,
           camping
+
+
+HEADER AND FOOTER
+-------------------------------------------------------------------
+Booking in the mobile menu. The .nav-cta button is display:none
+below 1000px, so on a phone the header offered no route to booking
+at all. A second link, .menu-book, sits inside the drawer and is
+hidden on desktop where the button already does the job. Both point
+at booking.html; only one is ever visible.
+
+Facebook and Instagram are inline SVG marks rather than words, in
+.foot-contact. The glyphs inherit currentColor so hover is a single
+colour change. Phone and email stay as text.
+
+Website-by-Framework credit sits in .built-by, linking to
+frameworkco.ca. images/framework.png is the supplied mark with its
+black square dropped to transparency (alpha taken from luminance),
+so the white glyph sits on the dark footer rather than in a box.
+96px stored, 15px displayed.
+
+The footer's second column is now a .foot-right wrapper holding
+both the credits line and the build credit, so .foot-in still has
+two flex children rather than three.
+
+
+QUICK FACTS GRID
+-------------------------------------------------------------------
+The panel no longer uses a fixed column count. It counts its own
+items with :has(> div:nth-child(N):last-child) and picks a column
+figure that splits them without stranding one on its own: 8 -> 4+4,
+7 -> 4+3, 9 -> 5+4 on desktop. Nothing names an accommodation.
+
+Two width bands, deliberately non-overlapping: 900px and up, and
+621-899px where cells are narrower so counts of 9 and above drop to
+three per row. Below 621px the old two-column mobile panel is
+untouched.
+
+Separators are per-cell, not full-height. Each block clears the top
+border on its first row, the right border on the last cell of each
+row, and the right border on the very last cell — that final rule
+has to live inside each block, because the shared last-child rule
+is less specific than the border re-assert and would lose to it.
+
+Adding or removing a fact re-balances the panel on its own. If a
+count above 14 ever appears, add a line to the map in the generator
+(gen_quickfacts.py, kept outside the site folder) and regenerate,
+or the panel falls back to auto-fit.
+
+Browsers without :has() get the auto-fit fallback: less tidy, still
+correct.
 
 
 COLLAPSED GALLERY PREVIEW

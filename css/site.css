@@ -126,6 +126,10 @@ section:has(+ .ridge.tall){padding-bottom:calc(var(--gap) + clamp(74px,11.5vw,16
 .burger{display:none;margin-left:auto;background:none;border:2px solid var(--forest);
   color:var(--forest);padding:.4rem .7rem;font-family:var(--label);font-weight:600;
   font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;cursor:pointer}
+/* Booking lives in the .nav-cta button on desktop. Below 1000px that button
+   is hidden, so this second link carries it inside the drawer instead —
+   otherwise there is no route to booking from the header on a phone. */
+.nav-links .menu-book{display:none}
 @media (max-width:1000px){
   .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;
     align-items:flex-start;gap:0;margin:0;background:var(--paper);
@@ -133,6 +137,11 @@ section:has(+ .ridge.tall){padding-bottom:calc(var(--gap) + clamp(74px,11.5vw,16
   .nav-links.open{display:flex}
   .nav-links a{padding-block:.8rem;width:100%;font-size:.92rem;border-bottom:1px solid var(--rule-soft)}
   .burger{display:block}.nav-cta{display:none}
+  .nav-links .menu-book,
+  .nav-links .menu-book[aria-current="page"]{display:block;margin-top:.9rem;
+    background:var(--forest);color:var(--paper);border-bottom:0;text-align:center;
+    font-weight:600;letter-spacing:.16em;padding:1rem}
+  .nav-links .menu-book:hover{background:var(--forest-mid);color:var(--paper)}
 }
 
 /* ============================================================
@@ -423,6 +432,27 @@ section:has(+ .ridge.tall){padding-bottom:calc(var(--gap) + clamp(74px,11.5vw,16
 .foot-nav a{font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;
   border-bottom:1px solid transparent;transition:border-color .16s,color .16s}
 .foot-nav a:hover{border-color:var(--gold)}
+
+/* Facebook and Instagram as marks rather than words — easier to spot, and
+   easier to hit on a phone. The glyphs inherit currentColor, so the hover
+   state is a single colour change. Phone and email stay as text. */
+.foot-contact{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .75rem;margin:0}
+.foot-contact .soc{display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;flex:none;color:rgba(243,238,225,.88);
+  border:1px solid rgba(243,238,225,.26);
+  transition:color .16s,background .16s,border-color .16s}
+.foot-contact .soc:hover,.foot-contact .soc:focus-visible{
+  background:var(--gold);border-color:var(--gold);color:var(--forest)}
+.foot-contact .sep{opacity:.4}
+
+/* build credit */
+.foot-right{max-width:52ch}
+.built-by{margin:1.15rem 0 0;font-size:.74rem}
+.built-by a{display:inline-flex;align-items:center;gap:.5rem;
+  border-bottom:1px solid transparent;transition:color .16s,border-color .16s}
+.built-by a:hover{color:var(--paper);border-color:var(--gold)}
+.built-by img{width:15px;height:15px;display:block;opacity:.85}
+.built-by a:hover img{opacity:1}
 
 .rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
 .rv.in{opacity:1;transform:none}
@@ -754,6 +784,213 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .quickinfo{grid-template-columns:1fr 1fr}
   .quickinfo div{border-bottom:1px solid var(--rule-soft)}
   .quickinfo div:nth-child(2n){border-right:0}
+}
+
+/* ------------------------------------------------------------------
+   QUICK FACTS — content-aware grid
+
+   Accommodations carry different numbers of facts, so a fixed column
+   count strands the odd one out: eight facts in a seven-wide row leaves
+   Wood Stove sitting alone underneath. auto-fit alone does not fix that
+   — it fills the row and drops the remainder, which is exactly the
+   orphan we are trying to avoid.
+
+   So the panel counts itself. :has(> div:nth-child(N):last-child) is an
+   exact-count test, and each count picks a column figure that splits its
+   items evenly: 8 becomes 4+4, 7 becomes 4+3, 9 becomes 5+4. Nothing
+   here names an accommodation; add or remove a fact and the panel
+   re-balances on its own.
+
+   Rules are per-cell rather than full-height separators, so they stop
+   where the content stops. The last cell drops its right-hand rule so an
+   incomplete final row does not draw a line into empty space.
+
+   The two width bands are mutually exclusive on purpose. Overlapping
+   them would put a desktop :nth-child rule up against a tablet one of
+   equal specificity, and the wrong border would win.
+
+   Browsers without :has() keep the auto-fit fallback above — fewer tidy,
+   still correct.
+
+   Below 621px the existing two-column mobile panel is untouched.
+   ------------------------------------------------------------------ */
+@media (min-width:621px){
+  .quickinfo > div{border-top:1px solid var(--rule-soft)}
+  .quickinfo > div:last-child{border-right:0}
+}
+
+/* roomy screens */
+@media (min-width:900px){
+  .quickinfo:has(> div:nth-child(1):last-child){grid-template-columns:repeat(1,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(1):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(1):last-child) > div:nth-child(-n+1){border-top:0}
+  .quickinfo:has(> div:nth-child(1):last-child) > div:nth-child(1n){border-right:0}
+  .quickinfo:has(> div:nth-child(1):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(2):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(2):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(2):last-child) > div:nth-child(-n+2){border-top:0}
+  .quickinfo:has(> div:nth-child(2):last-child) > div:nth-child(2n){border-right:0}
+  .quickinfo:has(> div:nth-child(2):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(3):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(3):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(3):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(3):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(4):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(4):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(4):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(4):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(4):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(5):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(5):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(5):last-child) > div:nth-child(-n+5){border-top:0}
+  .quickinfo:has(> div:nth-child(5):last-child) > div:nth-child(5n){border-right:0}
+  .quickinfo:has(> div:nth-child(5):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(6):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(6):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(6):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(6):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(6):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(7):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(7):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(7):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(7):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(7):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(8):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(8):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(8):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(8):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(8):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(9):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(9):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(9):last-child) > div:nth-child(-n+5){border-top:0}
+  .quickinfo:has(> div:nth-child(9):last-child) > div:nth-child(5n){border-right:0}
+  .quickinfo:has(> div:nth-child(9):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(10):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(10):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(10):last-child) > div:nth-child(-n+5){border-top:0}
+  .quickinfo:has(> div:nth-child(10):last-child) > div:nth-child(5n){border-right:0}
+  .quickinfo:has(> div:nth-child(10):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(11):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(11):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(11):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(11):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(11):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(12):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(12):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(12):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(12):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(12):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(13):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(13):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(13):last-child) > div:nth-child(-n+5){border-top:0}
+  .quickinfo:has(> div:nth-child(13):last-child) > div:nth-child(5n){border-right:0}
+  .quickinfo:has(> div:nth-child(13):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(14):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(14):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(14):last-child) > div:nth-child(-n+5){border-top:0}
+  .quickinfo:has(> div:nth-child(14):last-child) > div:nth-child(5n){border-right:0}
+  .quickinfo:has(> div:nth-child(14):last-child) > div:last-child{border-right:0}
+}
+
+/* smaller tablets — narrower cells, so fewer per row */
+@media (min-width:621px) and (max-width:899px){
+  .quickinfo:has(> div:nth-child(1):last-child){grid-template-columns:repeat(1,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(1):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(1):last-child) > div:nth-child(-n+1){border-top:0}
+  .quickinfo:has(> div:nth-child(1):last-child) > div:nth-child(1n){border-right:0}
+  .quickinfo:has(> div:nth-child(1):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(2):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(2):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(2):last-child) > div:nth-child(-n+2){border-top:0}
+  .quickinfo:has(> div:nth-child(2):last-child) > div:nth-child(2n){border-right:0}
+  .quickinfo:has(> div:nth-child(2):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(3):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(3):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(3):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(3):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(3):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(4):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(4):last-child) > div:nth-child(-n+2){border-top:0}
+  .quickinfo:has(> div:nth-child(4):last-child) > div:nth-child(2n){border-right:0}
+  .quickinfo:has(> div:nth-child(4):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(5):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(5):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(5):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(5):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(5):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(6):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(6):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(6):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(6):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(6):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(7):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(7):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(7):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(7):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(7):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(8):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(8):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(8):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(8):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(8):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(9):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(9):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(9):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(9):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(9):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(10):last-child){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(10):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(10):last-child) > div:nth-child(-n+5){border-top:0}
+  .quickinfo:has(> div:nth-child(10):last-child) > div:nth-child(5n){border-right:0}
+  .quickinfo:has(> div:nth-child(10):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(11):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(11):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(11):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(11):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(11):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(12):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(12):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(12):last-child) > div:nth-child(-n+3){border-top:0}
+  .quickinfo:has(> div:nth-child(12):last-child) > div:nth-child(3n){border-right:0}
+  .quickinfo:has(> div:nth-child(12):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(13):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(13):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(13):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(13):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(13):last-child) > div:last-child{border-right:0}
+
+  .quickinfo:has(> div:nth-child(14):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+  .quickinfo:has(> div:nth-child(14):last-child) > div{border-right:1px solid var(--rule-soft);border-top:1px solid var(--rule-soft)}
+  .quickinfo:has(> div:nth-child(14):last-child) > div:nth-child(-n+4){border-top:0}
+  .quickinfo:has(> div:nth-child(14):last-child) > div:nth-child(4n){border-right:0}
+  .quickinfo:has(> div:nth-child(14):last-child) > div:last-child{border-right:0}
 }
 
 .amenities{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));

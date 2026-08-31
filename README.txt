@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 2.7)
+EAGLE'S NEST RESORT — LIVE SITE (site live 3.1)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -20,7 +20,7 @@ keeping the structure as it is:
 
     css/site.css
     js/site.js
-    images/               25 files
+    images/               26 files
     images/gal/           67 gallery thumbnails
     images/lg/            67 larger versions for the viewer
     _headers              cache rules (Netlify; harmless elsewhere)
@@ -208,7 +208,7 @@ VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 2.7 -->
+    <!-- Eagle's Nest Resort — site live 3.1 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the
