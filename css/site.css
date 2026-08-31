@@ -1278,7 +1278,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-bird .sci{display:block;font-family:var(--body);font-style:italic;font-size:.74rem;
   color:var(--muted);margin-top:.3rem}
 
-/* --- drawn map --- */
+/* --- drawn map: currently unused, the map is off the page for now.
+       Kept so it can go back without being rebuilt. --- */
 .ttd-map{margin-top:clamp(2.2rem,5vw,3.4rem);border:2px solid var(--forest);
   background:var(--paper-2);background-image:var(--hatch-fine);padding:clamp(.6rem,1.6vw,1rem)}
 .ttd-map svg{display:block;width:100%;height:auto}
@@ -1289,6 +1290,13 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-map-key i{width:9px;height:9px;background:var(--gold);display:block;
   transform:rotate(45deg);flex:none}
 .ttd-map-key i.home{background:var(--forest)}
+
+/* --- a full-width plate, for a frame that carries a whole section --- */
+.ttd-wide{margin:clamp(1.8rem,4vw,2.8rem) 0 0}
+.ttd-wide img{width:100%;height:auto;display:block;border:2px solid var(--forest);
+  filter:saturate(1.02) contrast(1.03)}
+.ttd-wide figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-top:.7rem}
 
 /* --- winter: the page cools down, it does not change sides --- */
 .ttd-winter{background:linear-gradient(180deg,var(--paper) 0%,var(--ice) 42%,var(--ice) 100%)}

@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.2
+Current release: site live 3.3
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -59,16 +59,32 @@ SVG, a hand-drawn map, and a cooling transition into winter. All
 styles are namespaced .ttd- and appended to the end of site.css, so
 nothing can leak into the other pages. No other page was touched.
 
-The map is illustrative, but the bearings are real and sourced.
+THE MAP IS CURRENTLY OFF THE PAGE. The owner did not like how it
+looked. The SVG is still in the build script, marked unused, and
+the .ttd-map styles are still in site.css, so it can go back
+without being redrawn. "Go a little farther" survives as a short
+chapter break; its second line was changed from "Use the map to
+explore some of our favourite places to go" to "Here are a few of
+our favourite places to go", since the map it referred to is gone.
+
+If it does come back: the bearings on it were real and sourced.
 Highway 20 runs east-west through Anahim Lake. The Rainbow Range
 trailhead is west along it, inside Tweedsmuir Park — about 40 km,
 per BC Parks. Hotnarko Falls and the Precipice are south-west,
 reached off the highway and then south on the Beeftrail road.
 
-Beef Creek Falls is NOT on the map. No reliable source could be
-found to place it — every search result is a waterfall in Texas.
-It has an editorial section but no marker. Confirm roughly where it
-sits and it can be added.
+Beef Trail Falls — corrected by the owner from "Beef Creek Falls",
+which is why nothing could be found for it. The name points at the
+Beeftrail road, which runs south off Highway 20 west of Anahim
+Lake, the same road used to reach Hotnarko Falls.
+
+It is still NOT on the map. The corridor is now identifiable but
+how far down it the falls sit is not, and guessing that is exactly
+the invented geography to avoid. Confirm the rough distance or
+position and the marker goes in.
+
+Its section carries a photograph of the canyon on the way in,
+captioned as such. The falls themselves are still unphotographed.
 
 Nothing on the page states a distance, a drive time, a trail
 length, a difficulty or an access route. Those were left out
