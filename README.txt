@@ -64,7 +64,9 @@ HOW IT BEHAVES
   and stays in the nav, but shows only a short note and the
   contact buttons, with noindex set. Restore from v3.5.
 
-- THINGS TO DO is now a full page: paddling and fishing from the
+- THINGS TO DO is a holding page on live for now; the finished
+  page is in the v3.6 package and the staging bundle. Once
+  restored it is a full page: paddling and fishing from the
   dock, birds, the waterfalls, hiking, a turn into winter, dark
   skies, and a closing call to Diane and Murray. Seven photographs are still to come and
   show a neutral frame until they arrive.

@@ -51,6 +51,30 @@ PAGES
           camping
 
 
+THINGS TO DO IS A HOLDING PAGE ON LIVE
+-------------------------------------------------------------------
+Same treatment as Getting Here, and for the same reason: the URL
+resolves, stays in the nav and breaks no inbound link, but shows
+only a short "still building this one" note and the two buttons,
+with <meta name="robots" content="noindex"> so the placeholder is
+not what gets cached for that URL.
+
+The finished page — hero engraving, paper ridge, the two skyline
+transitions, ten photographs, the field-guide illustrations — is
+complete and unchanged. It lives in the v3.6 full package and in
+the Things To Do staging bundle. Restoring it to live is a matter
+of copying things-to-do.html back, along with its six page-specific
+images if they are not already on the server:
+
+    hero-things-to-do.jpg      lg/hotnarko-falls.jpg
+    lg/beef-trail-approach.jpg lg/rainbow-range.jpg
+    lg/winter-lodge.jpg        lg/pelican-lake.jpg
+
+No CSS changed for the holding page, so the ?v= hash is untouched
+and the .ttd styles simply sit unused in site.css until the real
+page comes back.
+
+
 GETTING HERE IS A HOLDING PAGE
 -------------------------------------------------------------------
 At the owner's request the directions are off the site for now. The
