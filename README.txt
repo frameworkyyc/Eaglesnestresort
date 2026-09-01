@@ -1,4 +1,4 @@
-EAGLE'S NEST RESORT — LIVE SITE (site live 1.8)
+EAGLE'S NEST RESORT — LIVE SITE (site live 3.1)
 ==================================================================
 The version that goes on the live domain. Pages are switched on
 as they are finished.
@@ -10,7 +10,8 @@ Upload everything in this folder to the root of your web host,
 keeping the structure as it is:
 
     index.html            The home page — the real thing
-    lodge.html            A gallery of the property
+    lodge.html            Accommodations + resort gallery
+    lodge/                11 accommodation pages
     hosts.html            Your Hosts — finished
     booking.html          Booking — contact form and options
     getting-here.html     Getting Here — finished
@@ -19,12 +20,12 @@ keeping the structure as it is:
 
     css/site.css
     js/site.js
-    images/               11 files
-    images/gal/           34 gallery thumbnails
-    images/lg/            34 larger versions for the viewer
+    images/               26 files
+    images/gal/           67 gallery thumbnails
+    images/lg/            67 larger versions for the viewer
     _headers              cache rules (Netlify; harmless elsewhere)
 
-11 MB in total. Delete this README before going live if you like.
+21 MB in total. Delete this README before going live if you like.
 
 
 HOW IT BEHAVES
@@ -33,11 +34,24 @@ HOW IT BEHAVES
   carousel, the hosts introduction, the two guest reviews, and the
   closing call to action.
 
-- THE LODGE is a gallery: 34 photographs of the property in a
-  grid, any of which opens larger. Arrow keys and swipe move
-  between them, Escape or a downward swipe closes. Under it, a
-  short note that rooms and rates are still to come, with the
-  phone number and email address.
+- THE LODGE now offers two paths at the top: view the resort
+  (jumps to the gallery and opens it) or find a place to stay
+  (jumps to the accommodations).
+
+  WHERE TO STAY lists 12 entries — 7 suites, 4 cabins and
+  camping — filterable by guests, type and power. Each card links
+  to its own page at lodge/<name>.html.
+
+  All twelve now have their own photographs. No placeholders
+  remain.
+
+  No prices are shown anywhere public. The rates are still in the
+  data (build/stays_live.py) for when you want them back.
+
+  The resort gallery sits below. Collapsed, it is the full masonry
+  gallery at its normal size, simply cropped after roughly its
+  first row by a wrapper (.gal-clip) with a gradient easing the
+  cut. VIEW FULL GALLERY lifts the crop to show all 34.
 
 - YOUR HOSTS is the finished page: Diane, Murray and Oliver, and
   the two guest reviews.
@@ -53,6 +67,40 @@ HOW IT BEHAVES
 - BOOKING is a page of its own now: phone and email, an enquiry
   form, and the online options. Both the Expedia and Booking.com
   listings link out in a new tab.
+
+
+ADDING PHOTOGRAPHS TO AN ACCOMMODATION
+------------------------------------------------------------------
+Every accommodation now has its own photographs. No placeholders
+remain. NO accommodation
+borrows another one's photographs — that is deliberate.
+
+Send me a batch and say which suite or cabin it belongs to, and it
+gets attached to that one only: card, hero and its own gallery.
+
+Note on the heritage photographs already on the site: they were
+supplied as "the heritage cabins" together. Most are now placed —
+heritage-cabin is Heritage 2, matched to its own batch. The
+lakefront frame is the one still in doubt; see HANDOVER.txt.
+
+
+STILL TO CONFIRM
+------------------------------------------------------------------
+  - TWO HELD PHOTOGRAPHS. One from the Pine batch and one from the
+    Pelican batch were not published because they contradict the
+    written specification (see HANDOVER.txt). They have not been
+    assigned to any other room.
+  - TV. The old site copy claimed satellite TV for "suites" as a
+    group, but the owners have confirmed Pine and Pelican have
+    none. That makes the old group claim unreliable, so no TV is
+    listed for ANY accommodation. Tell me which of Den, Chilcotin,
+    Tucson, Blue Heron and Green actually have one.
+  - Camping: number of sites, hookups, facilities, occupancy and
+    whether trailers are welcome. One Camping entry exists with a
+    photograph and no invented detail.
+  - Whether the cabins have Wi-Fi. Only the suites are listed
+    with it, as instructed.
+  - info@eaglesnest-resort.com — still unverified.
 
 
 ADDING OR REMOVING GALLERY PHOTOS
@@ -134,11 +182,33 @@ folder; dropping in the full lodge.html on its own would give you
 broken links and missing photographs.
 
 
+IF THE SITE LOOKS UNSTYLED AFTER A DEPLOY
+------------------------------------------------------------------
+That is almost always an old stylesheet still being served, not
+broken CSS. To check:
+
+1. View source on the live page and find the line:
+       <link rel="stylesheet" href="css/site.css?v=live-2.2">
+   The number must match the version comment on line 2.
+2. Open that css URL directly in the browser and search it for
+       .accom
+   If it is not there, the stylesheet on the server is out of date
+   and css/site.css did not upload.
+
+Upload the WHOLE folder every time, not just the .html files. The
+css, js and images folders must go up together.
+
+The ?v= number now tracks this build, so every release changes the
+address of the stylesheet and browsers are forced to fetch it
+fresh. _headers also tells Cloudflare to revalidate css and js on
+every request.
+
+
 VERSION
 ------------------------------------------------------------------
 Line 2 of every page reads:
 
-    <!-- Eagle's Nest Resort — site live 1.8 -->
+    <!-- Eagle's Nest Resort — site live 3.1 -->
 
 View source on the live site to confirm what is actually deployed.
 If you edit css/site.css or js/site.js, bump the ?v= number in the

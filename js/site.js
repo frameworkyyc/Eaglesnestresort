@@ -399,3 +399,101 @@
     });
   });
 })();
+
+
+/* ---- Accommodation filters ---- */
+(function(){
+  "use strict";
+  var wrap = document.getElementById("accoms");
+  if (!wrap) return;
+
+  var cards = Array.prototype.slice.call(wrap.querySelectorAll(".accom"));
+  var count = document.getElementById("acc-count");
+  var none  = document.getElementById("acc-none");
+  var clear = document.getElementById("acc-clear");
+  var state = { guests: "any", type: "all", power: "any" };
+
+  function fits(card) {
+    var sleeps = card.getAttribute("data-sleeps");
+    // "any" means occupancy is not yet known (camping) — never filter it out
+    if (state.guests !== "any" && sleeps !== "any" &&
+        parseInt(sleeps, 10) < parseInt(state.guests, 10)) return false;
+    if (state.type !== "all" && card.getAttribute("data-type") !== state.type) return false;
+    if (state.power !== "any" && card.getAttribute("data-power") !== state.power) return false;
+    return true;
+  }
+
+  function apply() {
+    var shown = 0;
+    cards.forEach(function (c) {
+      var ok = fits(c);
+      c.hidden = !ok;
+      if (ok) shown++;
+    });
+    count.textContent = shown === 0 ? ""
+      : shown + (shown === 1 ? " stay matches" : " stays match") + " what you\u2019re looking for";
+    none.hidden = shown !== 0;
+    var active = state.guests !== "any" || state.type !== "all" || state.power !== "any";
+    clear.hidden = !active;
+  }
+
+  document.querySelectorAll("[data-filter]").forEach(function (group) {
+    var key = group.getAttribute("data-filter");
+    group.addEventListener("click", function (e) {
+      var btn = e.target.closest("button");
+      if (!btn) return;
+      state[key] = btn.getAttribute("data-val");
+      group.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b === btn));
+      });
+      apply();
+    });
+  });
+
+  clear.addEventListener("click", function () {
+    state = { guests: "any", type: "all", power: "any" };
+    document.querySelectorAll("[data-filter]").forEach(function (g) {
+      g.querySelectorAll("button").forEach(function (b, i) {
+        b.setAttribute("aria-pressed", String(i === 0));
+      });
+    });
+    apply();
+  });
+
+  apply();
+})();
+
+/* ---- Collapsible resort gallery ---- */
+(function(){
+  "use strict";
+  var gal = document.getElementById("resort-gallery");
+  var btn = document.getElementById("gal-toggle");
+  if (!gal || !btn) return;
+
+  function expand() {
+    if (!gal.classList.contains("collapsed")) return;
+    gal.classList.remove("collapsed");
+    btn.textContent = "Show less";
+    btn.setAttribute("aria-expanded", "true");
+  }
+  function collapse() {
+    gal.classList.add("collapsed");
+    btn.textContent = "View full gallery";
+    btn.setAttribute("aria-expanded", "false");
+    gal.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  btn.addEventListener("click", function () {
+    gal.classList.contains("collapsed") ? expand() : collapse();
+  });
+
+  /* Asking for the gallery from the top of the page should not then ask the
+     visitor to press "view full gallery" as well — open it for them. */
+  document.querySelectorAll('[data-open-gallery]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      expand();
+      var target = document.getElementById("gallery");
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+})();
