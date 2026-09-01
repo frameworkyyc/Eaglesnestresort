@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.4
+Current release: site live 3.1
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -51,118 +51,6 @@ PAGES
           camping
 
 
-SCROLL FURNITURE ON THINGS TO DO
--------------------------------------------------------------------
-Two extra skyline transitions, both using the existing .ridge
-component rather than a new mechanism — same two-layer far/near
-paths, same --near/--far colour hooks, same negative-margin overlap.
-Only the path data is new.
-
-  after the dock section    a conifer treeline, with a bear
-  after the waterfalls      mountain peaks, with a deer
-
-The animals cannot live inside those SVGs: the skylines use
-preserveAspectRatio="none" so they stretch to any width, and a
-silhouette would stretch with them. Each sits on top instead, as a
-.ridge-fig span with its own aspect ratio. Both offsets are
-percentages, and since the skyline geometry scales proportionally
-in both axes, a figure placed on a valley floor stays on that
-valley floor at every viewport width.
-
-The treeline carries a deliberate clearing between x=150 and x=330
-of its 1440 viewBox. That is where the bear stands, so it reads
-against the far trees instead of disappearing into the near ones.
-If the bear moves, the clearing has to move with it.
-
-A tent and a campfire sit under the After Dark copy, in .ttd-camp,
-gold at half opacity.
-
-All five silhouettes were rasterised and looked at before shipping.
-Worth doing: the first bear read as a pig, and an early extraction
-bug had leaked Python comment text into the SVG markup, which would
-have rendered as visible words on the page.
-
-
-THINGS TO DO
--------------------------------------------------------------------
-Built as a field guide rather than a grid of activity cards:
-alternating editorial splits, line illustrations drawn as inline
-SVG, a hand-drawn map, and a cooling transition into winter. All
-styles are namespaced .ttd- and appended to the end of site.css, so
-nothing can leak into the other pages. No other page was touched.
-
-THE MAP IS CURRENTLY OFF THE PAGE. The owner did not like how it
-looked. The SVG is still in the build script, marked unused, and
-the .ttd-map styles are still in site.css, so it can go back
-without being redrawn. "Go a little farther" survives as a short
-chapter break; its second line was changed from "Use the map to
-explore some of our favourite places to go" to "Here are a few of
-our favourite places to go", since the map it referred to is gone.
-
-If it does come back: the bearings on it were real and sourced.
-Highway 20 runs east-west through Anahim Lake. The Rainbow Range
-trailhead is west along it, inside Tweedsmuir Park — about 40 km,
-per BC Parks. Hotnarko Falls and the Precipice are south-west,
-reached off the highway and then south on the Beeftrail road.
-
-Beef Trail Falls — corrected by the owner from "Beef Creek Falls",
-which is why nothing could be found for it. The name points at the
-Beeftrail road, which runs south off Highway 20 west of Anahim
-Lake, the same road used to reach Hotnarko Falls.
-
-It is still NOT on the map. The corridor is now identifiable but
-how far down it the falls sit is not, and guessing that is exactly
-the invented geography to avoid. Confirm the rough distance or
-position and the marker goes in.
-
-Its section carries a photograph of the canyon on the way in,
-captioned as such. The falls themselves are still unphotographed.
-
-Nothing on the page states a distance, a drive time, a trail
-length, a difficulty or an access route. Those were left out
-deliberately; the layout takes them whenever they are verified.
-
-Fish are named as given: Rainbow Trout and Cuttbow. No limits or
-seasons are stated; the box links to the B.C. regulations instead.
-
-The five bird glyphs are hand-drawn silhouettes, checked by
-rasterising them here rather than shipped unseen. The first attempt
-was unusable — the pelican looked like a hedgehog — so they were
-rebuilt from primitives.
-
-
-LINK PREVIEWS / OPEN GRAPH
--------------------------------------------------------------------
-images/eagles-nest-social-preview.jpg, 1200x630, is the preview card
-for every page. All 18 reference it; no page has a deliberate image
-of its own, so none needs an exception. If one ever does, override
-og:image and twitter:image on that page only.
-
-Why previews were broken: og:image pointed at a page photograph on
-eaglesnest-resort.com, which is not the domain the site is served
-from. The fetch failed, and the scraper fell back to sniffing the
-page — landing on the transparent header lockup, which iMessage then
-put on its own background. A new image alone would not have fixed
-it while the URL still 404ed. All absolute metadata URLs are now
-eaglesnestresort.ca, and og:url is per-page and extensionless to
-match the live URLs.
-
-The card is the owner's own cream-background logo. The supplied
-file is 3:2 and the card is 1.905:1, so rather than squash it or
-crop into the artwork it is scaled to fit and the shortfall filled
-with its own background colour, sampled from its corners. The fill
-matches to within a level or two, so the seam is invisible and the
-composition survives whole. The cream is the owner's, not --paper;
-it is a shade warmer and was left alone.
-
-Still on the old domain: the email address, in mailto links and in
-the schema block. That is a separate question — info@ may legitimately
-sit on a different domain from the website. Unverified either way.
-
-The header lockup, footer, favicon and apple-touch-icon are all
-untouched.
-
-
 HEADER AND FOOTER
 -------------------------------------------------------------------
 Booking in the mobile menu. The .nav-cta button is display:none
@@ -181,23 +69,9 @@ black square dropped to transparency (alpha taken from luminance),
 so the white glyph sits on the dark footer rather than in a box.
 96px stored, 15px displayed.
 
-The footer's second column is a .foot-right wrapper holding both
-the address line and the build credit.
-
-Desktop footer layout (900px and up): .foot-in becomes a grid
-rather than flex space-between, which had stranded the address
-against the right edge. The right column is given a definite width,
-clamp(320px,31%,380px), and the gap does the rest — across the real
-range of widths it starts between 67% and 69% across and runs
-320-361px wide. A top padding drops the address down beside the
-footer navigation instead of level with the wordmark; it tracks the
-same vw as the wordmark's own clamp so the two stay in step.
-
-The build credit sits 2.4rem below the address and slightly dimmer,
-reading as a signature rather than another line of resort detail.
-
-Below 900px nothing applies and the footer stacks as before. The
-photo credit line has been removed from all pages.
+The footer's second column is now a .foot-right wrapper holding
+both the credits line and the build credit, so .foot-in still has
+two flex children rather than three.
 
 
 QUICK FACTS GRID

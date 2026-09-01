@@ -60,10 +60,9 @@ HOW IT BEHAVES
   of the property, the float plane at the dock, and the contact
   and arrival details.
 
-- THINGS TO DO is now a full page: paddling and fishing from the
-  dock, birds, the waterfalls, hiking, a turn into winter, dark
-  skies, and a closing call to Diane and Murray. Seven photographs are still to come and
-  show a neutral frame until they arrive.
+- THINGS TO DO is the one page still to come. It opens a real page
+  saying so, with your phone number, email address and address on
+  it. Nobody hits a dead link or a 404.
 
 - BOOKING is a page of its own now: phone and email, an enquiry
   form, and the online options. Both the Expedia and Booking.com
@@ -171,21 +170,17 @@ a pile of tracking parameters, which would pin every visitor to
 your search instead of their own.
 
 
-PHOTOGRAPHS STILL NEEDED — THINGS TO DO
+TURNING THE LAST PAGE ON
 ------------------------------------------------------------------
-Three frames on that page show a neutral holder naming what belongs
-there, all of them in the winter section. Nothing has been filled
-with an unrelated photograph.
+The finished Things To Do page already exists in the full build.
+When you want it live, replace things-to-do.html with the real one
+and upload the extra images it needs.
 
-    snowmobiling    ice fishing    skating on the lake
+Do not mix the two builds halfway. The full Lodge page depends on
+a lodge/ folder of accommodation pages and a much larger images
+folder; dropping in the full lodge.html on its own would give you
+broken links and missing photographs.
 
-Beef Trail Falls has a photograph of the canyon on the way in, but
-not of the falls themselves. The winter section opens with a
-full-width plate of the lodge across the frozen lake; the three
-activity frames beneath it are the ones still waiting.
-
-Drop each one in and swap the holder for an <img>; the layout does
-not change.
 
 IF THE SITE LOOKS UNSTYLED AFTER A DEPLOY
 ------------------------------------------------------------------
@@ -193,8 +188,8 @@ That is almost always an old stylesheet still being served, not
 broken CSS. To check:
 
 1. View source on the live page and find the line:
-       <link rel="stylesheet" href="css/site.css?v=81d61dd6">
-   The number must match the one recorded in HANDOVER.txt.
+       <link rel="stylesheet" href="css/site.css?v=live-2.2">
+   The number must match the version comment on line 2.
 2. Open that css URL directly in the browser and search it for
        .accom
    If it is not there, the stylesheet on the server is out of date
@@ -215,9 +210,7 @@ Line 2 of every page reads:
 
     <!-- Eagle's Nest Resort — site live 3.1 -->
 
-That marker is re-synced only on a full export, so it reads as the
-release a page was last fully shipped in. The current release
-number is in HANDOVER.txt. View source on the live site to confirm
-what is actually deployed.
-If you edit css/site.css or js/site.js, bump the ?v= number on all
-18 pages, or returning visitors will keep seeing the old styling.
+View source on the live site to confirm what is actually deployed.
+If you edit css/site.css or js/site.js, bump the ?v= number in the
+<head> and at the foot of all five pages, or returning visitors
+will keep seeing the old styling.
