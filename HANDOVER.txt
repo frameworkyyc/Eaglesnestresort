@@ -51,23 +51,28 @@ PAGES
           camping
 
 
-GETTING HERE IS A HOLDING PAGE
+THINGS TO DO IS A HOLDING PAGE ON LIVE
 -------------------------------------------------------------------
-At the owner's request the directions are off the site for now. The
-URL still resolves — it is not a 404 and not removed from the nav,
-so no inbound link or bookmark breaks — but the page carries only a
-short "back shortly" note and the two buttons, plus
-<meta name="robots" content="noindex"> so search engines do not
-cache the placeholder in place of the real page.
+Same treatment as Getting Here, and for the same reason: the URL
+resolves, stays in the nav and breaks no inbound link, but shows
+only a short "still building this one" note and the two buttons,
+with <meta name="robots" content="noindex"> so the placeholder is
+not what gets cached for that URL.
 
-The nav link was deliberately left in place, matching how Things To
-Do was handled before it was finished: a real page saying so beats
-a dead link. If it should disappear from the nav as well, that is a
-one-line removal on all 18 pages.
+The finished page — hero engraving, paper ridge, the two skyline
+transitions, ten photographs, the field-guide illustrations — is
+complete and unchanged. It lives in the v3.6 full package and in
+the Things To Do staging bundle. Restoring it to live is a matter
+of copying things-to-do.html back, along with its six page-specific
+images if they are not already on the server:
 
-The full original page is unchanged in the v3.5 package and can be
-dropped straight back in — only the <head> description tags and
-everything between </nav> and the closing ridge were replaced.
+    hero-things-to-do.jpg      lg/hotnarko-falls.jpg
+    lg/beef-trail-approach.jpg lg/rainbow-range.jpg
+    lg/winter-lodge.jpg        lg/pelican-lake.jpg
+
+No CSS changed for the holding page, so the ?v= hash is untouched
+and the .ttd styles simply sit unused in site.css until the real
+page comes back.
 
 
 HERO PAPER RIDGE (THINGS TO DO)
