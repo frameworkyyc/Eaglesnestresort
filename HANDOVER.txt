@@ -75,6 +75,25 @@ and the .ttd styles simply sit unused in site.css until the real
 page comes back.
 
 
+GETTING HERE IS A HOLDING PAGE
+-------------------------------------------------------------------
+At the owner's request the directions are off the site for now. The
+URL still resolves — it is not a 404 and not removed from the nav,
+so no inbound link or bookmark breaks — but the page carries only a
+short "back shortly" note and the two buttons, plus
+<meta name="robots" content="noindex"> so search engines do not
+cache the placeholder in place of the real page.
+
+The nav link was deliberately left in place, matching how Things To
+Do was handled before it was finished: a real page saying so beats
+a dead link. If it should disappear from the nav as well, that is a
+one-line removal on all 18 pages.
+
+The full original page is unchanged in the v3.5 package and can be
+dropped straight back in — only the <head> description tags and
+everything between </nav> and the closing ridge were replaced.
+
+
 HERO PAPER RIDGE (THINGS TO DO)
 -------------------------------------------------------------------
 The next section's paper, cut to a mountain skyline and laid over
