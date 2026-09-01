@@ -1220,38 +1220,32 @@ body{overscroll-behavior-y:none;background:var(--paper);
    winter. Everything here is namespaced .ttd- so it cannot leak
    into the rest of the site.
    ============================================================ */
-.ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712}
+.ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712;
+  --map-paper:#EFD9B8;--map-overlap:clamp(70px,18vw,300px);
+  --map-peaks:clamp(44px,6.5vw,120px)}
 
-/* --- torn paper ridge at the foot of the hero -------------------------
-   Not a divider sitting between two bands: it is the next section's paper,
-   cut to a skyline and laid over the bottom of the hero. The fill is
-   var(--paper), the same colour as the section below, and the element sits
-   flush to the hero's bottom edge, so the two meet with no seam and no
-   straight horizontal line anywhere.
+/* --- the map sheet ---------------------------------------------------
+   The illustrated map page is the background of the first section, and its
+   drawn mountains rise out of the section to overlap the foot of the hero.
+   It is an <img> rather than a CSS background so it keeps its own aspect
+   ratio at every width and never stretches.
 
-   It paints above .stay-hero-in, so the hero's dark text scrim is covered by
-   the paper rather than muddying it — which is why the hero copy is given
-   bottom clearance equal to the ridge height. The peaks rise inside the hero
-   box, so .stay-hero's overflow:hidden never clips them. */
-.stay-hero{--paper-ridge-h:clamp(88px,12vw,180px)}
-.paper-ridge{position:absolute;left:0;right:0;bottom:-1px;z-index:4;
-  height:var(--paper-ridge-h);line-height:0;pointer-events:none}
-.paper-ridge svg{display:block;width:100%;height:100%}
-.paper-ridge .mass{fill:var(--paper)}
-.paper-ridge .spur{fill:none;stroke:var(--paper-3);stroke-width:2;opacity:.7;
-  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
-/* The copy is lifted clear of the peaks, and the scrim is rebuilt for this
-   hero. Two problems the default caused here: padded to clear the ridge it
-   grew to nearly the full height of the hero and washed the whole engraving
-   grey, and its hard bottom edge drew a straight horizontal line across the
-   image between the peaks — the one thing this transition exists to avoid.
-   So it is shorter, and it fades back to nothing at the foot, with the tail
-   landing inside the ridge band where the paper hides it. */
-.stay-hero.ttd .stay-hero-in{
-  padding-bottom:calc(var(--paper-ridge-h) * .62);
-  background:linear-gradient(180deg,
-    transparent 0%, rgba(18,32,24,.34) 30%, rgba(18,32,24,.80) 54%,
-    rgba(18,32,24,.80) 70%, rgba(18,32,24,.30) 88%, transparent 100%)}
+   The overlap has to clear the sheet's own empty margin before the drawn
+   peaks begin: the art starts a tenth of the way down the file, so at any
+   width that margin is about 12.5vw. --map-overlap is 18vw, which spends the
+   first 12.5 reaching the peaks and the remainder pushing them up into the
+   hero. --map-peaks is roughly that remainder, and is what the hero copy is
+   held clear of.
+
+   The sheet is a fixed portrait but the section it backs is a variable
+   height, so its foot is faded out in the file itself and the section's own
+   background — the same paper tone — carries on underneath. That way the art
+   ends without a seam however tall the section grows. On a phone the section
+   runs far taller than the sheet, so most of it is the flat tone. */
+.ttd-mapped{position:relative;background:var(--map-paper)}
+.map-sheet{position:absolute;left:0;right:0;top:calc(-1 * var(--map-overlap));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-mapped > .wrap{position:relative;z-index:1}
 
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
@@ -1263,6 +1257,9 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-shot{margin:0}
 .ttd-shot img{width:100%;height:auto;display:block;border:2px solid var(--forest);
   filter:saturate(1.02) contrast(1.03)}
+/* The weathered prints carry their own paper edge and drop shadow, so they
+   want no frame drawn round them and no grade laid over them. */
+.ttd-shot img.print{border:0;filter:none}
 .ttd-shot .holder{aspect-ratio:4/3}
 .ttd-shot figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin-top:.7rem}

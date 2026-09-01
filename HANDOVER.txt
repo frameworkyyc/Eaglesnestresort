@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.6
+Current release: site live 3.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -75,32 +75,41 @@ and the .ttd styles simply sit unused in site.css until the real
 page comes back.
 
 
-HERO PAPER RIDGE (THINGS TO DO)
+THE MAP SHEET (THINGS TO DO)
 -------------------------------------------------------------------
-The next section's paper, cut to a mountain skyline and laid over
-the foot of the hero — not a divider between two bands. Fill is
-var(--paper), the same colour as the section below, and the element
-sits flush at bottom:-1px, so there is no seam and no straight edge
-anywhere between hero and section.
+The hand-built SVG paper ridge is gone. In its place the owner's
+illustrated map page, images/map-sheet.webp, is the background of
+the first section, and its drawn mountains rise out of the section
+to overlap the foot of the hero.
 
-It paints above .stay-hero-in so the paper covers the scrim rather
-than the scrim muddying the paper. Peaks rise inside the hero box,
-so .stay-hero's overflow:hidden never clips them.
+It is an <img>, not a CSS background, so it keeps its aspect ratio
+at every width and never stretches.
 
-Two things the default hero fought, both fixed for this page only:
-padding the copy clear of the ridge stretched the scrim box to
-nearly the full hero height and washed the engraving grey; and the
-scrim's hard bottom edge drew a straight horizontal line across the
-image between the peaks. The scrim is now shorter and fades back to
-nothing at its foot, with the tail landing inside the ridge band
-where the paper hides it.
+Two numbers do the work, both on .ttd:
+  --map-overlap  18vw, clamped 70-300px
+  --map-peaks    6.5vw, clamped 44-120px
 
-Ridge height is clamp(88px,12vw,180px) — about 37% of the hero on a
-desktop, 20% on a phone. Raising it much past that starts swallowing
-the sun and the lake.
+The sheet has an empty margin above its art — the drawn peaks start
+a tenth of the way down the file, about 12.5vw at any width. So
+--map-overlap spends its first 12.5vw reaching the peaks and the
+rest pushing them into the hero. Change the artwork and that tenth
+changes with it; the overlap has to be re-derived or the mountains
+stop short and leave a flat band under the hero. That happened on
+the first attempt.
 
-Only .stay-hero.ttd is affected. Every other hero on the site keeps
-the original scrim.
+--map-peaks is roughly the remainder, and is what the hero copy is
+held clear of.
+
+The sheet's paper is much warmer than --paper: about #EFD9B8
+against the site's #F3EEE1. The section's background is set to that
+warmer tone, and the sheet's foot is faded out in the file itself,
+so the art dissolves into the flat tone with no seam however tall
+the section grows. On a phone the section runs several times taller
+than the sheet, so most of it is the flat tone.
+
+That makes the first section warmer than the rest of the page. It
+is deliberate — it reads as a map page — but it is the one thing to
+look at first.
 
 
 SCROLL FURNITURE ON THINGS TO DO
