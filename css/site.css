@@ -1222,6 +1222,37 @@ body{overscroll-behavior-y:none;background:var(--paper);
    ============================================================ */
 .ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712}
 
+/* --- torn paper ridge at the foot of the hero -------------------------
+   Not a divider sitting between two bands: it is the next section's paper,
+   cut to a skyline and laid over the bottom of the hero. The fill is
+   var(--paper), the same colour as the section below, and the element sits
+   flush to the hero's bottom edge, so the two meet with no seam and no
+   straight horizontal line anywhere.
+
+   It paints above .stay-hero-in, so the hero's dark text scrim is covered by
+   the paper rather than muddying it — which is why the hero copy is given
+   bottom clearance equal to the ridge height. The peaks rise inside the hero
+   box, so .stay-hero's overflow:hidden never clips them. */
+.stay-hero{--paper-ridge-h:clamp(88px,12vw,180px)}
+.paper-ridge{position:absolute;left:0;right:0;bottom:-1px;z-index:4;
+  height:var(--paper-ridge-h);line-height:0;pointer-events:none}
+.paper-ridge svg{display:block;width:100%;height:100%}
+.paper-ridge .mass{fill:var(--paper)}
+.paper-ridge .spur{fill:none;stroke:var(--paper-3);stroke-width:2;opacity:.7;
+  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+/* The copy is lifted clear of the peaks, and the scrim is rebuilt for this
+   hero. Two problems the default caused here: padded to clear the ridge it
+   grew to nearly the full height of the hero and washed the whole engraving
+   grey, and its hard bottom edge drew a straight horizontal line across the
+   image between the peaks — the one thing this transition exists to avoid.
+   So it is shorter, and it fades back to nothing at the foot, with the tail
+   landing inside the ridge band where the paper hides it. */
+.stay-hero.ttd .stay-hero-in{
+  padding-bottom:calc(var(--paper-ridge-h) * .62);
+  background:linear-gradient(180deg,
+    transparent 0%, rgba(18,32,24,.34) 30%, rgba(18,32,24,.80) 54%,
+    rgba(18,32,24,.80) 70%, rgba(18,32,24,.30) 88%, transparent 100%)}
+
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
   margin-top:clamp(2.2rem,5vw,3.6rem)}
@@ -1278,7 +1309,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-bird .sci{display:block;font-family:var(--body);font-style:italic;font-size:.74rem;
   color:var(--muted);margin-top:.3rem}
 
-/* --- drawn map --- */
+/* --- drawn map: currently unused, the map is off the page for now.
+       Kept so it can go back without being rebuilt. --- */
 .ttd-map{margin-top:clamp(2.2rem,5vw,3.4rem);border:2px solid var(--forest);
   background:var(--paper-2);background-image:var(--hatch-fine);padding:clamp(.6rem,1.6vw,1rem)}
 .ttd-map svg{display:block;width:100%;height:auto}
@@ -1289,6 +1321,22 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-map-key i{width:9px;height:9px;background:var(--gold);display:block;
   transform:rotate(45deg);flex:none}
 .ttd-map-key i.home{background:var(--forest)}
+
+/* --- a full-width plate, for a frame that carries a whole section --- */
+.ttd-wide{margin:clamp(1.8rem,4vw,2.8rem) 0 0}
+.ttd-wide img{width:100%;height:auto;display:block;border:2px solid var(--forest);
+  filter:saturate(1.02) contrast(1.03)}
+.ttd-wide figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-top:.7rem}
+
+/* --- a figure standing on a ridge line -------------------------------
+   The skyline SVGs use preserveAspectRatio="none", so they stretch to any
+   width. A silhouette cannot live inside them or it would stretch too, so it
+   sits on top as its own element. Both offsets are percentages, and because
+   the skyline's own geometry scales the same way in both axes, a figure
+   placed on a valley floor stays on that valley floor at every width. */
+.ridge-fig{position:absolute;color:var(--forest);height:auto;pointer-events:none}
+.ridge-fig svg{display:block;width:100%;height:auto}
 
 /* --- winter: the page cools down, it does not change sides --- */
 .ttd-winter{background:linear-gradient(180deg,var(--paper) 0%,var(--ice) 42%,var(--ice) 100%)}
@@ -1302,6 +1350,11 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-night .eyebrow{color:var(--gold-light)}
 .ttd-stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.5}
 .ttd-night .wrap{position:relative;z-index:2}
+
+/* tent and fire under the night sky — small, gold, well down the opacity */
+.ttd-camp{display:flex;justify-content:center;align-items:flex-end;gap:clamp(1.4rem,4vw,3rem);
+  margin-top:clamp(2.4rem,6vw,4rem);color:var(--gold-light);opacity:.5}
+.ttd-camp svg{width:clamp(44px,6vw,78px);height:auto;display:block}
 
 /* --- closing call --- */
 .ttd-close{text-align:center}

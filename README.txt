@@ -61,9 +61,8 @@ HOW IT BEHAVES
   and arrival details.
 
 - THINGS TO DO is now a full page: paddling and fishing from the
-  dock, birds, a drawn map of the country around the lake, the
-  waterfalls, hiking, a turn into winter, dark skies, and a closing
-  call to Diane and Murray. Seven photographs are still to come and
+  dock, birds, the waterfalls, hiking, a turn into winter, dark
+  skies, and a closing call to Diane and Murray. Seven photographs are still to come and
   show a neutral frame until they arrive.
 
 - BOOKING is a page of its own now: phone and email, an enquiry
@@ -174,22 +173,19 @@ your search instead of their own.
 
 PHOTOGRAPHS STILL NEEDED — THINGS TO DO
 ------------------------------------------------------------------
-Seven frames on that page show a neutral holder naming what belongs
-there. Nothing has been filled with an unrelated photograph.
+Three frames on that page show a neutral holder naming what belongs
+there, all of them in the winter section. Nothing has been filled
+with an unrelated photograph.
 
-    the pelicans on the lake        Hotnarko Falls
-    Beef Creek Falls                the Rainbow Range
-    snowmobiling                    ice fishing
-    skating on the lake
+    snowmobiling    ice fishing    skating on the lake
+
+Beef Trail Falls has a photograph of the canyon on the way in, but
+not of the falls themselves. The winter section opens with a
+full-width plate of the lodge across the frozen lake; the three
+activity frames beneath it are the ones still waiting.
 
 Drop each one in and swap the holder for an <img>; the layout does
 not change.
-
-Do not mix the two builds halfway. The full Lodge page depends on
-a lodge/ folder of accommodation pages and a much larger images
-folder; dropping in the full lodge.html on its own would give you
-broken links and missing photographs.
-
 
 IF THE SITE LOOKS UNSTYLED AFTER A DEPLOY
 ------------------------------------------------------------------
@@ -197,8 +193,8 @@ That is almost always an old stylesheet still being served, not
 broken CSS. To check:
 
 1. View source on the live page and find the line:
-       <link rel="stylesheet" href="css/site.css?v=live-2.2">
-   The number must match the version comment on line 2.
+       <link rel="stylesheet" href="css/site.css?v=81d61dd6">
+   The number must match the one recorded in HANDOVER.txt.
 2. Open that css URL directly in the browser and search it for
        .accom
    If it is not there, the stylesheet on the server is out of date
@@ -219,7 +215,9 @@ Line 2 of every page reads:
 
     <!-- Eagle's Nest Resort — site live 3.1 -->
 
-View source on the live site to confirm what is actually deployed.
-If you edit css/site.css or js/site.js, bump the ?v= number in the
-<head> and at the foot of all five pages, or returning visitors
-will keep seeing the old styling.
+That marker is re-synced only on a full export, so it reads as the
+release a page was last fully shipped in. The current release
+number is in HANDOVER.txt. View source on the live site to confirm
+what is actually deployed.
+If you edit css/site.css or js/site.js, bump the ?v= number on all
+18 pages, or returning visitors will keep seeing the old styling.
