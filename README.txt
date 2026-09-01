@@ -60,9 +60,11 @@ HOW IT BEHAVES
   of the property, the float plane at the dock, and the contact
   and arrival details.
 
-- THINGS TO DO is the one page still to come. It opens a real page
-  saying so, with your phone number, email address and address on
-  it. Nobody hits a dead link or a 404.
+- THINGS TO DO is now a full page: paddling and fishing from the
+  dock, birds, a drawn map of the country around the lake, the
+  waterfalls, hiking, a turn into winter, dark skies, and a closing
+  call to Diane and Murray. Seven photographs are still to come and
+  show a neutral frame until they arrive.
 
 - BOOKING is a page of its own now: phone and email, an enquiry
   form, and the online options. Both the Expedia and Booking.com
@@ -170,11 +172,18 @@ a pile of tracking parameters, which would pin every visitor to
 your search instead of their own.
 
 
-TURNING THE LAST PAGE ON
+PHOTOGRAPHS STILL NEEDED — THINGS TO DO
 ------------------------------------------------------------------
-The finished Things To Do page already exists in the full build.
-When you want it live, replace things-to-do.html with the real one
-and upload the extra images it needs.
+Seven frames on that page show a neutral holder naming what belongs
+there. Nothing has been filled with an unrelated photograph.
+
+    the pelicans on the lake        Hotnarko Falls
+    Beef Creek Falls                the Rainbow Range
+    snowmobiling                    ice fishing
+    skating on the lake
+
+Drop each one in and swap the holder for an <img>; the layout does
+not change.
 
 Do not mix the two builds halfway. The full Lodge page depends on
 a lodge/ folder of accommodation pages and a much larger images

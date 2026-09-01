@@ -454,6 +454,27 @@ section:has(+ .ridge.tall){padding-bottom:calc(var(--gap) + clamp(74px,11.5vw,16
 .built-by img{width:15px;height:15px;display:block;opacity:.85}
 .built-by a:hover img{opacity:1}
 
+/* Desktop only. Left to itself the footer is two flex children pushed apart,
+   which strands the address against the right edge. A grid instead: the right
+   column is given a definite width and the gap does the rest, so it starts
+   around two-thirds across and reads as part of the same block.
+
+   The top padding drops the address down to sit alongside the footer
+   navigation rather than level with the wordmark. It tracks the same vw as
+   the wordmark's own clamp, so the two stay roughly in step as the viewport
+   changes.
+
+   Below 900px none of this applies and the footer stacks exactly as it does
+   now. */
+@media (min-width:900px){
+  .foot-in{display:grid;grid-template-columns:minmax(0,1fr) clamp(320px,31%,380px);
+    gap:clamp(2rem,4vw,3.4rem);align-items:start}
+  .foot-right{max-width:none;padding-top:clamp(3rem,4.4vw,4.4rem)}
+  /* a signature under the address, not another line of resort information */
+  .built-by{margin-top:2.4rem;font-size:.72rem;color:rgba(243,238,225,.5)}
+  .built-by a{color:rgba(243,238,225,.72)}
+}
+
 .rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
@@ -1191,3 +1212,97 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .gal-clip.collapsed + .gal-toggle{margin-top:1.1rem}
 
 .gal-toggle{margin-top:2rem;display:flex;justify-content:center}
+
+/* ============================================================
+   THINGS TO DO
+   A field-guide page: editorial splits rather than a card grid,
+   line illustrations, a drawn map, and a seasonal turn into
+   winter. Everything here is namespaced .ttd- so it cannot leak
+   into the rest of the site.
+   ============================================================ */
+.ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712}
+
+/* --- editorial split: photograph one side, copy the other --- */
+.ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
+  margin-top:clamp(2.2rem,5vw,3.6rem)}
+@media (min-width:860px){
+  .ttd-split{grid-template-columns:1.02fr .98fr}
+  .ttd-split.rev .ttd-shot{order:2}
+}
+.ttd-shot{margin:0}
+.ttd-shot img{width:100%;height:auto;display:block;border:2px solid var(--forest);
+  filter:saturate(1.02) contrast(1.03)}
+.ttd-shot .holder{aspect-ratio:4/3}
+.ttd-shot figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-top:.7rem}
+.ttd-copy h3{font-family:var(--display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.5rem,3.2vw,2.3rem);line-height:1.02;letter-spacing:-.01em;margin:0 0 1.2rem}
+.ttd-copy p{max-width:46ch;color:var(--forest-soft);line-height:1.72}
+.on-dark .ttd-copy h3{color:var(--paper)}
+.on-dark .ttd-copy p{color:rgba(243,238,225,.76)}
+
+/* --- vintage field-guide box --- */
+.ttd-guide{position:relative;border:2px solid var(--forest);background:var(--paper);
+  padding:clamp(1.3rem,3vw,1.9rem);margin-top:2.2rem;max-width:26rem}
+.ttd-guide::after{content:"";position:absolute;inset:5px;border:1px solid var(--rule);
+  pointer-events:none}
+.ttd-guide h4{font-family:var(--label);font-weight:600;font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin:0 0 1rem}
+.ttd-guide ul{list-style:none;margin:0;padding:0}
+.ttd-guide li{display:flex;align-items:baseline;gap:.7rem;padding:.5rem 0;
+  border-bottom:1px dotted var(--rule);font-family:var(--label);font-size:.92rem;
+  letter-spacing:.04em;color:var(--forest)}
+.ttd-guide li:last-child{border-bottom:0}
+.ttd-guide li em{font-family:var(--body);font-style:italic;font-size:.8rem;color:var(--muted)}
+.ttd-guide .fig{display:block;margin:0 auto 1rem;color:var(--forest)}
+.ttd-guide .note{font-family:var(--body);font-size:.82rem;line-height:1.65;
+  color:var(--muted);margin:1rem 0 0}
+.ttd-guide .note a{color:var(--forest)}
+
+/* --- pull-quote style callout --- */
+.ttd-callout{border-left:3px solid var(--gold);padding:.2rem 0 .2rem 1.4rem;
+  margin-top:2.2rem;max-width:44ch}
+.ttd-callout .lbl{font-family:var(--label);font-weight:600;font-size:.7rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.6rem}
+.ttd-callout p{margin:0;font-family:var(--body);font-size:1.02rem;line-height:1.7;
+  color:var(--forest-soft)}
+
+/* --- bird strip --- */
+.ttd-birds{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:clamp(1.2rem,3vw,2rem);margin-top:2.6rem;
+  border-block:2px solid var(--forest);padding-block:clamp(1.8rem,4vw,2.6rem)}
+.ttd-bird{text-align:center}
+.ttd-bird svg{display:block;margin:0 auto .9rem;color:var(--forest)}
+.ttd-bird .nm{display:block;font-family:var(--label);font-weight:500;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--forest);line-height:1.35}
+.ttd-bird .sci{display:block;font-family:var(--body);font-style:italic;font-size:.74rem;
+  color:var(--muted);margin-top:.3rem}
+
+/* --- drawn map --- */
+.ttd-map{margin-top:clamp(2.2rem,5vw,3.4rem);border:2px solid var(--forest);
+  background:var(--paper-2);background-image:var(--hatch-fine);padding:clamp(.6rem,1.6vw,1rem)}
+.ttd-map svg{display:block;width:100%;height:auto}
+.ttd-map-key{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;margin-top:1.2rem;
+  font-family:var(--label);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted)}
+.ttd-map-key span{display:inline-flex;align-items:center;gap:.5rem}
+.ttd-map-key i{width:9px;height:9px;background:var(--gold);display:block;
+  transform:rotate(45deg);flex:none}
+.ttd-map-key i.home{background:var(--forest)}
+
+/* --- winter: the page cools down, it does not change sides --- */
+.ttd-winter{background:linear-gradient(180deg,var(--paper) 0%,var(--ice) 42%,var(--ice) 100%)}
+.ttd-winter .ttd-copy p{color:#4A5A55}
+.ttd-snowline{display:block;width:100%;height:auto;margin-bottom:-1px}
+
+/* --- after dark --- */
+.ttd-night{background:var(--night);color:rgba(243,238,225,.74);position:relative;
+  overflow:hidden}
+.ttd-night h2{color:var(--paper)}
+.ttd-night .eyebrow{color:var(--gold-light)}
+.ttd-stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.5}
+.ttd-night .wrap{position:relative;z-index:2}
+
+/* --- closing call --- */
+.ttd-close{text-align:center}
+.ttd-close .btn-row{justify-content:center;margin-top:2rem}
