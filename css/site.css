@@ -1221,8 +1221,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
    into the rest of the site.
    ============================================================ */
 .ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712;
-  --map-paper:#EFD9B8;--map-overlap:clamp(70px,18vw,300px);
-  --map-peaks:clamp(44px,6.5vw,120px)}
+  --map-paper:#EFD9B8;--map-peaks:clamp(20px,3vw,60px);
+  --map-overlap:calc(12.5vw + var(--map-peaks))}
 
 /* --- the map sheet ---------------------------------------------------
    The illustrated map page is the background of the first section, and its
@@ -1246,6 +1246,27 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .map-sheet{position:absolute;left:0;right:0;top:calc(-1 * var(--map-overlap));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-mapped > .wrap{position:relative;z-index:1}
+
+/* --- the forest sheet ------------------------------------------------
+   Same idea as the map sheet: the owner's illustrated page, with its
+   treeline rising out of the section to overlap the one above.
+
+   It differs in one important way. Its paper is #A19D8A, far darker than
+   the site's, and the type was chosen for cream: body copy drops to 2.4:1
+   on it and the gold accents to 1.08:1, which is invisible. So the sheet is
+   faded out inside the file well before its own foot, the section keeps its
+   cream background, and the content starts below the drawing. The art is the
+   section's head, not a wash behind its text.
+
+   Geometry, as with the map sheet: the trees begin 27.9% down a sheet that
+   is 0.93x its own width, so the overlap spends 25.9vw reaching them. The
+   art then runs to roughly 79vw from the sheet's top, which is 53vw below
+   the section's, and that is the padding the heading needs to clear it. */
+.ttd-forested{position:relative;padding-top:53vw}
+.forest-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (25.9vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-forested > .wrap{position:relative;z-index:1}
 
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
