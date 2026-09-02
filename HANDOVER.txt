@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.7
+Current release: site live 3.8
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -85,20 +85,19 @@ to overlap the foot of the hero.
 It is an <img>, not a CSS background, so it keeps its aspect ratio
 at every width and never stretches.
 
-Two numbers do the work, both on .ttd:
-  --map-overlap  18vw, clamped 70-300px
-  --map-peaks    6.5vw, clamped 44-120px
+One number does the work:
+  --map-peaks    3vw, clamped 20-60px
+  --map-overlap  calc(12.5vw + var(--map-peaks))
 
 The sheet has an empty margin above its art — the drawn peaks start
-a tenth of the way down the file, about 12.5vw at any width. So
---map-overlap spends its first 12.5vw reaching the peaks and the
-rest pushing them into the hero. Change the artwork and that tenth
-changes with it; the overlap has to be re-derived or the mountains
-stop short and leave a flat band under the hero. That happened on
-the first attempt.
+a tenth of the way down the file, which is about 12.5vw at any
+width. Writing the overlap as that margin plus --map-peaks makes
+--map-peaks literally how far the peaks rise into the hero, so it
+is the only value to touch. The hero copy is held clear of it too.
 
---map-peaks is roughly the remainder, and is what the hero copy is
-held clear of.
+If the artwork is replaced, check where its art begins: change that
+tenth and the 12.5vw must change with it, or the mountains stop
+short and leave a flat band under the hero. That happened once.
 
 The sheet's paper is much warmer than --paper: about #EFD9B8
 against the site's #F3EEE1. The section's background is set to that
@@ -112,6 +111,41 @@ is deliberate — it reads as a map page — but it is the one thing to
 look at first.
 
 
+THE FOREST SHEET (THINGS TO DO)
+-------------------------------------------------------------------
+The second illustrated page backs the bird-watching section, its
+treeline overlapping the map section above. It replaced the
+hand-built forest ridge, which would have collided with it — so the
+BEAR SILHOUETTE NO LONGER APPEARS ANYWHERE. The deer is still on
+the peaks ridge before Find a Trail. If the bear is wanted back it
+needs a new home.
+
+This sheet is handled differently from the map sheet, and the
+reason is contrast. Its paper is #A19D8A, far darker than the
+site's cream, and the type was chosen for cream:
+
+    body copy   2.41:1   fails
+    small text  2.08:1   fails
+    gold accent 1.08:1   effectively invisible
+
+Lightening it does not rescue the gold — gold and olive sit at
+almost the same luminance, so even blended 70% toward cream it only
+reaches 1.85:1. So the sheet is faded out inside the file well
+before its own foot, the section keeps its cream background, and
+the content starts below the drawing. The art is the section's
+illustrated head, not a wash behind its text.
+
+Geometry: the trees begin 27.9% down a sheet 0.93x its own width,
+so the overlap spends 25.9vw reaching them. The art runs to about
+79vw from the sheet top, 53vw below the section top, which is the
+padding-top the heading needs. Replace the artwork and all three
+numbers have to be re-measured.
+
+If the full olive paper behind everything is wanted instead, the
+eyebrows, body copy and small text on that section all need
+recolouring first.
+
+
 SCROLL FURNITURE ON THINGS TO DO
 -------------------------------------------------------------------
 Two extra skyline transitions, both using the existing .ridge
@@ -119,8 +153,10 @@ component rather than a new mechanism — same two-layer far/near
 paths, same --near/--far colour hooks, same negative-margin overlap.
 Only the path data is new.
 
-  after the dock section    a conifer treeline, with a bear
   after the waterfalls      mountain peaks, with a deer
+
+The conifer treeline and its bear are gone, replaced by the forest
+sheet. The clearing cut into that treeline went with it.
 
 The animals cannot live inside those SVGs: the skylines use
 preserveAspectRatio="none" so they stretch to any width, and a
