@@ -1221,8 +1221,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
    into the rest of the site.
    ============================================================ */
 .ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712;
-  --map-paper:#EFD9B8;--map-peaks:clamp(20px,3vw,60px);
-  --map-overlap:calc(12.5vw + var(--map-peaks))}
+  --map-paper:#F0D5B4;--map-peaks:clamp(20px,3vw,60px);
+  --map-overlap:calc(31.5vw + var(--map-peaks))}
 
 /* --- the map sheet ---------------------------------------------------
    The illustrated map page is the background of the first section, and its
@@ -1242,31 +1242,60 @@ body{overscroll-behavior-y:none;background:var(--paper);
    background — the same paper tone — carries on underneath. That way the art
    ends without a seam however tall the section grows. On a phone the section
    runs far taller than the sheet, so most of it is the flat tone. */
+/* On the tan map paper the site's gold drops to about 2:1, so the eyebrow
+   above the heading was barely there — true of the previous artwork as well.
+   A darker gold inside this section only; the rest of the site is untouched. */
+.ttd-mapped{--gold:#7C5414}
+
 .ttd-mapped{position:relative;background:var(--map-paper)}
 .map-sheet{position:absolute;left:0;right:0;top:calc(-1 * var(--map-overlap));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-mapped > .wrap{position:relative;z-index:1}
 
 /* --- the forest sheet ------------------------------------------------
-   Same idea as the map sheet: the owner's illustrated page, with its
-   treeline rising out of the section to overlap the one above.
+   The second illustrated page, treeline overlapping the map section above.
+   Handled exactly like the map sheet: section background set to the sheet's
+   own paper, the sheet top-anchored over it, its foot faded out in the file
+   so the art dissolves into that tone however tall the section grows.
 
-   It differs in one important way. Its paper is #A19D8A, far darker than
-   the site's, and the type was chosen for cream: body copy drops to 2.4:1
-   on it and the gold accents to 1.08:1, which is invisible. So the sheet is
-   faded out inside the file well before its own foot, the section keeps its
-   cream background, and the content starts below the drawing. The art is the
-   section's head, not a wash behind its text.
+   The previous artwork could not work this way — its paper was #A19D8A and
+   body copy fell to 2.4:1 on it, so the drawing had to be an illustrated
+   head with the content pushed below. This one is #F5E6D0: headings 11:1,
+   body 5.4:1, small text 4.6:1. Only the gold needs help, as on the map
+   sheet, and gets the same darker value.
 
-   Geometry, as with the map sheet: the trees begin 27.9% down a sheet that
-   is 0.93x its own width, so the overlap spends 25.9vw reaching them. The
-   art then runs to roughly 79vw from the sheet's top, which is 53vw below
-   the section's, and that is the padding the heading needs to clear it. */
-.ttd-forested{position:relative;padding-top:53vw}
+   Geometry: trees begin 13.8% down a sheet 1.243x its width, so the overlap
+   spends 17.2vw reaching them. Re-measure if the artwork changes. */
+.ttd-forested{position:relative;background:#F5E6D0;--gold:#7C5414}
 .forest-sheet{position:absolute;left:0;right:0;
-  top:calc(-1 * (25.9vw + var(--map-peaks)));
+  top:calc(-1 * (17.2vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-forested > .wrap{position:relative;z-index:1}
+
+/* --- the glade sheet -------------------------------------------------
+   Third illustrated page, backing "Go a little farther", its treeline
+   overlapping the forest sheet above.
+
+   This one is dark: its paper is #4E5D4B, so the section is treated like the
+   night band rather than the paper ones — light type on dark ground. The
+   defaults still needed lifting for it. On this green, .sub at 72% opacity
+   reads 4.03:1 and the gold-light eyebrow 3.34:1, both short of the mark at
+   the sizes they are set in, so both are raised here.
+
+   The section is given a height because the artwork is much taller than its
+   copy: without it only the treeline would show and the glade, the river and
+   the deer would sit behind the section below. 74vw shows the drawing down
+   to the open meadow.
+
+   Geometry: trees begin 15.2% down a sheet 1.242x its width, so the overlap
+   spends 18.9vw reaching them. */
+.ttd-glade{position:relative;background:#4E5D4B;min-height:74vw;
+  --gold-light:#EBC97F}
+.ttd-glade .sub{color:rgba(243,238,225,.92)}
+.glade-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (18.9vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-glade > .wrap{position:relative;z-index:1}
 
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;

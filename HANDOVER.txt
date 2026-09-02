@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.8
+Current release: site live 3.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -87,17 +87,23 @@ at every width and never stretches.
 
 One number does the work:
   --map-peaks    3vw, clamped 20-60px
-  --map-overlap  calc(12.5vw + var(--map-peaks))
+  --map-overlap  calc(31.5vw + var(--map-peaks))
 
-The sheet has an empty margin above its art — the drawn peaks start
-a tenth of the way down the file, which is about 12.5vw at any
-width. Writing the overlap as that margin plus --map-peaks makes
+The sheet has an empty margin above its art. On the current artwork
+the peaks start 21% down a file 1.5x its own width, so that margin
+is 31.5vw. Writing the overlap as margin + --map-peaks makes
 --map-peaks literally how far the peaks rise into the hero, so it
 is the only value to touch. The hero copy is held clear of it too.
 
-If the artwork is replaced, check where its art begins: change that
-tenth and the 12.5vw must change with it, or the mountains stop
-short and leave a flat band under the hero. That happened once.
+REPLACE THE ARTWORK AND THE 31.5vw MUST BE RE-MEASURED: multiply
+the fraction of the file above the art by the sheet's height-to-
+width ratio. Get it wrong and the mountains stop short, leaving a
+flat band under the hero. That has happened once already, and the
+figure has changed twice — it was 12.5vw on the previous sheet.
+
+The paper is #F0D5B4. On it the site's gold drops to 2.1:1, so the
+eyebrow was barely legible — true of the previous artwork too. A
+darker gold, #7C5414, is scoped to this section only.
 
 The sheet's paper is much warmer than --paper: about #EFD9B8
 against the site's #F3EEE1. The section's background is set to that
@@ -117,33 +123,65 @@ The second illustrated page backs the bird-watching section, its
 treeline overlapping the map section above. It replaced the
 hand-built forest ridge, which would have collided with it — so the
 BEAR SILHOUETTE NO LONGER APPEARS ANYWHERE. The deer is still on
-the peaks ridge before Find a Trail. If the bear is wanted back it
-needs a new home.
+the peaks ridge before Find a Trail.
 
-This sheet is handled differently from the map sheet, and the
-reason is contrast. Its paper is #A19D8A, far darker than the
-site's cream, and the type was chosen for cream:
+Handled exactly like the map sheet: section background set to the
+sheet's own paper (#F5E6D0), the sheet top-anchored over it, its
+foot faded out in the file so the art dissolves into that tone
+however tall the section grows.
 
-    body copy   2.41:1   fails
-    small text  2.08:1   fails
-    gold accent 1.08:1   effectively invisible
+Contrast on this paper: headings 11:1, body 5.4:1, small text
+4.6:1. Only gold fails at 2.4:1, so it takes the same darker gold
+as the map section, #7C5414, scoped to the section.
 
-Lightening it does not rescue the gold — gold and olive sit at
-almost the same luminance, so even blended 70% toward cream it only
-reaches 1.85:1. So the sheet is faded out inside the file well
-before its own foot, the section keeps its cream background, and
-the content starts below the drawing. The art is the section's
-illustrated head, not a wash behind its text.
+An earlier version of this artwork had paper at #A19D8A, on which
+body copy fell to 2.4:1 and gold to 1.08:1. That one could not be a
+background at all and had to be an illustrated head with the copy
+pushed below it. Worth remembering if a dark sheet turns up again:
+check the paper tone before assuming it can sit behind text.
 
-Geometry: the trees begin 27.9% down a sheet 0.93x its own width,
-so the overlap spends 25.9vw reaching them. The art runs to about
-79vw from the sheet top, 53vw below the section top, which is the
-padding-top the heading needs. Replace the artwork and all three
-numbers have to be re-measured.
+Geometry: trees begin 13.8% down a sheet 1.243x its own width, so
+the overlap spends 17.2vw reaching them. Re-measure if the artwork
+changes.
 
-If the full olive paper behind everything is wanted instead, the
-eyebrows, body copy and small text on that section all need
-recolouring first.
+Both sheets arrived at some point with the transparency
+checkerboard flattened into the file as actual grey squares. If
+that happens again it must be keyed out — connected region from the
+top corners, bright and neutral — or it renders as a grey grid in
+the sky. Note the checker is TWO greys, about 181 and 255; a
+threshold that only catches the light one leaves a visible grid.
+
+
+THE GLADE SHEET (THINGS TO DO)
+-------------------------------------------------------------------
+Third illustrated page, backing "Go a little farther", treeline
+overlapping the forest sheet above.
+
+This one is DARK — paper #4E5D4B — so the section is treated like
+the night band, light type on dark ground, and carries .on-dark.
+The dark defaults still needed lifting: on this green, .sub at 72%
+opacity reads 4.03:1 and the gold-light eyebrow 3.34:1, both short
+at the sizes they are set in. Both are raised inside the section
+(.sub to 92%, gold-light to #EBC97F).
+
+The section is given min-height:74vw. Its copy is only a heading
+and one line, and the artwork is far taller, so without a height
+only the treeline would show and the glade, the river and the deer
+would sit behind the section below.
+
+Geometry: trees begin 15.2% down a sheet 1.242x its width, so the
+overlap spends 18.9vw reaching them.
+
+There is a drawn deer in this artwork. There is also an SVG deer
+on the peaks ridge two sections later. Worth deciding whether both
+should stay.
+
+Three sheets now, each with its own paper and its own geometry:
+    map     #F0D5B4  light   31.5vw margin
+    forest  #F5E6D0  light   17.2vw margin
+    glade   #4E5D4B  dark    18.9vw margin
+All three arrived with the transparency checkerboard flattened in
+at some point and had to be keyed out.
 
 
 SCROLL FURNITURE ON THINGS TO DO
