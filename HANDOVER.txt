@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.1
+Current release: site live 4.2
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -205,31 +205,35 @@ figcaptions, and the glade lifts .sub to 92% opacity.
 
 
 
-CONTENT RE-PAIRED TO ITS ENVIRONMENT
+DO NOT REORDER THE SHEETS
 -------------------------------------------------------------------
-The sections were reordered so each activity sits on the sheet that
-matches it. Before, lake activities sat on a mountain sheet and the
-waterfalls sat on an open lake sheet.
+The owner assigned each sheet to a section as they built them, one
+at a time, in page order. That sequence is theirs and is fixed:
 
-    lake        basin sheet   Start at the dock
-    wildlife    map sheet     Who's around?
-    beyond      glade sheet   Go a little farther
-    mountains   ridge sheet   Find a trail
-    waterfalls  forest sheet  Chase a waterfall
-    winter      snow sheet    Winter
+    1 map     Start at the dock
+    2 forest  Who's around?
+    3 glade   Go a little farther
+    4 basin   Chase a waterfall
+    5 ridge   Find a trail
+    6 snow    Winter
 
-Bird watching merged into the lake section, alongside canoes and
-fishing, as three across. The "Who's around?" field guide became its
-own section on the map sheet — parchment suits a field guide, and it
-had to stay on a LIGHT paper because the bird glyphs use var(--paper)
-for the owl's eyes and the pelican's eye. On a dark sheet those
-vanish. Do not move that strip onto the glade.
+This was reordered once to match activities to environments and it
+was wrong — the brief's "activity should match its environment" meant
+moving the CONTENT between and within sections, not resequencing the
+backgrounds. It has been restored.
 
-THE SEAM CHAIN FOLLOWS THE ORDER, so reordering means re-deriving it:
-    hero -> basin -> map -> glade -> ridge -> forest -> snow
-The hero pull-up moved with the first section: it is now on .ttd-basin
-(0.8vw, its band) and .ttd-mapped went back to a normal gradient with
-its full 31.5vw overlap.
+The content rearrangement that was wanted: bird watching merged up
+into the dock section alongside canoes and fishing, three across, so
+section 2 now carries the "Who's around?" field guide on its own.
+
+Note the bird glyphs use var(--paper) for the owl's and pelican's
+eyes, so that strip must stay on a LIGHT sheet. It is on the forest
+sheet (#F5E6D0), which is fine. It must not move to the glade.
+
+THE SEAM CHAIN FOLLOWS THE ORDER:
+    hero -> map -> forest -> glade -> basin -> ridge -> snow
+The hero pull-up sits on the first section, .ttd-mapped: -4.3vw with
+a transparent start, and --map-overlap reduced to 27.2vw to match.
 
 EDITORIAL SCALE
 Prints are capped at clamp(200px,26vw,340px), 300px inside a row.
