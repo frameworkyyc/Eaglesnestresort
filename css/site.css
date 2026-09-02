@@ -1245,9 +1245,34 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* On the tan map paper the site's gold drops to about 2:1, so the eyebrow
    above the heading was barely there — true of the previous artwork as well.
    A darker gold inside this section only; the rest of the site is untouched. */
+/* --- making the sheets meet without a seam ---------------------------
+   Each sheet's treeline is ragged: it starts as tree tips against nothing and
+   only becomes solid paper some way down. A flat background colour on the
+   section drew a hard horizontal line across that gap, visible between the
+   trees, because the colour changed at the section's top edge while the art
+   did not.
+
+   So each section starts in the PREVIOUS section's colour and blends to its
+   own over exactly the depth its own treeline takes to go solid. Measured per
+   sheet, in vw so it holds at every width:
+
+       map     4.3vw    forest  14.5vw    glade  17.4vw
+       basin   0.8vw    ridge    4.3vw    snow    9.7vw
+
+   The hero is the exception: what sits above the map section is a photograph,
+   not a flat colour, and its bottom edge changes with the crop — 140/122/84
+   at desktop, 99/91/62 on a phone. There is no colour to blend from. Instead
+   that section is pulled up over the hero by its own band depth and starts
+   transparent, so the photograph itself shows through the treeline. Only 4.3vw,
+   small enough not to reach the hero's copy. Its sheet offset is reduced by
+   the same amount so the peaks do not move.
+   ------------------------------------------------------------------ */
+
 .ttd-mapped{--gold:#7C5414}
 
-.ttd-mapped{position:relative;background:var(--map-paper)}
+.ttd-mapped{position:relative;
+  background:linear-gradient(180deg,#D8DBC8 0,var(--map-paper) 4.6vw,
+    var(--map-paper) 100%)}
 .map-sheet{position:absolute;left:0;right:0;top:calc(-1 * var(--map-overlap));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-mapped > .wrap{position:relative;z-index:1}
@@ -1266,7 +1291,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 
    Geometry: trees begin 13.8% down a sheet 1.243x its width, so the overlap
    spends 17.2vw reaching them. Re-measure if the artwork changes. */
-.ttd-forested{position:relative;background:#F5E6D0;--gold:#7C5414}
+.ttd-forested{position:relative;--gold:#7C5414;
+  background:linear-gradient(180deg,#E5E9EA 0,#F5E6D0 15.5vw,#F5E6D0 100%)}
 .forest-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (17.2vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
@@ -1289,8 +1315,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 
    Geometry: trees begin 15.2% down a sheet 1.242x its width, so the overlap
    spends 18.9vw reaching them. */
-.ttd-glade{position:relative;background:#4E5D4B;min-height:74vw;
-  --gold-light:#EBC97F}
+.ttd-glade{position:relative;min-height:74vw;--gold-light:#EBC97F;
+  background:linear-gradient(180deg,#F0D5B4 0,#4E5D4B 18.5vw,#4E5D4B 100%)}
 .ttd-glade .sub{color:rgba(243,238,225,.92)}
 .glade-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (18.9vw + var(--map-peaks)));
@@ -1313,9 +1339,10 @@ body{overscroll-behavior-y:none;background:var(--paper);
 
    Geometry: art begins 21.7% down a sheet 1.242x its width, so the overlap
    spends 27vw reaching it. */
-.ttd-basin{position:relative;background:#D8DBC8;--gold:#7C5414;--muted:#4C5648}
+.ttd-basin{position:relative;--gold:#7C5414;--muted:#4C5648;margin-top:-0.8vw;
+  background:linear-gradient(180deg,transparent 0,#D8DBC8 0.8vw,#D8DBC8 100%)}
 .basin-sheet{position:absolute;left:0;right:0;
-  top:calc(-1 * (27vw + var(--map-peaks)));
+  top:calc(-1 * (26.2vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-basin > .wrap{position:relative;z-index:1}
 
@@ -1333,17 +1360,67 @@ body{overscroll-behavior-y:none;background:var(--paper);
    gold needs the darker value, as on the other light sheets. The snow
    sheet's figcaption grey lands at 4.26:1, short at that size, so it is
    darkened too. */
-.ttd-ridge{position:relative;background:#E5E9EA;--gold:#7C5414}
+.ttd-ridge{position:relative;--gold:#7C5414;
+  background:linear-gradient(180deg,#4E5D4B 0,#E5E9EA 5vw,#E5E9EA 100%)}
 .ridge-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (12.5vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-ridge > .wrap{position:relative;z-index:1}
 
-.ttd-snow{position:relative;background:#DBE1D8;--gold:#7C5414;--muted:#4C5648}
+.ttd-snow{position:relative;--gold:#7C5414;--muted:#4C5648;
+  background:linear-gradient(180deg,#F5E6D0 0,#DBE1D8 10.5vw,#DBE1D8 100%)}
 .snow-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (10.5vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-snow > .wrap{position:relative;z-index:1}
+
+/* --- Things To Do: editorial scale --------------------------------------
+   The brief: printed snapshots scattered through an illustrated landscape,
+   not hero images stacked down a column. So the prints are capped well below
+   the column width, related activities sit three across, and the vertical
+   rhythm is tightened so the artwork stays visible around the content. */
+.ttd-row{display:grid;gap:clamp(1.5rem,3vw,2.4rem);margin-top:clamp(1.6rem,3.4vw,2.4rem)}
+@media (min-width:820px){
+  .ttd-row{grid-template-columns:repeat(3,1fr);align-items:start}
+  .ttd-row.two{grid-template-columns:repeat(2,1fr);max-width:60rem}
+}
+.ttd-item{margin:0}
+.ttd-item h3{font-family:var(--display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.02rem,1.5vw,1.3rem);line-height:1.06;letter-spacing:-.005em;
+  margin:0 0 .55rem}
+.ttd-item p{font-size:.94rem;line-height:1.6;max-width:32ch;margin:0;color:var(--forest-soft)}
+.ttd-item .ttd-shot{margin:0 0 .9rem}
+.ttd-item .ttd-shot figcaption{margin-top:.45rem}
+
+/* snapshots, not hero images */
+.ttd-shot{max-width:clamp(200px,26vw,340px)}
+.ttd-row .ttd-shot{max-width:min(100%,300px)}
+.ttd-split{gap:clamp(1.4rem,3vw,2.6rem);margin-top:clamp(1.6rem,3.4vw,2.6rem)}
+@media (min-width:860px){.ttd-split{grid-template-columns:auto 1fr}}
+.ttd-copy p{max-width:40ch}
+.ttd-guide{margin-top:1.4rem;max-width:22rem;padding:clamp(1rem,2vw,1.4rem)}
+
+/* the field-guide bird strip, tightened */
+.ttd-birds{gap:clamp(.9rem,2vw,1.6rem);margin-top:1.8rem;
+  padding-block:clamp(1.4rem,3vw,2rem)}
+.ttd-bird svg{width:58px;height:58px;margin-bottom:.6rem}
+
+/* --- Things To Do hero, desktop only ------------------------------------
+   The hero was clamped to 620px, which at 1440 showed less than half the
+   engraving: the sheet is 3:2, so filling the width makes it 960px tall and
+   everything below the midline was being cut. Desktop now takes the lesser of
+   66vw (the image's own full height at that width) and 76vh, so it shows far
+   more of the sky, the lake and the far shore without stretching anything.
+   The copy is repadded to suit. Mobile is deliberately untouched. */
+@media (min-width:900px){
+  .stay-hero.ttd img{height:clamp(520px,min(66vw,76vh),900px);object-position:center 50%}
+  .stay-hero.ttd .stay-hero-in{padding-bottom:calc(var(--map-peaks) + 2.2rem)}
+}
+
+/* the eyebrow was gold-light on a light patch of the engraving and barely
+   read; a paler gold with a soft dark halo holds it at any crop */
+.stay-hero.ttd .eyebrow{color:#F4DEAC;
+  text-shadow:0 1px 10px rgba(18,32,24,.85),0 0 3px rgba(18,32,24,.7)}
 
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;

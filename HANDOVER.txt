@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.0
+Current release: site live 4.1
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -203,6 +203,77 @@ on all four papers (2.1-2.4:1). Light sheets take #7C5414, the dark
 glade takes #EBC97F. The basin also darkens --muted for its
 figcaptions, and the glade lifts .sub to 92% opacity.
 
+
+
+CONTENT RE-PAIRED TO ITS ENVIRONMENT
+-------------------------------------------------------------------
+The sections were reordered so each activity sits on the sheet that
+matches it. Before, lake activities sat on a mountain sheet and the
+waterfalls sat on an open lake sheet.
+
+    lake        basin sheet   Start at the dock
+    wildlife    map sheet     Who's around?
+    beyond      glade sheet   Go a little farther
+    mountains   ridge sheet   Find a trail
+    waterfalls  forest sheet  Chase a waterfall
+    winter      snow sheet    Winter
+
+Bird watching merged into the lake section, alongside canoes and
+fishing, as three across. The "Who's around?" field guide became its
+own section on the map sheet — parchment suits a field guide, and it
+had to stay on a LIGHT paper because the bird glyphs use var(--paper)
+for the owl's eyes and the pelican's eye. On a dark sheet those
+vanish. Do not move that strip onto the glade.
+
+THE SEAM CHAIN FOLLOWS THE ORDER, so reordering means re-deriving it:
+    hero -> basin -> map -> glade -> ridge -> forest -> snow
+The hero pull-up moved with the first section: it is now on .ttd-basin
+(0.8vw, its band) and .ttd-mapped went back to a normal gradient with
+its full 31.5vw overlap.
+
+EDITORIAL SCALE
+Prints are capped at clamp(200px,26vw,340px), 300px inside a row.
+.ttd-row puts related activities three across (two for the
+waterfalls). Splits, guide boxes and the bird strip were all
+tightened. The supporting canoe and trout illustrations are kept but
+at roughly half their previous size.
+
+DESKTOP HERO
+Was clamped to 620px, which showed under half the engraving: the
+sheet is 3:2, so filling the width makes it 960px tall. Now
+min(66vw,76vh) above 900px — 71% of the image at 1440 against 49%
+before. Mobile is untouched. The eyebrow was gold-light on a light
+patch of the engraving; it is now a paler gold with a dark halo.
+
+
+SEAMS BETWEEN THE SHEETS
+-------------------------------------------------------------------
+Each sheet's treeline is ragged: tree tips against nothing at the
+top, solid paper only some way down. A flat background colour on
+the section drew a hard horizontal line across that gap, clearly
+visible between the trees, because the colour changed at the
+section's top edge while the art did not.
+
+Fixed by starting each section in the PREVIOUS section's colour and
+blending to its own over exactly the depth its treeline takes to go
+solid. Measured per sheet, in vw so it holds at any width:
+
+    map     4.3vw     forest  14.5vw    glade  17.4vw
+    basin   0.8vw     ridge    4.3vw    snow    9.7vw
+
+Change a sheet and this must be re-measured with it: find the row
+where alpha first exceeds ~40 (first art) and where it exceeds ~251
+(solid), convert both to vw using the sheet's height-to-width
+ratio, and the band is solid minus the sheet's own margin.
+
+THE HERO IS THE EXCEPTION. What sits above the map section is a
+photograph, not a flat colour, and its bottom edge changes with the
+crop — 140/122/84 at desktop, 99/91/62 on a phone. There is no
+colour to blend from, so that section is instead pulled up over the
+hero by 4.3vw and starts transparent, letting the photograph show
+through the treeline. --map-overlap was reduced from 31.5vw to
+27.2vw by the same amount so the peaks stay exactly where they
+were. If either number changes, the other must follow.
 
 
 ALL HAND-BUILT TRANSITIONS ARE NOW GONE
