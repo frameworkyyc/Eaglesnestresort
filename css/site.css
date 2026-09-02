@@ -1297,6 +1297,54 @@ body{overscroll-behavior-y:none;background:var(--paper);
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-glade > .wrap{position:relative;z-index:1}
 
+/* --- the basin sheet -------------------------------------------------
+   Fourth illustrated page, backing "Chase a waterfall", its horizon
+   overlapping the glade above. Paper #D8DBC8, a pale sage — light enough to
+   sit behind text, and handled like the map and forest sheets.
+
+   Its own paper is BRIGHTER than the transparency checkerboard that came
+   baked into the file, so brightness alone would have keyed the paper away
+   too. Saturation separated them: the paper carries about 17 levels of
+   spread, the checker is perfectly neutral.
+
+   Contrast here: headings 9.5:1, body 4.7:1. The small figcaption grey lands
+   at 4.02:1, just short at that size, so it is darkened inside the section,
+   and gold takes the same darker value as the other light sheets.
+
+   Geometry: art begins 21.7% down a sheet 1.242x its width, so the overlap
+   spends 27vw reaching it. */
+.ttd-basin{position:relative;background:#D8DBC8;--gold:#7C5414;--muted:#4C5648}
+.basin-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (27vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-basin > .wrap{position:relative;z-index:1}
+
+/* --- the ridge and snow sheets ---------------------------------------
+   Fifth and sixth illustrated pages: snowbound peaks behind "Find a trail",
+   the frozen lake behind the winter section, each overlapping the one above.
+
+   Snow scenes are the hardest to key. The artwork is nearly white AND nearly
+   neutral, so tone alone cannot separate it from the transparency
+   checkerboard baked into the file. What does separate them is that the
+   checker is exactly neutral while snow keeps a faint blue cast and paper
+   grain, so the saturation cut is tightened to under 4 levels.
+
+   Both papers are light — headings above 10:1, body copy near 5:1 — so only
+   gold needs the darker value, as on the other light sheets. The snow
+   sheet's figcaption grey lands at 4.26:1, short at that size, so it is
+   darkened too. */
+.ttd-ridge{position:relative;background:#E5E9EA;--gold:#7C5414}
+.ridge-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (12.5vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-ridge > .wrap{position:relative;z-index:1}
+
+.ttd-snow{position:relative;background:#DBE1D8;--gold:#7C5414;--muted:#4C5648}
+.snow-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (10.5vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-snow > .wrap{position:relative;z-index:1}
+
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
   margin-top:clamp(2.2rem,5vw,3.6rem)}
@@ -1386,9 +1434,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ridge-fig svg{display:block;width:100%;height:auto}
 
 /* --- winter: the page cools down, it does not change sides --- */
-.ttd-winter{background:linear-gradient(180deg,var(--paper) 0%,var(--ice) 42%,var(--ice) 100%)}
+/* .ttd-winter's gradient is gone: the snow sheet supplies the cool ground now */
 .ttd-winter .ttd-copy p{color:#4A5A55}
-.ttd-snowline{display:block;width:100%;height:auto;margin-bottom:-1px}
 
 /* --- after dark --- */
 .ttd-night{background:var(--night);color:rgba(243,238,225,.74);position:relative;

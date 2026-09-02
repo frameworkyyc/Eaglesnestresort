@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 3.9
+Current release: site live 4.0
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -176,13 +176,49 @@ There is a drawn deer in this artwork. There is also an SVG deer
 on the peaks ridge two sections later. Worth deciding whether both
 should stay.
 
-Three sheets now, each with its own paper and its own geometry:
-    map     #F0D5B4  light   31.5vw margin
-    forest  #F5E6D0  light   17.2vw margin
-    glade   #4E5D4B  dark    18.9vw margin
-All three arrived with the transparency checkerboard flattened in
-at some point and had to be keyed out.
+Six sheets now, each with its own paper and its own geometry:
+    map     #F0D5B4  light  31.5vw margin  Start at the dock
+    forest  #F5E6D0  light  17.2vw margin  Bird watching
+    glade   #4E5D4B  DARK   18.9vw margin  Go a little farther
+    basin   #D8DBC8  light  27.0vw margin  Chase a waterfall
+    ridge   #E5E9EA  light  12.5vw margin  Find a trail
+    snow    #DBE1D8  light  10.5vw margin  Winter
 
+All four arrived with the transparency checkerboard flattened into
+the file and had to be keyed out: connected region from the top
+corners, bright and neutral. Two traps seen so far — the checker is
+TWO greys, so a threshold catching only the light one leaves a grid
+in the sky; and on the basin sheet the artwork's own paper is
+BRIGHTER than the checker, so brightness alone keys the paper away
+and saturation has to do the separating.
+
+Snow scenes were the hardest to key: the artwork is nearly white
+AND nearly neutral, so tone cannot separate it from the checker.
+The saturation cut had to be tightened to under 4 levels, relying
+on snow keeping a faint blue cast where the checker is exactly
+neutral.
+
+Every sheet has needed a scoped gold. The site value is illegible
+on all four papers (2.1-2.4:1). Light sheets take #7C5414, the dark
+glade takes #EBC97F. The basin also darkens --muted for its
+figcaptions, and the glade lifts .sub to 92% opacity.
+
+
+
+ALL HAND-BUILT TRANSITIONS ARE NOW GONE
+-------------------------------------------------------------------
+The sheets replaced every SVG transition on the page. Removed along
+the way, and no longer anywhere on the site:
+
+    conifer treeline + BEAR   replaced by the forest sheet
+    mountain peaks + DEER     replaced by the ridge sheet
+    snowline                  replaced by the snow sheet
+    .ttd-winter's cool gradient — the snow sheet is the ground now
+
+The only .ridge left on the page is the original one above the
+footer, which every page has. The tent and campfire under After
+Dark are still there. If any silhouette is wanted back it needs a
+new home; the drawn glade sheet has a deer in it already.
 
 SCROLL FURNITURE ON THINGS TO DO
 -------------------------------------------------------------------
