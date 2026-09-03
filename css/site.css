@@ -1470,6 +1470,22 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-glade .ttd-bird .sci{color:rgba(243,238,225,.94)}
 .ttd-glade .ttd-birds{border-color:rgba(243,238,225,.4)}
 
+/* --- the prints sit as if tossed down ----------------------------------
+   A small rotation each, alternating direction so no two side by side lean
+   the same way, and four different angles so a row of three or four never
+   repeats. The artwork already carries its own slight tilt; this varies it
+   rather than replacing it. */
+.ttd-row > :nth-child(4n+1) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+1){transform:rotate(-1.8deg)}
+.ttd-row > :nth-child(4n+2) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+2){transform:rotate(1.3deg)}
+.ttd-row > :nth-child(4n+3) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+3){transform:rotate(-1.1deg)}
+.ttd-row > :nth-child(4n+4) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+4){transform:rotate(2deg)}
+.ttd-split .ttd-shot{transform:rotate(-1.5deg)}
+.ttd-shot{transform-origin:50% 55%}
+
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
   margin-top:clamp(2.2rem,5vw,3.6rem)}
