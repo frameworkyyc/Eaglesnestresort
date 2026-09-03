@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.2
+Current release: site live 4.3
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -203,6 +203,47 @@ on all four papers (2.1-2.4:1). Light sheets take #7C5414, the dark
 glade takes #EBC97F. The basin also darkens --muted for its
 figcaptions, and the glade lifts .sub to 92% opacity.
 
+
+
+CONTENT MAPPED TO THE LOCKED BACKGROUNDS
+-------------------------------------------------------------------
+The background sequence is the owner's and is LOCKED. Content was
+moved onto it, not the other way round:
+
+  1 map     mountains        Find a trail — Rainbow Range, Beef Trail
+  2 forest  forest+falls     Hotnarko Falls, Hunlen Falls
+  3 glade   deep forest+deer Wildlife — who's around
+  4 basin   glade+water      Start at the dock — canoes, fishing, birds
+  5 ridge   snow mountains   Snowmobile
+  6 snow    frozen lake      Ice fish, skate the lake
+
+CONTENT SITS BELOW THE SCENERY
+Each sheet is busiest through its drawn band and quiet underneath.
+The depth at which local contrast falls away was measured per sheet
+and applied as padding-top, so headings and copy start on open paper
+instead of over trees, waterfalls or wildlife:
+
+    map 35.5   forest 54.0   glade 39.5
+    basin 47.1  ridge 44.7   snow 43.8     (vw below the section top)
+
+The two the owner called cramped — the waterfall sheet and the snowy
+mountains — also carry a min-height (104vw and 96vw), which pushes
+the following section farther down and leaves open ground for their
+content. Re-measure if a sheet is replaced.
+
+BIRD GLYPHS ON A DARK SHEET
+The glyph cut-outs — the owl's eyes and beak, the pelican's eye —
+were painted var(--paper), which vanishes on a dark ground. They now
+use var(--glyph-bg,var(--paper)), and .ttd-glade repaints that to
+#4E5D4B while colouring the birds themselves paper. That is what
+makes the strip legible on the wildlife sheet.
+
+NEW COPY THAT NEEDS OWNER APPROVAL
+  - Hunlen Falls description (no facts stated beyond Tweedsmuir)
+  - the wildlife section's opening line (deer, bears, birds)
+  - "Out on the lake." as the frozen-lake heading
+  - "The Beef Trail" as a trail heading, carrying the old Beef Trail
+    Falls copy with its photograph into the hiking section
 
 
 DO NOT REORDER THE SHEETS
