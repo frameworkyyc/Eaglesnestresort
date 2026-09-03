@@ -1422,6 +1422,33 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .stay-hero.ttd .eyebrow{color:#F4DEAC;
   text-shadow:0 1px 10px rgba(18,32,24,.85),0 0 3px rgba(18,32,24,.7)}
 
+/* --- content sits on the open paper, not on the scenery ----------------
+   Each sheet is busiest through its drawn band and quiet below it. Measured
+   per sheet as the depth from the section's top at which the local contrast
+   drops away, so headings and copy start on open paper rather than over
+   trees, waterfalls or wildlife:
+
+       map 35.5   forest 54.0   glade 39.5
+       basin 47.1  ridge 44.7   snow 43.8      (vw below the section top)
+
+   In vw, so it tracks the artwork at every width. The two the owner called
+   out as cramped — the waterfall sheet and the snowy mountains — also get a
+   min-height, which pushes the section below them farther down the page and
+   leaves open ground for their content. */
+.ttd-mapped  {padding-top:35.5vw}
+.ttd-forested{padding-top:54vw;min-height:104vw}
+.ttd-glade   {padding-top:39.5vw;min-height:88vw}
+.ttd-basin   {padding-top:47vw}
+.ttd-ridge   {padding-top:44.7vw;min-height:96vw}
+.ttd-snow    {padding-top:43.8vw}
+
+/* the bird glyphs on the dark wildlife sheet: light birds, cut-outs repainted
+   in the sheet's own green so eyes and beak read as holes again */
+.ttd-glade .ttd-bird svg{color:var(--paper);--glyph-bg:#4E5D4B}
+.ttd-glade .ttd-bird .nm{color:var(--paper)}
+.ttd-glade .ttd-bird .sci{color:rgba(243,238,225,.94)}
+.ttd-glade .ttd-birds{border-color:rgba(243,238,225,.4)}
+
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
   margin-top:clamp(2.2rem,5vw,3.6rem)}
