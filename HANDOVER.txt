@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.3
+Current release: site live 4.4
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -205,6 +205,50 @@ figcaptions, and the glade lifts .sub to 92% opacity.
 
 
 
+AFTER DARK REMOVED
+-------------------------------------------------------------------
+The stargazing section is gone at the owner's request, and with it
+the night background, the constellation SVG and the tent and
+campfire. Their CSS was removed too rather than left dead. The page
+now ends on the frozen lake and goes straight to the closing call.
+
+BIRD WATCHING MOVED TO THE WILDLIFE SECTION
+The pelican print and the bird-watching copy were lifted out of the
+lake section and combined with "Who's around?" on the glade sheet,
+so all the bird content sits together.
+
+That item's type was written for light paper and had to be recoloured
+on the dark sheet — it read 1.07:1 for body copy, 1.24:1 for the
+figcaption and 2.39:1 for the callout label. All three are now light
+on the glade. The lake section is down to two items, canoes and
+fishing.
+
+
+PHOTOGRAPHS ADDED, AFTER DARK REMOVED
+-------------------------------------------------------------------
+Hunlen Falls and the winter lodge are now weathered prints. The
+plain winter-lodge.jpg is no longer used on the page; .ttd-wide
+gained a .print variant that drops the frame and the grade, since a
+print carries its own.
+
+Two prints arrived flat rather than transparent and had to be
+keyed. One of them, the first Hunlen file, had a "white" ground
+running 246-254 — a faint checkerboard rather than a flat white.
+Scaling alpha off luminance left the darker squares at about 3%
+opacity and they rendered as a grid across the section. Anything
+above 240 inside a keyed region must be forced fully clear. It was
+later replaced with a properly transparent file anyway.
+
+After Dark is gone at the owner's request, along with the night
+background, the constellation SVG, the tent and campfire, and all
+their CSS. The page ends on the frozen lake.
+
+Bird watching moved from the lake section up into "Who's around?"
+on the glade sheet, so all the bird content sits together. Its type
+had to be recoloured for the dark ground — it read 1.07:1 for body
+copy there.
+
+
 CONTENT MAPPED TO THE LOCKED BACKGROUNDS
 -------------------------------------------------------------------
 The background sequence is the owner's and is LOCKED. Content was
@@ -291,34 +335,33 @@ before. Mobile is untouched. The eyebrow was gold-light on a light
 patch of the engraving; it is now a paler gold with a dark halo.
 
 
-SEAMS BETWEEN THE SHEETS
+THE SHEETS MEET AS CUT-OUTS, NOT FADES
 -------------------------------------------------------------------
-Each sheet's treeline is ragged: tree tips against nothing at the
-top, solid paper only some way down. A flat background colour on
-the section drew a hard horizontal line across that gap, clearly
-visible between the trees, because the colour changed at the
-section's top edge while the art did not.
+The drawn edge IS the boundary. Above it a section keeps the colour
+of the section above; below the line where the artwork becomes
+opaque right across its width, it switches to its own colour. The
+switch is a two-stop gradient with both stops at the same position
+— a hard edge, hidden behind the art, so nothing blends and no band
+of a third colour appears.
 
-Fixed by starting each section in the PREVIOUS section's colour and
-blending to its own over exactly the depth its treeline takes to go
-solid. Measured per sheet, in vw so it holds at any width:
+Cut line per sheet, measured as the first row opaque edge to edge:
 
-    map     4.3vw     forest  14.5vw    glade  17.4vw
-    basin   0.8vw     ridge    4.3vw    snow    9.7vw
+    map 4.7   forest 14.8   glade 17.9
+    basin 0.9  ridge 4.5    snow 9.9    (vw below the section top)
 
-Change a sheet and this must be re-measured with it: find the row
-where alpha first exceeds ~40 (first art) and where it exceeds ~251
-(solid), convert both to vw using the sheet's height-to-width
-ratio, and the band is solid minus the sheet's own margin.
+An earlier version faded between the colours over that depth. It
+was wrong: it read as haze rather than a cut, and where a fade had
+not finished you still saw a band. Do not reintroduce a blend here.
 
-THE HERO IS THE EXCEPTION. What sits above the map section is a
-photograph, not a flat colour, and its bottom edge changes with the
-crop — 140/122/84 at desktop, 99/91/62 on a phone. There is no
-colour to blend from, so that section is instead pulled up over the
-hero by 4.3vw and starts transparent, letting the photograph show
-through the treeline. --map-overlap was reduced from 31.5vw to
-27.2vw by the same amount so the peaks stay exactly where they
-were. If either number changes, the other must follow.
+THE FIRST SECTION is transparent above its line rather than a
+colour, so the hero photograph shows through to the mountain
+outline. Its pull-up must equal its cut line exactly — both are
+4.7vw — and --map-overlap is reduced by the same amount (26.8vw) so
+the peaks do not move. Change one and the other must follow.
+
+Re-measure all of this if a sheet is replaced: find the first row
+where alpha is above 250 across the whole width, convert to vw with
+the sheet's height-to-width ratio, subtract the sheet's own margin.
 
 
 ALL HAND-BUILT TRANSITIONS ARE NOW GONE

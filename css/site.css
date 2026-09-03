@@ -1222,7 +1222,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
    ============================================================ */
 .ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712;
   --map-paper:#F0D5B4;--map-peaks:clamp(20px,3vw,60px);
-  --map-overlap:calc(27.2vw + var(--map-peaks))}
+  --map-overlap:calc(26.8vw + var(--map-peaks))}
 
 /* --- the map sheet ---------------------------------------------------
    The illustrated map page is the background of the first section, and its
@@ -1245,7 +1245,20 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* On the tan map paper the site's gold drops to about 2:1, so the eyebrow
    above the heading was barely there — true of the previous artwork as well.
    A darker gold inside this section only; the rest of the site is untouched. */
-/* --- making the sheets meet without a seam ---------------------------
+/* The sheets are hard cut-outs, not fades. Above each sheet's drawn edge the
+   section keeps the colour of the section above it; below the line where the
+   artwork becomes opaque right across its width, it switches to its own — a
+   two-stop gradient with both stops at the same position, so the switch is a
+   hard edge hidden behind the art. Nothing blends, and no band of a third
+   colour appears between the two.
+
+   The cut line per sheet, measured as the first row opaque edge to edge:
+       map 4.7   forest 14.8   glade 17.9
+       basin 0.9  ridge 4.5    snow 9.9      (vw below the section top)
+
+   The first section is transparent above its line rather than a colour, so
+   the hero photograph itself shows through to the mountain outline. */
+/* --- the sheets meet as cut-outs ---------------------------
    Each sheet's treeline is ragged: it starts as tree tips against nothing and
    only becomes solid paper some way down. A flat background colour on the
    section drew a hard horizontal line across that gap, visible between the
@@ -1270,9 +1283,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 
 .ttd-mapped{--gold:#7C5414}
 
-.ttd-mapped{position:relative;margin-top:-4.3vw;
-  background:linear-gradient(180deg,transparent 0,var(--map-paper) 4.3vw,
-    var(--map-paper) 100%)}
+.ttd-mapped{position:relative;margin-top:-4.7vw;
+  background:linear-gradient(180deg,transparent 0,transparent 4.7vw,var(--map-paper) 4.7vw,var(--map-paper) 100%)}
 .map-sheet{position:absolute;left:0;right:0;top:calc(-1 * var(--map-overlap));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-mapped > .wrap{position:relative;z-index:1}
@@ -1292,7 +1304,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
    Geometry: trees begin 13.8% down a sheet 1.243x its width, so the overlap
    spends 17.2vw reaching them. Re-measure if the artwork changes. */
 .ttd-forested{position:relative;--gold:#7C5414;
-  background:linear-gradient(180deg,#F0D5B4 0,#F5E6D0 15.5vw,#F5E6D0 100%)}
+  background:linear-gradient(180deg,#F0D5B4 0,#F0D5B4 14.8vw,#F5E6D0 14.8vw,#F5E6D0 100%)}
 .forest-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (17.2vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
@@ -1316,7 +1328,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
    Geometry: trees begin 15.2% down a sheet 1.242x its width, so the overlap
    spends 18.9vw reaching them. */
 .ttd-glade{position:relative;min-height:74vw;--gold-light:#EBC97F;
-  background:linear-gradient(180deg,#F5E6D0 0,#4E5D4B 18.5vw,#4E5D4B 100%)}
+  background:linear-gradient(180deg,#F5E6D0 0,#F5E6D0 17.9vw,#4E5D4B 17.9vw,#4E5D4B 100%)}
 .ttd-glade .sub{color:rgba(243,238,225,.92)}
 .glade-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (18.9vw + var(--map-peaks)));
@@ -1340,7 +1352,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
    Geometry: art begins 21.7% down a sheet 1.242x its width, so the overlap
    spends 27vw reaching it. */
 .ttd-basin{position:relative;--gold:#7C5414;--muted:#4C5648;
-  background:linear-gradient(180deg,#4E5D4B 0,#D8DBC8 1.6vw,#D8DBC8 100%)}
+  background:linear-gradient(180deg,#4E5D4B 0,#4E5D4B 0.9vw,#D8DBC8 0.9vw,#D8DBC8 100%)}
 .basin-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (27vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
@@ -1361,14 +1373,14 @@ body{overscroll-behavior-y:none;background:var(--paper);
    sheet's figcaption grey lands at 4.26:1, short at that size, so it is
    darkened too. */
 .ttd-ridge{position:relative;--gold:#7C5414;
-  background:linear-gradient(180deg,#D8DBC8 0,#E5E9EA 5vw,#E5E9EA 100%)}
+  background:linear-gradient(180deg,#D8DBC8 0,#D8DBC8 4.5vw,#E5E9EA 4.5vw,#E5E9EA 100%)}
 .ridge-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (12.5vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
 .ttd-ridge > .wrap{position:relative;z-index:1}
 
 .ttd-snow{position:relative;--gold:#7C5414;--muted:#4C5648;
-  background:linear-gradient(180deg,#E5E9EA 0,#DBE1D8 10.5vw,#DBE1D8 100%)}
+  background:linear-gradient(180deg,#E5E9EA 0,#E5E9EA 9.9vw,#DBE1D8 9.9vw,#DBE1D8 100%)}
 .snow-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (10.5vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
@@ -1441,6 +1453,15 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-basin   {padding-top:47vw}
 .ttd-ridge   {padding-top:44.7vw;min-height:96vw}
 .ttd-snow    {padding-top:43.8vw}
+
+/* the bird-watching item moved onto the dark wildlife sheet, so its type has
+   to come with it: body copy read 1.07:1 there, the figcaption 1.24:1 and the
+   callout label 2.39:1 */
+.ttd-glade .ttd-item p{color:rgba(243,238,225,.9)}
+.ttd-glade .ttd-shot figcaption{color:rgba(243,238,225,.72)}
+.ttd-glade .ttd-callout p{color:rgba(243,238,225,.9)}
+.ttd-glade .ttd-callout .lbl{color:var(--gold-light)}
+.ttd-glade .ttd-callout{border-left-color:var(--gold-light)}
 
 /* the bird glyphs on the dark wildlife sheet: light birds, cut-outs repainted
    in the sheet's own green so eyes and beak read as holes again */
@@ -1525,6 +1546,9 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-wide{margin:clamp(1.8rem,4vw,2.8rem) 0 0}
 .ttd-wide img{width:100%;height:auto;display:block;border:2px solid var(--forest);
   filter:saturate(1.02) contrast(1.03)}
+/* a full-width plate that is itself a print needs no frame and no grade */
+.ttd-wide img.print{border:0;filter:none}
+.ttd-wide:has(img.print){max-width:52rem}
 .ttd-wide figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin-top:.7rem}
 
@@ -1541,18 +1565,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* .ttd-winter's gradient is gone: the snow sheet supplies the cool ground now */
 .ttd-winter .ttd-copy p{color:#4A5A55}
 
-/* --- after dark --- */
-.ttd-night{background:var(--night);color:rgba(243,238,225,.74);position:relative;
-  overflow:hidden}
-.ttd-night h2{color:var(--paper)}
-.ttd-night .eyebrow{color:var(--gold-light)}
-.ttd-stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.5}
-.ttd-night .wrap{position:relative;z-index:2}
 
-/* tent and fire under the night sky — small, gold, well down the opacity */
-.ttd-camp{display:flex;justify-content:center;align-items:flex-end;gap:clamp(1.4rem,4vw,3rem);
-  margin-top:clamp(2.4rem,6vw,4rem);color:var(--gold-light);opacity:.5}
-.ttd-camp svg{width:clamp(44px,6vw,78px);height:auto;display:block}
 
 /* --- closing call --- */
 .ttd-close{text-align:center}
