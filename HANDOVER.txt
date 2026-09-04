@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.2
+Current release: site live 5.3
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -333,6 +333,17 @@ own positioning. If one of those starts drifting, this is the fix.
 
 Two new assets: trail-signpost.webp upper right, and
 say-worth-the-drive.webp pointing at the Rainbow Range print.
+
+TIGHTENED IN 5.3. Columns pulled inward (the spread now runs cols
+2-12 instead of 1-13), vertical margins roughly halved, the route
+band shortened. The Beef print carries a small negative top margin
+so it sits offset — keep it under about 40% of the route band's
+height or it climbs into the route's own row, which is the one thing
+that row exists to prevent.
+
+The two prints now lean opposite ways: Rainbow -2.4deg, Beef
++1.9deg, on top of the tilt already drawn into each file. Both were
+checked for clipping against the wrap at 900-1920px.
 
 
 THE CLOSING SPREAD
