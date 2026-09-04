@@ -1667,6 +1667,44 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .dock-spread .a-card{max-width:min(60%,240px)}
 }
 
+/* --- the closing spread ------------------------------------------------
+   The CTA now carries its own illustrated sheet: snowbanks along the top that
+   cut into the winter section above, open parchment through the middle for
+   the content, and the mountains at the foot ending the page. Same cut-out
+   technique as the six sheets above it — the colour switches at the line
+   where the artwork goes opaque across its width, hidden behind the art.
+
+   Its parchment is #F2EBDE. Headings read 11.4:1 on it and body copy 5.6:1,
+   but the site gold falls to 2.48:1, so this section takes the darker gold
+   used on the other light sheets. */
+.ttd-cta{position:relative;--gold:#7C5414;--glyph-bg:#F2EBDE;
+  padding-top:24vw;padding-bottom:clamp(3rem,8vw,7rem);min-height:46vw;
+  background:linear-gradient(180deg,#DBE1D8 0,#DBE1D8 21.6vw,#F2EBDE 21.6vw,#F2EBDE 100%)}
+.cta-sheet{position:absolute;left:0;right:0;top:calc(-1 * (11.3vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-cta > .wrap{position:relative;z-index:1}
+.cta-lede{font-family:var(--body);font-size:clamp(1.24rem,2.1vw,1.72rem);line-height:1.28;
+  color:var(--forest);margin:0 0 .7rem;max-width:22ch}
+.cta-sub{font-size:1rem;color:var(--forest-soft);margin:0 0 1.4rem}
+.say{display:block;width:100%;height:auto;position:relative;z-index:1}
+.say-ask{max-width:clamp(190px,24vw,340px);margin-top:clamp(1rem,2.5vw,2rem)}
+.say-good{max-width:clamp(130px,16vw,230px)}
+
+@media (min-width:900px){
+  /* the sheet is decorated down its outer fifths, so both columns sit inside
+     them, with a hairline between as in the reference */
+  .cta-spread{grid-template-columns:repeat(12,1fr);align-items:start;
+    column-gap:clamp(1rem,2vw,2rem)}
+  .cta-left {grid-column:2/6;grid-row:1}
+  .cta-right{grid-column:7/11;grid-row:1;padding-left:clamp(1.4rem,3vw,2.6rem);
+    border-left:1px solid rgba(31,51,39,.22)}
+  .say-good {grid-column:11/13;grid-row:1;margin-top:clamp(4rem,10vw,8rem)}
+}
+@media (max-width:899px){
+  .cta-spread .say-ask{max-width:min(66%,260px)}
+  .cta-spread .say-good{max-width:min(46%,190px);margin-top:1.4rem}
+}
+
 .spread{position:relative;display:grid;gap:clamp(1.3rem,3vw,1.9rem)}
 .sp-head .sub{margin-top:.85rem;font-size:1.02rem;max-width:44ch}
 .sp-shot{margin:0;position:relative;z-index:1}

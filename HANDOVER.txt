@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.9
+Current release: site live 5.0
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -312,6 +312,33 @@ THE OLD SVG BIRD STRIP IS GONE, replaced by the supplied
 eye-out-for graphic. That means the Latin names went with it, and
 the black tern is no longer mentioned anywhere on the site. Its CSS
 was removed too.
+
+
+THE CLOSING SPREAD
+-------------------------------------------------------------------
+The CTA now carries its own illustrated sheet, cta-sheet.webp:
+snowbanks along the top cutting into the winter section above, open
+parchment through the middle for the content, mountains at the foot
+ending the page. Same cut-out technique as the six sheets above it
+— colour switches at 21.6vw, the line where the artwork goes opaque
+across its width, hidden behind the art. Overlap is 11.3vw plus
+--map-peaks.
+
+Its parchment is #F2EBDE. Headings read 11.4:1 and body copy 5.6:1,
+but the site gold falls to 2.48:1, so this section takes the darker
+gold like the other light sheets.
+
+The sheet is top-anchored and the section carries min-height:46vw so
+the mountains land inside the section rather than being cut off.
+Checked at 900, 1280, 1440 and 1920px. If either number changes the
+other must follow.
+
+FOUR HANDWRITTEN NOTES were sliced from the supplied sheet:
+say-same-lake, say-different-season, say-ask-the-people,
+say-good-adventures. Only the last two are used here.
+say-different-season is now available to replace the italic
+stand-in in the snowmobile section, which does not match the
+supplied handwriting — that was flagged when it was built.
 
 
 THE SNOWMOBILE SPREAD
