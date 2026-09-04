@@ -1491,7 +1491,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .trailspread .t-route{display:none;width:100%;height:auto;color:var(--gold);
   opacity:.75;grid-row:3}
 .trail-art{display:block;width:100%;height:auto;position:relative;z-index:1}
-.t-signpost{max-width:clamp(260px,36vw,560px)}
+.t-signpost{max-width:clamp(300px,44vw,700px)}
 .t-worth   {max-width:clamp(130px,17vw,250px)}
 .trail-copy{max-width:34ch;position:relative;z-index:1}
 .trail-copy h3{font-family:var(--display);font-weight:400;text-transform:uppercase;
@@ -1508,26 +1508,41 @@ body{overscroll-behavior-y:none;background:var(--paper);
    clockwise lean. At 20deg it swings about 48px above and below its own box,
    so it carries margin to keep that clear of the route band underneath. */
 .rr-photo{max-width:clamp(180px,24vw,350px);transform:rotate(-20deg)}
-.bt-photo{max-width:clamp(140px,15.5vw,220px);transform:rotate(1.9deg)}
+.bt-photo{max-width:clamp(150px,17vw,245px);transform:rotate(1.9deg)}
 
 @media (min-width:900px){
-  /* Photographs pushed out to the outer columns, both paragraphs pulled into
-     the middle between them, and the two rows brought close together so the
-     prints sit almost opposite each other rather than far apart down the page.
-     The signpost is much larger now and takes the upper right on its own. */
-  .trailspread .t-route{display:block;height:clamp(40px,4.5vw,72px)}
-  .trailspread .t-worth   {grid-column:1/3;grid-row:1;align-self:end;
-                           margin-bottom:clamp(-1rem,-2vw,-.4rem)}
-  .trailspread .t-intro   {grid-column:3/8;grid-row:1;align-self:center}
-  .trailspread .t-signpost{grid-column:8/13;grid-row:1;justify-self:end;
-                           margin-top:clamp(-1rem,-2vw,-.4rem)}
-  .trailspread .rr-photo  {grid-column:2/6;grid-row:2;justify-self:start;
-                           margin:clamp(2.6rem,5vw,3.4rem) 0}
-  .trailspread .rr-copy   {grid-column:6/10;grid-row:2;align-self:center}
-  .trailspread .t-route   {grid-column:4/10;grid-row:3}
-  .trailspread .bt-copy   {grid-column:6/10;grid-row:4;align-self:center}
+  /* Both paragraphs share columns 7-10 so they align with each other; the
+     Rainbow print sits outside them on the left, the Beef print outside on
+     the right, and "Worth the drive." goes back beside the Rainbow print
+     rather than above it.
+
+     The signpost drops into the top of row 2 by a negative bottom margin.
+     Row 2 is 369px tall at 1440 because the Rainbow print sets it, while the
+     copy beside it is about 190px and vertically centred — so there is ~89px
+     of clear space above that copy. The drop is held to 4rem, inside that,
+     so the graphic comes down towards the text without ever reaching it. */
+  .trailspread .t-route{display:block;height:clamp(34px,3.6vw,58px)}
+  .trailspread .t-intro   {grid-column:2/7;grid-row:1;align-self:center}
+  .trailspread .t-signpost{grid-column:7/13;grid-row:1;justify-self:end;
+                           margin-top:clamp(-1rem,-2vw,-.4rem);
+                           margin-bottom:clamp(-4rem,-5vw,-1.6rem)}
+  .trailspread .t-worth   {grid-column:1/3;grid-row:2;align-self:center}
+  .trailspread .rr-photo  {grid-column:3/7;grid-row:2;justify-self:start;
+                           margin:clamp(2.6rem,5vw,3.4rem) 0 clamp(1rem,2vw,1.6rem)}
+  .trailspread .rr-copy   {grid-column:7/10;grid-row:2;align-self:center}
+  /* The route is anchored to the Rainbow COPY, not to the print. It cannot
+     span the print's own columns: the print is taller than the copy and, at
+     -20deg, swings about 48px below its own box, so a line under those
+     columns would cross it. Starting at column 7 puts the route's left end
+     right where the print's turned corner reaches, so the two meet without
+     overlapping, and it can then sit just under the copy instead of far
+     below the print. */
+  .trailspread .t-route   {grid-column:7/10;grid-row:3;
+                           margin-top:clamp(-8rem,-9vw,-3.5rem)}
+  .trailspread .bt-copy   {grid-column:7/10;grid-row:4;align-self:start;
+                           margin-top:clamp(-4.4rem,-5vw,-2rem)}
   .trailspread .bt-photo  {grid-column:10/13;grid-row:4;justify-self:end;
-                           margin-top:clamp(-2rem,-3vw,-1rem)}
+                           margin-top:clamp(-10rem,-10vw,-4rem)}
 }
 
 @media (max-width:899px){

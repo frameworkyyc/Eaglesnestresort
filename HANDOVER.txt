@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.5
+Current release: site live 5.6
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -323,6 +323,20 @@ lands on the paper's own cream, keeping 45% of the original chroma
 so the boots do not go flat. Ink went [14,31,21] -> [50,71,53] and
 the fills [237,232,220] -> [223,213,189]. If the asset is
 re-supplied, the grade must be re-applied.
+
+THE ROUTE IS ANCHORED TO THE COPY, NOT THE PRINT
+It sits in columns 7-10, the same columns as the two paragraphs, and
+is pulled up with a negative margin to land about 12px under the
+Rainbow copy. It cannot span the print's own columns: the print is
+taller than the copy and, at -20deg, swings roughly 48px below its
+own box, so a line under those columns would cross it. Starting at
+column 7 puts the route's left end within a pixel of where the
+turned print's right corner reaches, so they touch without
+overlapping. It stops at column 10, short of the Beef print.
+
+Every offset in this section is a negative margin tuned against a
+measured height. If a photograph is resized or the rotation changes,
+re-derive them rather than nudging.
 
 TRAIL LAYOUT, 5.5
 Prints pushed to opposite outer columns with both paragraphs
