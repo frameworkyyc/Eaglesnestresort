@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bevan&family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=f85d1cd0">
+<link rel="stylesheet" href="css/site.css?v=3c2d5ef4">
 
 <script type="application/ld+json">
 {
@@ -252,13 +252,18 @@
   </div>
 </section>
 
-<!-- ============ 4. GLADE + WATER — a lakeside noticeboard ============ -->
+<!-- ============ 4. GLADE + WATER — a lakeside journal page ============ -->
 <section class="band-2 ttd ttd-basin">
   <img class="basin-sheet" src="images/basin-sheet.webp" width="1200" height="1491"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
     <div class="spread dock-spread">
-      <svg class="trail-route route-dock" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true"><path d="M258 250C330 316 452 330 560 300c96-26 176-14 228 54" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="3 11" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
+      <svg class="trail-route route-dock" viewBox="0 0 1200 560" preserveAspectRatio="none"
+           aria-hidden="true">
+        <path d="M470 372C560 330 660 344 700 400c34 48-24 96-118 92-96-4-186-16-268-52"
+              fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="3 11"
+              stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      </svg>
 
       <div class="sp-head d-head">
         <p class="eyebrow">No car required</p>
@@ -273,32 +278,54 @@
       </figure>
 
       <div class="trail-copy d-canoe">
-        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>At the water&rsquo;s edge</p>
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="12" height="16" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--paper))"/></svg>At the water&rsquo;s edge</p>
         <h3>Canoes &amp; pedal boats</h3>
         <p>Grab a paddle and head out from the dock. Canoes and pedal boats are available for
           guests to explore Anahim Lake at their own pace.</p>
-        <svg viewBox="0 0 200 72" width="104" height="37" aria-hidden="true" style="margin-top:.8rem;color:var(--forest);opacity:.75"><path d="M6 42C42 68 158 68 194 42c-36 8-152 8-188 0Z" fill="currentColor"/><polygon points="40,6 45,4 124,34 119,38" fill="currentColor"/><polygon points="120,29 143,38 136,52 114,42" fill="currentColor"/></svg>
       </div>
 
+      <p class="handnote h-30s">30 seconds<br>from your door.
+        <svg viewBox="0 0 90 54" width="62" height="37" aria-hidden="true">
+          <path d="M4 6C34 4 66 14 80 38" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round"/>
+          <path d="M84 44 78 28 66 38Z" fill="currentColor"/>
+        </svg>
+      </p>
+
+      <img class="dock-art a-canoe" src="images/canoe-note.webp" width="1000" height="337"
+           loading="lazy" decoding="async"
+           alt="A canoe drawn up at the water's edge with a paddle resting in the shallows.
+                Quiet water. Big possibilities.">
+
+      <img class="dock-art a-trout" src="images/trout-note.webp" width="760" height="696"
+           loading="lazy" decoding="async"
+           alt="A rainbow trout leaping clear of the water. Same lake. New stories every day.">
+
       <div class="trail-copy d-fish">
-        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>Off the dock</p>
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="12" height="16" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--paper))"/></svg>Off the dock</p>
         <h3>See what&rsquo;s biting.</h3>
         <p>The fishing starts where the dock ends. Bring your own gear, take a boat out, or cast
           from the shore and see what happens.</p>
       </div>
 
-      <div class="ttd-guide d-guide">
-        <svg class="fig" viewBox="0 0 200 82" width="104" height="43" aria-hidden="true"><path d="M14 41C40 21 108 19 150 28l6 6 36-20c-10 14-10 38 0 52l-36-19-6 6c-42 9-110 7-136-13Z" fill="currentColor"/><polygon points="92,23 114,15 117,26" fill="currentColor"/><polygon points="132,24 145,20 144,28" fill="currentColor"/><polygon points="86,56 100,68 106,55" fill="currentColor"/><polygon points="52,52 62,62 70,51" fill="currentColor"/><circle cx="27" cy="38" r="2.6" fill="var(--paper)"/></svg>
-        <h4>Anahim Lake fish</h4>
-        <ul>
-          <li>Rainbow Trout</li>
-          <li>Cuttbow</li>
-        </ul>
-        <p class="note">Licences, limits and seasons change. Check the
-          <a href="https://www2.gov.bc.ca/gov/content/sports-culture/recreation/fishing-hunting/fishing/fishing-regulations"
-             target="_blank" rel="noopener noreferrer">B.C. freshwater fishing
-             regulations</a> before you go.</p>
+      <a class="dock-art a-card" href="https://www2.gov.bc.ca/gov/content/sports-culture/recreation/fishing-hunting/fishing/fishing-regulations" target="_blank" rel="noopener noreferrer">
+        <img src="images/fish-card.webp" width="720" height="885" loading="lazy"
+             decoding="async" alt="Anahim Lake fish: rainbow trout and cuttbow. Licences, limits
+             and seasons change &mdash; check the B.C. freshwater fishing regulations before you
+             go. Opens the regulations in a new tab.">
+      </a>
+
+      <img class="dock-art a-hook" src="images/hook-note.webp" width="620" height="444"
+           loading="lazy" decoding="async"
+           alt="A fishing hook on a line. Cast a line. See what finds you.">
+
+      <div class="trail-copy d-lake">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="12" height="16" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--paper))"/></svg>Anahim Lake</p>
+        <p>Step off the dock and you&rsquo;re there. Paddle the shoreline, cast for trout, or
+          just head out and see where the lake takes you.</p>
       </div>
+
+      <p class="handnote h-explore">Explore a little<br>further.</p>
     </div>
   </div>
 </section>
@@ -421,6 +448,6 @@
 
 
 
-<script src="js/site.js?v=f85d1cd0"></script>
+<script src="js/site.js?v=3c2d5ef4"></script>
 </body>
 </html>

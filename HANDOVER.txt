@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.7
+Current release: site live 4.8
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -312,6 +312,28 @@ THE OLD SVG BIRD STRIP IS GONE, replaced by the supplied
 eye-out-for graphic. That means the Latin names went with it, and
 the black tern is no longer mentioned anywhere on the site. Its CSS
 was removed too.
+
+
+THE DOCK PAGE
+-------------------------------------------------------------------
+Rebuilt from four owner-supplied illustrations laid over the lake
+sheet: canoe-note, trout-note, fish-card and hook-note.
+
+THE FISH CARD IS A LINK. It carries its own text as pixels,
+including the B.C. regulations line, so the old HTML guide box was
+removed — and the working link would have gone with it. The card
+itself is now the anchor, and its alt text says where it goes.
+Nothing on the page repeats what the card already says. If the card
+is ever replaced, keep the anchor.
+
+NO SCRIPT FACE ON THIS SITE. The two written notes that had no
+supplied asset ("30 seconds from your door", "Explore a little
+further") are set in the body italic with a small drawn arrow. They
+will not match the handwriting inside the supplied graphics. If that
+matters, they need to be supplied as artwork too.
+
+The lake sheet is decorated down both outer fifths, so every item
+sits between grid columns 2 and 12.
 
 
 SIX SPREADS, ONE BOOK
