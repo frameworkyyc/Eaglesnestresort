@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.4
+Current release: site live 5.5
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -312,6 +312,25 @@ THE OLD SVG BIRD STRIP IS GONE, replaced by the supplied
 eye-out-for graphic. That means the Latin names went with it, and
 the black tern is no longer mentioned anywhere on the site. Its CSS
 was removed too.
+
+
+SIGNPOST GRADING
+-------------------------------------------------------------------
+trail-signpost.webp was supplied near-black on near-white, which
+punched against the tan map paper. Its tonal range is remapped so
+the darkest ink lands just above --forest and the brightest fill
+lands on the paper's own cream, keeping 45% of the original chroma
+so the boots do not go flat. Ink went [14,31,21] -> [50,71,53] and
+the fills [237,232,220] -> [223,213,189]. If the asset is
+re-supplied, the grade must be re-applied.
+
+TRAIL LAYOUT, 5.5
+Prints pushed to opposite outer columns with both paragraphs
+aligned in the middle between them. The Rainbow print turns -20deg
+against the Beef print's +1.9deg. At that angle it swings about
+48px above and below its own box, so it carries vertical margin to
+keep clear of the route band; reduce the angle and that margin can
+come back.
 
 
 THE TRAIL ROUTE HAS ITS OWN ROW
