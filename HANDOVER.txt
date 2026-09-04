@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.3
+Current release: site live 5.4
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -334,7 +334,28 @@ own positioning. If one of those starts drifting, this is the fix.
 Two new assets: trail-signpost.webp upper right, and
 say-worth-the-drive.webp pointing at the Rainbow Range print.
 
-TIGHTENED IN 5.3. Columns pulled inward (the spread now runs cols
+TIGHTENING THIS SECTION — WHERE THE SPACE ACTUALLY IS
+The obvious move, cutting the gaps between rows, does almost
+nothing: those gaps are 20-40px against a section over 1500px tall.
+Two things dominate instead.
+
+First, the padding-top. It cannot come down much: the drawn
+foothills run to about 34vw under the heading's own columns, and
+below that the reading is just the paper's texture. 34vw is the
+floor; 36vw was two clear.
+
+Second, and this is the real one: EACH GRID ROW IS AS TALL AS ITS
+TALLEST ITEM. A short text block beside a tall graphic leaves dead
+space alongside it — 115px in row 1, 117px in row 2, 132px in row 4
+at 1440. The fix is to stop tall graphics forcing a row: the
+signpost now SPANS rows 1 and 2 instead of setting row 1's height.
+That alone took 115px out. Section is 14% shorter at 1440.
+
+If it needs to come down further, the lever is the same one: give a
+tall item a row span, or reduce the tallest item in a row. Trimming
+margins will not do it.
+
+EARLIER NOTE, 5.3. Columns pulled inward (the spread now runs cols
 2-12 instead of 1-13), vertical margins roughly halved, the route
 band shortened. The Beef print carries a small negative top margin
 so it sits offset — keep it under about 40% of the route band's
