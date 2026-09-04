@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.1
+Current release: site live 5.2
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -312,6 +312,27 @@ THE OLD SVG BIRD STRIP IS GONE, replaced by the supplied
 eye-out-for graphic. That means the Latin names went with it, and
 the black tern is no longer mentioned anywhere on the site. Its CSS
 was removed too.
+
+
+THE TRAIL ROUTE HAS ITS OWN ROW
+-------------------------------------------------------------------
+The dotted route in Find a Trail was an absolutely positioned
+overlay spanning the whole spread. That is exactly why it kept
+drifting behind headings and copy: it had no relationship to where
+the text actually landed, so any change in text length moved the
+text and not the line.
+
+It now occupies its OWN grid row, alone, in the empty band between
+the Rainbow Range feature and the Beef Trail feature. It cannot run
+behind anything because the layout reserves the space for it. One
+continuous curve, left to right, with a marker at its midpoint.
+
+The other three routes — falls, dock, sled — are still overlays and
+still work, because .route-fall/.route-dock/.route-sled carries its
+own positioning. If one of those starts drifting, this is the fix.
+
+Two new assets: trail-signpost.webp upper right, and
+say-worth-the-drive.webp pointing at the Rainbow Range print.
 
 
 THE CLOSING SPREAD
