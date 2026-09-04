@@ -1620,6 +1620,14 @@ body{overscroll-behavior-y:none;background:var(--paper);
    regulations line, so the old HTML guide box is gone — but the link went
    with it, so the card itself is the link now. Its alt text says where it
    goes; nothing on the page repeats what the card already says. */
+/* the supplied snowmobile illustration: the largest decorative graphic on the
+   page, but still smaller than the heading it sits under */
+.sled-art{display:block;width:100%;height:auto;position:relative;z-index:1;
+  max-width:clamp(260px,36vw,560px)}
+.h-season{transform:rotate(3deg)}
+.h-season svg{margin-left:auto}
+.s-hosts p{font-size:.9rem;line-height:1.55;color:var(--forest-soft);margin:0;max-width:26ch}
+
 .dock-art{display:block;width:100%;height:auto;position:relative;z-index:1}
 .a-canoe{max-width:clamp(200px,26vw,400px)}
 .a-trout{max-width:clamp(160px,21vw,300px)}
@@ -1688,17 +1696,23 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .falls-spread .fb-copy {grid-column:7/11;grid-row:3;margin-top:clamp(1.4rem,3vw,2.6rem)}
   .falls-spread .fa-photo{grid-column:3/6;grid-row:3;margin-top:clamp(2.4rem,6vw,5rem)}
 
-  /* 5 — the sled section is mostly snow: one block, right of centre */
-  .sled-spread .s-head{grid-column:6/12;grid-row:1}
-  .sled-spread .s-copy{grid-column:7/12;grid-row:2;margin-top:clamp(1.4rem,3vw,2.4rem)}
+  /* 5 — a winter spread: heading and photograph across the top, the copy
+     under it on the left, the sled riding out across the open snow. The
+     ridge sheet is decorated down both outer fifths, so nothing goes past
+     columns 2 or 12. */
+  .sled-spread .s-head  {grid-column:2/7;grid-row:1}
+  .sled-spread .s-photo {grid-column:7/10;grid-row:1;max-width:clamp(170px,23vw,330px);
+                         margin-top:clamp(.4rem,1.5vw,1.4rem)}
+  .sled-spread .h-season{grid-column:10/12;grid-row:1;margin-top:clamp(2rem,5vw,4rem)}
+  .sled-spread .s-copy  {grid-column:2/6;grid-row:2;margin-top:clamp(1.4rem,3.5vw,2.8rem)}
+  .sled-spread .sled-art{grid-column:6/12;grid-row:2;margin-top:clamp(1.6rem,4vw,3.4rem)}
+  .sled-spread .s-hosts {grid-column:2/6;grid-row:3;margin-top:clamp(1.6rem,4vw,3.2rem)}
 
   /* 6 — the ice pinwheels: photo, copy, copy, photo, opposite corners */
   .ice-spread .i-head   {grid-column:4/10;grid-row:1;text-align:center}
   .ice-spread .i-photo-a{grid-column:2/6;grid-row:2;margin-top:clamp(1.4rem,3.5vw,2.8rem)}
   .ice-spread .i-fish   {grid-column:7/11;grid-row:2;margin-top:clamp(2.6rem,6vw,4.6rem)}
   .ice-spread .i-skate  {grid-column:2/6;grid-row:3;margin-top:clamp(2rem,5vw,3.6rem)}
-  .ice-spread .i-photo-b{grid-column:7/12;grid-row:3;justify-self:end;
-    margin-top:clamp(1rem,2.5vw,2rem)}
 }
 
 /* mobile keeps each photo with its own copy and drops the routes */

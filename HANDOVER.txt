@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.8
+Current release: site live 4.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -312,6 +312,25 @@ THE OLD SVG BIRD STRIP IS GONE, replaced by the supplied
 eye-out-for graphic. That means the Latin names went with it, and
 the black tern is no longer mentioned anywhere on the site. Its CSS
 was removed too.
+
+
+THE SNOWMOBILE SPREAD
+-------------------------------------------------------------------
+Heading and the closer resort photograph across the top, the sled
+copy under it on the left, and the supplied snowmobile illustration
+riding out across the open snow. snowmobile-note.webp is the largest
+decorative graphic on the page but still sits under the heading in
+weight.
+
+THE CLOSER RESORT PHOTOGRAPH MOVED HERE from Out on the Lake. It
+appears exactly once on the page — checked. Out on the Lake keeps
+the wider lodge view with the footprints, which now supports both
+ice fishing and skating; nothing else in that section changed.
+
+The annotation was first placed at column 13 and rotated, which is
+the same trap that clipped the wildlife notes: rotation happens
+after layout, so an element flush to the wrap edge swings outside
+it. Nothing rotated should sit past column 12.
 
 
 THE DOCK PAGE
