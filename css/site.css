@@ -1449,7 +1449,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
    leaves open ground for their content. */
 .ttd-mapped  {padding-top:36vw;padding-bottom:clamp(3rem,7vw,6rem)}
 .ttd-forested{padding-top:54vw;min-height:104vw}
-.ttd-glade   {padding-top:39.5vw;min-height:88vw}
+.ttd-glade   {padding-top:39.5vw}
 .ttd-basin   {padding-top:47vw}
 .ttd-ridge   {padding-top:44.7vw;min-height:96vw}
 .ttd-snow    {padding-top:43.8vw}
@@ -1463,12 +1463,6 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-glade .ttd-callout .lbl{color:var(--gold-light)}
 .ttd-glade .ttd-callout{border-left-color:var(--gold-light)}
 
-/* the bird glyphs on the dark wildlife sheet: light birds, cut-outs repainted
-   in the sheet's own green so eyes and beak read as holes again */
-.ttd-glade .ttd-bird svg{color:var(--paper);--glyph-bg:#4E5D4B}
-.ttd-glade .ttd-bird .nm{color:var(--paper)}
-.ttd-glade .ttd-bird .sci{color:rgba(243,238,225,.94)}
-.ttd-glade .ttd-birds{border-color:rgba(243,238,225,.4)}
 
 /* --- the prints sit as if tossed down ----------------------------------
    A small rotation each, alternating direction so no two side by side lean
@@ -1560,6 +1554,66 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-ridge{--glyph-bg:#E5E9EA}
 .ttd-snow{--glyph-bg:#DBE1D8}
 
+/* --- the wildlife page: a naturalist's spread ---------------------------
+   Photographs pinned across the page with their field notes beside them,
+   tracks and handwriting scattered between, and the two supplied panels
+   closing it off. Nothing sits in a card; the copy lies straight on the
+   forest ground.
+
+   The section heading was dark green on dark green — .on-dark never set a
+   heading colour, so it was invisible. Cream here. */
+.ttd-glade h2,.ttd-glade h3{color:var(--paper)}
+.species{max-width:30ch;position:relative;z-index:1}
+.sp-name{display:flex;align-items:center;gap:.4rem;margin:0 0 .1rem;
+  font-family:var(--ui);font-size:.82rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--gold-light)}
+.sp-name .pin{color:var(--gold-light);flex:none}
+.sp-habitat{margin:0 0 .5rem;font-style:italic;font-size:.92rem;
+  color:rgba(243,238,225,.82)}
+.sp-note{margin:0;font-size:.93rem;line-height:1.6;color:rgba(243,238,225,.92)}
+
+/* the handwritten track notes: small, scattered, decorative */
+.fieldnote{display:block;width:100%;height:auto;opacity:.9;pointer-events:none;
+  position:relative;z-index:1}
+.n-bird {max-width:clamp(120px,14vw,190px);transform:rotate(-3deg)}
+.n-canid{max-width:clamp(130px,15vw,205px);transform:rotate(2deg)}
+.n-hare {max-width:clamp(130px,15vw,200px);transform:rotate(-2deg)}
+.n-bear {max-width:clamp(120px,14vw,195px);transform:rotate(3deg)}
+.n-moose{max-width:clamp(115px,13vw,180px);transform:rotate(-3deg)}
+
+.eye-out{display:block;width:100%;height:auto;position:relative;z-index:1}
+.wild-note{display:block;width:100%;height:auto;position:relative;z-index:1;
+  transform:rotate(-1.6deg)}
+
+@media (min-width:900px){
+  /* deliberately staggered — no two rows share a left edge */
+  .wild-spread .w-head    {grid-column:1/6;grid-row:1}
+  .wild-spread .w-pelican {grid-column:6/9;grid-row:1;max-width:clamp(130px,17vw,235px)}
+  .wild-spread .s-pelican {grid-column:9/13;grid-row:1;margin-top:clamp(1.6rem,4vw,3.4rem)}
+  .wild-spread .n-bear    {grid-column:1/3;grid-row:2;align-self:start;
+                           margin-top:clamp(.2rem,1vw,1rem)}
+  .wild-spread .n-bird    {grid-column:11/13;grid-row:2;justify-self:end;
+                           margin-top:clamp(.5rem,1.5vw,1.2rem)}
+  .wild-spread .w-fox     {grid-column:1/5;grid-row:2;max-width:clamp(150px,19vw,265px);
+                           margin-top:clamp(1.6rem,4vw,3.2rem)}
+  .wild-spread .s-fox     {grid-column:5/8;grid-row:2;margin-top:clamp(2.6rem,6vw,4.8rem)}
+  .wild-spread .n-canid   {grid-column:3/5;grid-row:3;margin-top:clamp(.4rem,1vw,1rem)}
+  .wild-spread .w-hare    {grid-column:5/8;grid-row:3;max-width:clamp(150px,19vw,255px);
+                           margin-top:clamp(1.4rem,3.5vw,2.8rem)}
+  .wild-spread .s-hare    {grid-column:8/12;grid-row:3;margin-top:clamp(2.4rem,5.5vw,4.4rem)}
+  .wild-spread .n-hare    {grid-column:8/10;grid-row:4;margin-top:clamp(.4rem,1vw,1rem)}
+  .wild-spread .eye-out   {grid-column:1/8;grid-row:5;margin-top:clamp(2rem,5vw,4rem)}
+  .wild-spread .n-moose   {grid-column:11/13;grid-row:4;justify-self:end;
+                           margin-top:clamp(1rem,2.5vw,2rem)}
+  .wild-spread .wild-note {grid-column:8/13;grid-row:5;align-self:end;
+                           margin-top:clamp(2rem,5vw,4rem)}
+}
+
+@media (max-width:899px){
+  .wild-spread .fieldnote{max-width:min(58%,220px)}
+  .wild-spread .eye-out,.wild-spread .wild-note{max-width:100%}
+}
+
 .spread{position:relative;display:grid;gap:clamp(1.3rem,3vw,1.9rem)}
 .sp-head .sub{margin-top:.85rem;font-size:1.02rem;max-width:44ch}
 .sp-shot{margin:0;position:relative;z-index:1}
@@ -1588,16 +1642,6 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .falls-spread .fb-photo{grid-column:8/11;grid-row:2;margin-top:clamp(.5rem,1.5vw,1.4rem)}
   .falls-spread .fb-copy {grid-column:7/11;grid-row:3;margin-top:clamp(1.4rem,3vw,2.6rem)}
   .falls-spread .fa-photo{grid-column:3/6;grid-row:3;margin-top:clamp(2.4rem,6vw,5rem)}
-
-  /* 3 — wildlife observed: prints ring a centred block, strip beneath */
-  .wild-spread .w-pelican{grid-column:6/9;grid-row:1;justify-self:center}
-  .wild-spread .w-head    {grid-column:4/10;grid-row:2;text-align:center;
-    margin-top:clamp(1.2rem,3vw,2.2rem)}
-  .wild-spread .w-head .sub{margin-inline:auto}
-  .wild-spread .w-fox     {grid-column:2/6;grid-row:3;margin-top:clamp(1.4rem,3.5vw,2.8rem)}
-  .wild-spread .w-hare    {grid-column:8/12;grid-row:3;justify-self:end;
-    margin-top:clamp(3rem,7vw,5.4rem)}
-  .wild-spread .w-strip   {grid-column:2/12;grid-row:4;margin-top:clamp(2rem,5vw,4rem)}
 
   /* 4 — the noticeboard: heading and photo shoulder to shoulder, then a band
      of three across, which no other section does */

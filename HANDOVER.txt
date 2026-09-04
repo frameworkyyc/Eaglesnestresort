@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.6
+Current release: site live 4.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,38 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+THE WILDLIFE PAGE
+-------------------------------------------------------------------
+Rebuilt as a naturalist's spread from four owner-supplied assets.
+
+THE HEADING WAS INVISIBLE. .on-dark styles the eyebrow, lede and sub
+but never set a heading colour, so h2 kept its dark green on the dark
+glade. Fixed for this section (.ttd-glade h2,h3 -> cream). If another
+dark section is ever added, check this first.
+
+THE SUPPLIED ASSETS WERE DRAWN FOR WHITE PAPER. On the forest green
+the handwriting read 1.66:1 and the strip's habitat lines 1.81:1 —
+effectively invisible. The owner's own mockup shows that text as
+cream, so the ink was lifted to match:
+  - the six track notes: whole tile lifted
+  - eye-out-for: header and habitat bands lifted to cream, species
+    names recoloured to the light gold, ANIMALS LEFT UNTOUCHED
+Bands were found by measuring where gold and dark ink actually sit,
+not guessed. If replacement assets arrive already drawn light, drop
+this step.
+
+THE FOOTPRINT SHEET IS SLICED INTO SIX FILES, not cropped with
+object-position: each note can then be placed and sized on its own,
+nothing bleeds in from the next cell, and 1022 KB became 258 KB.
+Cut at the real empty columns — equal thirds sliced through two of
+the annotations.
+
+THE OLD SVG BIRD STRIP IS GONE, replaced by the supplied
+eye-out-for graphic. That means the Latin names went with it, and
+the black tern is no longer mentioned anywhere on the site. Its CSS
+was removed too.
 
 
 SIX SPREADS, ONE BOOK
