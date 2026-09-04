@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 4.5
+Current release: site live 4.6
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,39 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+SIX SPREADS, ONE BOOK
+-------------------------------------------------------------------
+Every sheet is decorated down BOTH outer edges at every height. The
+usable ground on all six is the middle 20-80% of the width. That is
+the hard constraint behind every composition here; a mockup that
+puts content at the far left or far right will not survive contact
+with the real artwork.
+
+Inside that band each section is placed differently on purpose:
+
+  trail     staggered, left to right, route between the tiers
+  falls     a descent — copy left, print upper right, print lower left
+  wildlife  centred cluster, prints ringing the text, NO route
+  dock      horizontal noticeboard, three blocks across
+  sled      one block right of centre in open snow, route sweeping under
+  ice       pinwheel across the lake, NO route
+
+Routes exist only where they mean something: trail, falls, dock,
+sled. Wildlife and ice have none.
+
+Photo widths vary by section on purpose — 180px for the pelican up
+to 310px for the winter lodge. Do not normalise them.
+
+Blur the blocks and the six silhouettes should still be tellable
+apart. Falls and ice are the closest pair (both alternate side to
+side over two rows) but they are four sections apart, their headings
+differ in alignment, and their prints differ in orientation.
+
+MAP PINS: the pin's hole is cut through to the paper, so every
+section declares --glyph-bg as its own paper colour. A new section
+must do the same or the hole stays tan.
 
 
 CONTENT MAPPED TO THE LOCKED BACKGROUNDS

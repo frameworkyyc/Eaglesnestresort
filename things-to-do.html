@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bevan&family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=6e086a73">
+<link rel="stylesheet" href="css/site.css?v=8b592385">
 
 <script type="application/ld+json">
 {
@@ -87,85 +87,126 @@
   <img class="map-sheet" src="images/map-sheet.webp" width="1200" height="1800"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
-    <p class="eyebrow">On foot</p>
-    <h2>Find a trail.</h2>
-    <p class="sub" style="margin-top:1rem;font-size:1.02rem;max-width:46ch">The country around
-      Anahim Lake opens up quickly once you are walking in it.</p>
+    <div class="trailspread">
+      <svg class="trail-route" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M380 335C400 395 520 417 640 405c76-8 140-27 210-55"
+              fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-dasharray="3 11" stroke-linecap="round"
+              vector-effect="non-scaling-stroke"/>
+      </svg>
 
-    <div class="ttd-row two">
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-rainbow-range.webp" width="900" height="960"
-               loading="lazy" decoding="async" alt="The Rainbow Range at evening, its volcanic slopes streaked orange, gold and rust, as a weathered print.">
-          <figcaption>The Rainbow Range</figcaption>
-        </figure>
+      <div class="trail-intro">
+        <p class="eyebrow">On foot</p>
+        <h2>Find a trail.</h2>
+        <p class="sub">The country around Anahim Lake opens up quickly once you are walking
+          in it.</p>
+      </div>
+
+      <figure class="ttd-shot trail-shot rr-photo">
+        <img class="print" src="images/print-rainbow-range.webp" width="900" height="960"
+             loading="lazy" decoding="async" alt="The Rainbow Range at evening, its volcanic
+             slopes streaked orange, gold and rust, as a weathered print.">
+      </figure>
+
+      <div class="trail-copy rr-copy">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--map-paper)"/></svg>The Rainbow Range</p>
         <h3>The Rainbow Range</h3>
         <p>West along Highway 20, inside Tweedsmuir Park, the Rainbow Range is the big one
           &mdash; old volcanic rock streaked red, orange and yellow, with the alpine arriving
           sooner than you expect. It is the regional hike people come back talking about.</p>
       </div>
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-beef-trail-approach.webp" width="900" height="1350"
-               loading="lazy" decoding="async" alt="A rock canyon on the way in to Beef Trail Falls, still green water running between shelves of stone, as a weathered print.">
-          <figcaption>On the way in</figcaption>
-        </figure>
+
+      <div class="trail-copy bt-copy">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--map-paper)"/></svg>On the way in</p>
         <h3>The Beef Trail</h3>
         <p>The walk in crosses rock shelves and still green water before it reaches the falls.
           Ask Diane and Murray before you set off &mdash; they will tell you what the road is
           doing.</p>
       </div>
+
+      <figure class="ttd-shot trail-shot bt-photo">
+        <img class="print" src="images/print-beef-trail-approach.webp" width="900" height="1350"
+             loading="lazy" decoding="async" alt="A rock canyon on the way in to Beef Trail
+             Falls, still green water running between shelves of stone, as a weathered print.">
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ============ 2. FOREST + WATERFALLS — the forest sheet ============ -->
+<!-- ============ 2. FOREST + WATERFALLS — a descent, not a traverse ============ -->
 <section class="band-2 ttd ttd-forested">
   <img class="forest-sheet" src="images/forest-sheet.webp" width="1200" height="1492"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
-    <p class="eyebrow">Follow the water</p>
-    <h2>Chase a waterfall.</h2>
+    <div class="spread falls-spread">
+      <svg class="trail-route route-fall" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true"><path d="M300 118C356 196 470 236 612 250c132 13 210 78 214 186" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="3 11" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
 
-    <div class="ttd-row two">
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-hotnarko-falls.webp" width="900" height="1350"
-               loading="lazy" decoding="async" alt="Hotnarko Falls dropping in two steps through a basalt canyon, as a weathered print.">
-          <figcaption>Hotnarko Falls</figcaption>
-        </figure>
-        <h3>Hotnarko Falls</h3>
-        <p>South-west of here the Hotnarko River drops off the edge of the Precipice, a canyon
-          walled in basalt. It is the kind of place that makes the drive out worth it on its
-          own.</p>
+      <div class="sp-head">
+        <p class="eyebrow">Follow the water</p>
+        <h2>Chase a waterfall.</h2>
       </div>
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-hunlen-falls.webp" width="900" height="1350"
-               loading="lazy" decoding="async" alt="Hunlen Falls seen from the air, a single
-               long drop off a forested plateau into the canyon below, as a weathered print.">
-          <figcaption>Hunlen Falls</figcaption>
-        </figure>
+
+      <div class="trail-copy fa-copy">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>South-west of here</p>
+        <h3>Hotnarko Falls</h3>
+        <p>The Hotnarko River drops off the edge of the Precipice, a canyon walled in basalt. It
+          is the kind of place that makes the drive out worth it on its own.</p>
+      </div>
+
+      <figure class="ttd-shot sp-shot fb-photo">
+        <img class="print" src="images/print-hunlen-falls.webp" width="900" height="1350"
+             loading="lazy" decoding="async" alt="Hunlen Falls seen from the air, a single long
+             drop off a forested plateau into the canyon below, as a weathered print.">
+      </figure>
+
+      <div class="trail-copy fb-copy">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>Farther into the park</p>
         <h3>Hunlen Falls</h3>
         <p>Farther into Tweedsmuir Park, and a longer day than the others. Ask Diane and Murray
           about the way in before you plan it.</p>
       </div>
+
+      <figure class="ttd-shot sp-shot fa-photo">
+        <img class="print" src="images/print-hotnarko-falls.webp" width="900" height="1350"
+             loading="lazy" decoding="async" alt="Hotnarko Falls dropping in two steps through a
+             basalt canyon, as a weathered print.">
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ============ 3. DEEP FOREST + DEER — the glade sheet — WILDLIFE ============ -->
+<!-- ============ 3. DEEP FOREST + DEER — a field guide, observed not travelled ============ -->
 <section class="ttd ttd-glade on-dark">
   <img class="glade-sheet" src="images/glade-sheet.webp" width="1200" height="1491"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
-    <p class="eyebrow">Keep your eyes open</p>
-    <h2>Who&rsquo;s around?</h2>
-    <p class="sub" style="margin-top:1rem;font-size:1.02rem;max-width:48ch">Deer along the
-      treeline, bears working the berry patches, and birds on the water all summer. Most of it
-      turns up without being looked for.</p>
+    <div class="spread wild-spread">
+      <figure class="ttd-shot sp-shot w-pelican">
+        <img class="print" src="images/print-pelican-lake.webp" width="900" height="1350"
+             loading="lazy" decoding="async" alt="An American white pelican lifting off the
+             water, as a weathered print.">
+      </figure>
 
-    <div class="ttd-birds">
+      <div class="sp-head w-head">
+        <p class="eyebrow">Keep your eyes open</p>
+        <h2>Who&rsquo;s around?</h2>
+        <p class="sub">Deer along the treeline, bears working the berry patches, and birds on
+          the water all summer. Most of it turns up without being looked for.</p>
+      </div>
+
+      <figure class="ttd-shot sp-shot w-fox">
+        <img class="print" src="images/print-fox.webp" width="900" height="600"
+             loading="lazy" decoding="async" alt="A fox standing on a gravel road in the evening
+             light, silver and rust along its back, as a weathered print.">
+      </figure>
+
+      <figure class="ttd-shot sp-shot w-hare">
+        <img class="print" src="images/print-hare.webp" width="900" height="600"
+             loading="lazy" decoding="async" alt="A hare in its pale winter coat sitting on
+             frosted leaves beside a bank of snow, as a weathered print.">
+      </figure>
+
+      <div class="ttd-birds w-strip">
         <div class="ttd-bird">
           <svg viewBox="0 0 64 64" width="72" height="72" aria-hidden="true"><ellipse cx="26" cy="42" rx="16" ry="8.5" fill="currentColor"/><polygon points="12,39 3,36 6,46" fill="currentColor"/><polygon points="29,44 37,44 42,31 46,31 46,37 38,44" fill="currentColor"/><circle cx="45.5" cy="29.5" r="5" fill="currentColor"/><polygon points="49,27.5 62,29.5 62,32 48.5,32" fill="currentColor"/><polygon points="48.5,31.5 60,33 55,37.5 47,35.5" fill="currentColor"/><circle cx="44" cy="27.8" r="1" fill="var(--glyph-bg,var(--paper))"/></svg>
           <span class="nm">American White Pelican</span>
@@ -191,99 +232,77 @@
           <span class="nm">Great Grey Owl</span>
           <span class="sci">Strix nebulosa</span>
         </div>
-    </div>
-
-    <div class="ttd-row">
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-pelican-lake.webp" width="900" height="1350"
-               loading="lazy" decoding="async" alt="An American white pelican lifting off the water, as a weathered print.">
-          <figcaption>American white pelican</figcaption>
-        </figure>
-        <h3>Bird watching</h3>
-        <p>Eagles work the shoreline, ospreys fish the shallows and terns turn over the open
-          water &mdash; most of it visible from the dock or a canoe.</p>
-        <div class="ttd-callout">
-          <span class="lbl">The regulars</span>
-          <p>American white pelicans feed on the lake around Eagle&rsquo;s Nest. Look straight
-            across from the lodge &mdash; that is usually where they are.</p>
-        </div>
-      </div>
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-fox.webp" width="900" height="600"
-               loading="lazy" decoding="async" alt="A fox standing on a gravel road in the
-               evening light, silver and rust along its back, as a weathered print.">
-          <figcaption>A fox on the road</figcaption>
-        </figure>
-      </div>
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-hare.webp" width="900" height="600"
-               loading="lazy" decoding="async" alt="A hare in its pale winter coat sitting on
-               frosted leaves beside a bank of snow, as a weathered print.">
-          <figcaption>A hare, still in its winter coat</figcaption>
-        </figure>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 4. GLADE + WATER — the basin sheet — LAKE / DOCK ============ -->
+<!-- ============ 4. GLADE + WATER — a lakeside noticeboard ============ -->
 <section class="band-2 ttd ttd-basin">
   <img class="basin-sheet" src="images/basin-sheet.webp" width="1200" height="1491"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
-    <p class="eyebrow">No car required</p>
-    <h2>Start at the dock.</h2>
-    <p class="sub" style="margin-top:1rem;font-size:1.02rem;max-width:46ch">Some of the best of
-      it is thirty seconds from your door.</p>
+    <div class="spread dock-spread">
+      <svg class="trail-route route-dock" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true"><path d="M258 250C330 316 452 330 560 300c96-26 176-14 228 54" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="3 11" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
 
-    <div class="ttd-row">
-      <div class="ttd-item">
-        <figure class="ttd-shot">
-          <img class="print" src="images/print-dock-canoe.webp" width="900" height="960"
-               loading="lazy" decoding="async" alt="A canoe pulled up on the dock at Eagle&rsquo;s Nest Resort, as a weathered print.">
-          <figcaption>The dock, most mornings</figcaption>
-        </figure>
+      <div class="sp-head d-head">
+        <p class="eyebrow">No car required</p>
+        <h2>Start at the dock.</h2>
+        <p class="sub">Some of the best of it is thirty seconds from your door.</p>
+      </div>
+
+      <figure class="ttd-shot sp-shot d-photo">
+        <img class="print" src="images/print-dock-canoe.webp" width="900" height="960"
+             loading="lazy" decoding="async" alt="A canoe pulled up on the dock at Eagle&rsquo;s
+             Nest Resort, as a weathered print.">
+      </figure>
+
+      <div class="trail-copy d-canoe">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>At the water&rsquo;s edge</p>
         <h3>Canoes &amp; pedal boats</h3>
         <p>Grab a paddle and head out from the dock. Canoes and pedal boats are available for
           guests to explore Anahim Lake at their own pace.</p>
-        <svg viewBox="0 0 200 72" width="118" height="42" aria-hidden="true" style="margin-top:.9rem;color:var(--forest);opacity:.8"><path d="M6 42C42 68 158 68 194 42c-36 8-152 8-188 0Z" fill="currentColor"/><polygon points="40,6 45,4 124,34 119,38" fill="currentColor"/><polygon points="120,29 143,38 136,52 114,42" fill="currentColor"/></svg>
+        <svg viewBox="0 0 200 72" width="104" height="37" aria-hidden="true" style="margin-top:.8rem;color:var(--forest);opacity:.75"><path d="M6 42C42 68 158 68 194 42c-36 8-152 8-188 0Z" fill="currentColor"/><polygon points="40,6 45,4 124,34 119,38" fill="currentColor"/><polygon points="120,29 143,38 136,52 114,42" fill="currentColor"/></svg>
       </div>
 
-      <div class="ttd-item">
+      <div class="trail-copy d-fish">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>Off the dock</p>
         <h3>See what&rsquo;s biting.</h3>
         <p>The fishing starts where the dock ends. Bring your own gear, take a boat out, or cast
           from the shore and see what happens.</p>
-        <div class="ttd-guide">
-          <svg class="fig" viewBox="0 0 200 82" width="118" height="48" aria-hidden="true"><path d="M14 41C40 21 108 19 150 28l6 6 36-20c-10 14-10 38 0 52l-36-19-6 6c-42 9-110 7-136-13Z" fill="currentColor"/><polygon points="92,23 114,15 117,26" fill="currentColor"/><polygon points="132,24 145,20 144,28" fill="currentColor"/><polygon points="86,56 100,68 106,55" fill="currentColor"/><polygon points="52,52 62,62 70,51" fill="currentColor"/><circle cx="27" cy="38" r="2.6" fill="var(--paper)"/></svg>
-          <h4>Anahim Lake fish</h4>
-          <ul>
-            <li>Rainbow Trout</li>
-            <li>Cuttbow</li>
-          </ul>
-          <p class="note">Licences, limits and seasons change. Check the
-            <a href="https://www2.gov.bc.ca/gov/content/sports-culture/recreation/fishing-hunting/fishing/fishing-regulations"
-               target="_blank" rel="noopener noreferrer">B.C. freshwater fishing
-               regulations</a> before you go.</p>
-        </div>
       </div>
 
+      <div class="ttd-guide d-guide">
+        <svg class="fig" viewBox="0 0 200 82" width="104" height="43" aria-hidden="true"><path d="M14 41C40 21 108 19 150 28l6 6 36-20c-10 14-10 38 0 52l-36-19-6 6c-42 9-110 7-136-13Z" fill="currentColor"/><polygon points="92,23 114,15 117,26" fill="currentColor"/><polygon points="132,24 145,20 144,28" fill="currentColor"/><polygon points="86,56 100,68 106,55" fill="currentColor"/><polygon points="52,52 62,62 70,51" fill="currentColor"/><circle cx="27" cy="38" r="2.6" fill="var(--paper)"/></svg>
+        <h4>Anahim Lake fish</h4>
+        <ul>
+          <li>Rainbow Trout</li>
+          <li>Cuttbow</li>
+        </ul>
+        <p class="note">Licences, limits and seasons change. Check the
+          <a href="https://www2.gov.bc.ca/gov/content/sports-culture/recreation/fishing-hunting/fishing/fishing-regulations"
+             target="_blank" rel="noopener noreferrer">B.C. freshwater fishing
+             regulations</a> before you go.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 5. SNOW MOUNTAINS — the ridge sheet — SNOWMOBILE ============ -->
+<!-- ============ 5. SNOW MOUNTAINS — one activity, given room ============ -->
 <section class="ttd ttd-ridge">
   <img class="ridge-sheet" src="images/ridge-sheet.webp" width="1200" height="1491"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
-    <p class="eyebrow">When the lake freezes&hellip;</p>
-    <h2>Winter doesn&rsquo;t shut the place down.</h2>
+    <div class="spread sled-spread">
+      <svg class="trail-route route-sled" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true"><path d="M96 392C240 424 420 380 560 300c130-74 236-116 470-128" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="3 11" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>
 
-    <div class="ttd-split">
-      <div class="ttd-copy">
+      <div class="sp-head s-head">
+        <p class="eyebrow">When the lake freezes&hellip;</p>
+        <h2>Winter doesn&rsquo;t shut the place down.</h2>
+      </div>
+
+      <div class="trail-copy s-copy">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>Miles of it</p>
         <h3>Snowmobile</h3>
         <p>The West Chilcotin is sledding country, and there is a great deal of it &mdash; miles
           of backcountry once the snow is down. Come with your own machines and talk to Diane and
@@ -293,43 +312,45 @@
   </div>
 </section>
 
-<!-- ============ 6. SNOWY FOREST + FROZEN LAKE — the snow sheet ============ -->
+<!-- ============ 6. FROZEN LAKE — two activities, balanced across the ice ============ -->
 <section class="ttd ttd-winter ttd-snow">
   <img class="snow-sheet" src="images/snow-sheet.webp" width="1200" height="1491"
        alt="" aria-hidden="true" decoding="async">
   <div class="wrap rv">
-    <p class="eyebrow">On the ice</p>
-    <h2>Out on the lake.</h2>
+    <div class="spread ice-spread">
+      <div class="sp-head i-head">
+        <p class="eyebrow">On the ice</p>
+        <h2>Out on the lake.</h2>
+      </div>
 
-    <div class="ttd-row two">
-      <figure class="ttd-shot">
+      <figure class="ttd-shot sp-shot i-photo-a">
         <img class="print" src="images/print-winter-lodge.webp" width="1200" height="800"
-             loading="lazy" decoding="async" alt="The lodge seen across the frozen lake in winter,
-             a line of footprints crossing the snow towards a snowman, as a weathered print.">
-        <figcaption>The lodge from the lake, once it has frozen over</figcaption>
+             loading="lazy" decoding="async" alt="The lodge seen across the frozen lake in
+             winter, a line of footprints crossing the snow towards a snowman, as a weathered
+             print.">
       </figure>
-      <figure class="ttd-shot">
-        <img class="print" src="images/print-winter-lake.webp" width="1000" height="667"
-             loading="lazy" decoding="async" alt="The lodge and its stone garden walls under deep
-             snow, smoke rising from the chimney and the frozen lake running to the far shore
-             beyond, as a weathered print.">
-        <figcaption>Smoke up, lake frozen right across</figcaption>
-      </figure>
-    </div>
 
-    <div class="ttd-row two">
-      <div class="ttd-item">
+      <div class="trail-copy i-fish">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>Through the ice</p>
         <h3>Ice fish</h3>
         <p>The same lake, a good deal harder. Drill a hole, set up and wait it out. Check the
           regulations before you go, and check the ice before you walk on it.</p>
       </div>
-      <div class="ttd-item">
+
+      <div class="trail-copy i-skate">
+        <p class="pinlabel"><svg class="pin" viewBox="0 0 16 22" width="11" height="15" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 5.8 8 14 8 14s8-8.2 8-14c0-4.4-3.6-8-8-8Z" fill="currentColor"/><circle cx="8" cy="7.6" r="2.8" fill="var(--glyph-bg,var(--map-paper))"/></svg>When it takes</p>
         <h3>Skate the lake</h3>
         <p>When conditions permit, there&rsquo;s nothing quite like skating out on a frozen
           lake. Conditions decide, not the calendar &mdash; ask before you go out.</p>
       </div>
-    </div>
 
+      <figure class="ttd-shot sp-shot i-photo-b">
+        <img class="print" src="images/print-winter-lake.webp" width="1000" height="667"
+             loading="lazy" decoding="async" alt="The lodge and its stone garden walls under deep
+             snow, smoke rising from the chimney and the frozen lake running to the far shore
+             beyond, as a weathered print.">
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -385,6 +406,6 @@
 
 
 
-<script src="js/site.js?v=6e086a73"></script>
+<script src="js/site.js?v=8b592385"></script>
 </body>
 </html>
