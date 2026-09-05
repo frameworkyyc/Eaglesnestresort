@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.2
+Current release: site live 6.3
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -345,6 +345,28 @@ against the Beef print's +1.9deg. At that angle it swings about
 48px above and below its own box, so it carries vertical margin to
 keep clear of the route band; reduce the angle and that margin can
 come back.
+
+
+PULLING THE GLADE UP UNDER THE FALLS
+-------------------------------------------------------------------
+The waterfall pairs ended up tighter than .ttd-forested was built
+for, so the section ran on well past its own content and left a band
+of empty paper before the glade's treeline. It now carries
+margin-bottom:-11vw, and min-height came down from 104vw to 88vw so
+it cannot re-open the gap.
+
+11vw was derived from a measurement, not chosen: the gap between the
+Hotnarko copy and the treeline was about 175px at a 1106px viewport,
+which is 15.8vw. Pulling 11vw leaves roughly 4.8vw of clear paper
+under the copy at any width.
+
+THE HOTNARKO PRINT SITS IN FRONT OF THE TREELINE. It is given
+z-index:3. That works because .ttd-glade is position:relative with
+z-index:auto and no transform, filter or opacity — so it does NOT
+create a stacking context, and a positive z-index inside the
+previous section still paints above it in the root stacking context.
+If .ttd-glade is ever given a z-index, a transform or an opacity,
+this will stop working and the print will fall behind the trees.
 
 
 THE FALLS PAIRS

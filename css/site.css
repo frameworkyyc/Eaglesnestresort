@@ -1473,7 +1473,11 @@ body{overscroll-behavior-y:none;background:var(--paper);
    min-height, which pushes the section below them farther down the page and
    leaves open ground for their content. */
 .ttd-mapped  {padding-top:34vw;padding-bottom:clamp(1.6rem,3.5vw,3rem)}
-.ttd-forested{padding-top:54vw;min-height:104vw}
+/* the waterfall pairs are tighter than the section was built for, so it
+   was ending well below its own content. Pulling the next section up by
+   11vw brings the glade's treeline to just under the Hotnarko copy;
+   min-height comes down to match so it cannot re-open the gap. */
+.ttd-forested{padding-top:54vw;min-height:88vw;margin-bottom:-11vw}
 .ttd-glade   {padding-top:39.5vw}
 .ttd-basin   {padding-top:47vw}
 .ttd-ridge   {padding-top:44.7vw;min-height:96vw}
@@ -1799,7 +1803,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .falls-spread .sp-head {grid-column:2/8;grid-row:1}
   .falls-spread .fb-copy {grid-column:4/8;grid-row:2;align-self:center}
   .falls-spread .fb-photo{grid-column:8/12;grid-row:2;margin-top:clamp(-2.5rem,-3vw,-1rem)}
-  .falls-spread .fa-photo{grid-column:2/6;grid-row:3;margin-top:clamp(-4rem,-5vw,-1.5rem)}
+  .falls-spread .fa-photo{grid-column:2/6;grid-row:3;margin-top:clamp(-4rem,-5vw,-1.5rem);z-index:3}
   .falls-spread .fa-copy {grid-column:6/10;grid-row:3;align-self:center;
                           margin-top:clamp(1rem,2.5vw,2rem)}
 
