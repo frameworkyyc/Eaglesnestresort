@@ -1506,9 +1506,13 @@ body{overscroll-behavior-y:none;background:var(--paper);
 
 @media (min-width:900px){
   .shot-route{display:block}
-  /* out of the Rainbow print's lower right, under the copy, stopping short
-     of the Beef print */
-  .r-trail{top:92%;left:88%;width:118%;height:15%}
+  /* The Rainbow route runs to the right of its print, which is the copy's own
+     space, so it has to sit below that copy. Below about 1055px the copy wraps
+     to seven or eight lines and grows taller than the print itself — there is
+     then no room beneath it inside the row, at any offset. Swept every width
+     from 900 to 1960: this route is hidden below 1060px rather than allowed to
+     cross the text. The other three have no such constraint. */
+  .r-trail{display:none}
   /* down-left from the Hunlen print towards the Hotnarko print */
   .r-fall {top:104%;left:-105%;width:125%;height:22%}
   /* off the dock print towards the fish card */
@@ -1534,7 +1538,10 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* the Rainbow print turns hard anti-clockwise against the Beef print's small
    clockwise lean. At 20deg it swings about 48px above and below its own box,
    so it carries margin to keep that clear of the route band underneath. */
-.rr-photo{max-width:clamp(180px,24vw,350px);transform:rotate(-20deg)}
+/* rotate the IMAGE, not the figure: the figure is the positioning context for
+   its route, and a transform on it turns the route too. */
+.rr-photo{max-width:clamp(180px,24vw,350px)}
+.rr-photo > img{transform:rotate(-20deg)}
 .bt-photo{max-width:clamp(150px,17vw,245px);transform:rotate(1.9deg)}
 
 @media (min-width:900px){
@@ -1554,9 +1561,16 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .trailspread .rr-photo  {grid-column:3/7;grid-row:2;justify-self:start;
                            margin:clamp(.6rem,1.5vw,1.4rem) 0 clamp(1rem,2vw,1.6rem)}
   .trailspread .rr-copy   {grid-column:7/11;grid-row:2;align-self:center}
-    .trailspread .bt-copy   {grid-column:6/10;grid-row:3;align-self:start}
+    /* the trail route hangs a little past its own row, so the Beef block starts
+     below it rather than at the row boundary */
+  .trailspread .bt-copy   {grid-column:6/10;grid-row:3;align-self:start;
+                           margin-top:clamp(1.6rem,2.8vw,2.6rem)}
   .trailspread .bt-photo  {grid-column:10/13;grid-row:3;justify-self:end;
                            margin-top:clamp(-8rem,-6.5vw,-3rem)}
+}
+
+@media (min-width:1060px){
+  .r-trail{display:block;top:96%;left:88%;width:118%;height:12%}
 }
 
 @media (max-width:899px){
@@ -1734,7 +1748,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .spread .trail-copy,.spread .sp-head,.spread .ttd-guide{position:relative;z-index:1}
 
 /* photo scale varies by section, never uniform */
-.fb-photo{max-width:clamp(150px,18.5vw,256px);transform:rotate(15deg)}
+.fb-photo{max-width:clamp(150px,18.5vw,256px)}
+.fb-photo > img{transform:rotate(15deg)}
 .fa-photo{max-width:clamp(165px,21vw,294px);transform:rotate(-5deg)}
 .w-pelican{max-width:clamp(110px,13vw,180px)}
 .w-fox,.w-hare{max-width:clamp(140px,18vw,250px)}

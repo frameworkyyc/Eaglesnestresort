@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.7
+Current release: site live 5.8
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -368,9 +368,25 @@ why they stopped touching anything, twice.
 
 Wildlife and the frozen lake have no route, deliberately.
 
+A TRANSFORM ON THE FIGURE ROTATES THE ROUTE WITH IT. The Rainbow and
+Hunlen prints were rotated on the figure, which is the route's own
+positioning context, so their routes were turned -20 and +15 degrees
+too and shot off into the text. The rotation now sits on the IMG
+inside each of those figures instead. Neither has a caption, so
+nothing else changed. If a rotated figure is ever given a route,
+move its transform to the image first.
+
 WHEN ADDING OR MOVING ONE: check its box against every text block in
-that section. The dock route was landing on the fishing copy at 88%
-and had to come up to 76%.
+that section, at every width, not at one. The dock route was landing
+on the fishing copy at 88% and came up to 76%.
+
+.r-trail IS HIDDEN BELOW 1060px. It runs to the right of its print,
+which is the copy's own space, so it must sit under that copy. Below
+about 1055px the copy wraps to seven or eight lines and becomes
+taller than the print, and there is then no room beneath it inside
+the row at any offset. Swept every width from 900 to 1960 to find
+that. Hiding a decorative line is better than running it through a
+paragraph.
 
 FALLS SECTION: the two copies were crossed — the Hotnarko text sat
 beside the Hunlen print. Fixed in both the grid AND the markup
