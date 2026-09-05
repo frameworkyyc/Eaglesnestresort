@@ -1431,8 +1431,28 @@ body{overscroll-behavior-y:none;background:var(--paper);
    The copy is repadded to suit. Mobile is deliberately untouched. */
 @media (min-width:900px){
   .stay-hero.ttd img{height:clamp(520px,min(66vw,76vh),900px);object-position:center 50%}
-  .stay-hero.ttd .stay-hero-in{padding-bottom:calc(var(--map-peaks) + 2.2rem)}
+  /* the whole block lifts 70px clear of the peaks; eyebrow, headline and lede
+     move together because they share this one padding */
+  .stay-hero.ttd .stay-hero-in{padding-bottom:calc(var(--map-peaks) + 2.2rem + 70px)}
+  /* 6% smaller and tighter tracking, so the line stops reaching so far right.
+     Its left edge is the wrap's, and stays put. */
+  .stay-hero.ttd h1{font-size:clamp(2.1rem,5.6vw,3.95rem);letter-spacing:-.032em}
 }
+
+/* The engraving runs from a bright sunset sky on the left to dark timber on
+   the right, so cream type crosses a 4x swing in background luminance along a
+   single line. Two things carry it: a localised darkening that is heaviest
+   where the picture is brightest, and a thin dark-green halo on the letters
+   themselves, which works per-letter regardless of what is behind them. */
+.stay-hero.ttd .stay-hero-in{
+  background:
+    radial-gradient(125% 95% at 16% 32%,
+      rgba(14,27,19,.26) 0%, rgba(14,27,19,.15) 48%, rgba(14,27,19,0) 78%),
+    linear-gradient(180deg,transparent 40%,rgba(18,32,24,.30) 78%,rgba(18,32,24,.46) 100%)}
+.stay-hero.ttd h1{color:var(--paper);
+  text-shadow:0 0 2px rgba(16,30,22,.62),0 1px 1px rgba(16,30,22,.55),
+              0 6px 20px rgba(16,30,22,.5)}
+.stay-hero.ttd .lede{text-shadow:0 1px 10px rgba(16,30,22,.7)}
 
 /* the eyebrow was gold-light on a light patch of the engraving and barely
    read; a paler gold with a soft dark halo holds it at any crop */

@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.9
+Current release: site live 6.0
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -345,6 +345,35 @@ against the Beef print's +1.9deg. At that angle it swings about
 48px above and below its own box, so it carries vertical margin to
 keep clear of the route band; reduce the angle and that margin can
 come back.
+
+
+THE THINGS TO DO HERO TYPOGRAPHY
+-------------------------------------------------------------------
+The engraving runs from a bright sunset sky on the LEFT to dark
+timber on the right, so cream type crosses about a fivefold swing in
+background luminance along one line. Measured at 1440x900, cream on
+the picture across the headline:
+
+    left 0-20%  1.9:1   20-40%  4.1:1
+    40-60%      5.9:1   60-80% 10.2:1
+
+The left is the hard part, not the right. The localised gradient is
+therefore centred at 16% across, not in the middle — its strength
+lands where the picture is brightest instead of being spread evenly.
+Peak overlay 25%. With it: 3.1 / 5.6 / 7.3 / 11.0.
+
+Display type at this size needs 3:1, not 4.5:1, so the worst point
+clears — but only just, and the dark-green halo on the letters does
+much of the work there. If more margin is ever wanted, the levers
+are a stronger gradient or indenting the headline past the sun.
+
+The block lifts 70px via ONE padding-bottom on .stay-hero-in, so the
+eyebrow, headline and lede move together. The headline is ~7%
+shorter (4.2rem to 3.95rem, tracking -.015em to -.032em) so it stops
+reaching right; its left edge does not move.
+
+ALL OF IT IS SCOPED TO .stay-hero.ttd. Twelve other pages use
+.stay-hero and none carry .ttd.
 
 
 THE MAP SHEET'S TWO JOINS
