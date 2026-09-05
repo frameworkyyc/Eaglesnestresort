@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.1
+Current release: site live 6.2
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -345,6 +345,26 @@ against the Beef print's +1.9deg. At that angle it swings about
 48px above and below its own box, so it carries vertical margin to
 keep clear of the route band; reduce the angle and that margin can
 come back.
+
+
+THE FALLS PAIRS
+-------------------------------------------------------------------
+Each text sits immediately beside its own photograph and is centred
+against it, so the two read as pairs rather than as a heading with
+captions beneath. The pairs alternate, giving the diagonal:
+
+    row 2   Hunlen text  4-8    Hunlen print   8-12
+    row 3   Hotnarko print 2-6  Hotnarko text  6-10
+
+Both prints keep their size, rotation and treatment. Only their
+offsets changed; the negative top margins are what pull the two
+groups together.
+
+.r-fall runs in the clear band BETWEEN the two texts — 262px deep at
+1440. Checked at 1000-1920px: at worst it clears the Hunlen text by
+37px, the Hotnarko text by 67px and the Hotnarko print by 13px,
+while starting on the Hunlen print's own left edge so the two touch.
+Move either text and re-derive it; do not nudge.
 
 
 COUNTING TAGS DOES NOT CATCH MIS-NESTING

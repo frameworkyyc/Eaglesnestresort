@@ -1539,7 +1539,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
      cross the text. The other three have no such constraint. */
   .r-trail{display:none}
   /* down-left from the Hunlen print towards the Hotnarko print */
-  .r-fall {top:104%;left:-105%;width:125%;height:22%}
+  .r-fall {top:90%;left:-113%;width:111%;height:17%}
   /* off the dock print towards the fish card */
   .r-dock {top:76%;left:92%;width:112%;height:16%}
   /* out of the winter print towards the sled */
@@ -1791,11 +1791,17 @@ body{overscroll-behavior-y:none;background:var(--paper);
   /* The two copies were crossed: the Hotnarko text sat beside the Hunlen
      print and vice versa. Each now sits with its own photograph — Hunlen
      upper, Hotnarko lower. */
+  /* Each text sits immediately beside its own photograph and is centred
+     against it, so the two read as pairs rather than as a heading with
+     captions underneath. The pairs alternate to give the diagonal. Both
+     photographs keep their size, rotation and treatment; only their offsets
+     changed, and the negative margins pull the two groups together. */
   .falls-spread .sp-head {grid-column:2/8;grid-row:1}
-  .falls-spread .fb-copy {grid-column:2/6;grid-row:2;margin-top:clamp(1.4rem,3vw,2.4rem)}
-  .falls-spread .fb-photo{grid-column:8/12;grid-row:2;margin-top:clamp(.5rem,1.5vw,1.4rem)}
-  .falls-spread .fa-copy {grid-column:7/11;grid-row:3;margin-top:clamp(1.4rem,3vw,2.6rem)}
-  .falls-spread .fa-photo{grid-column:2/6;grid-row:3;margin-top:clamp(2.4rem,6vw,5rem)}
+  .falls-spread .fb-copy {grid-column:4/8;grid-row:2;align-self:center}
+  .falls-spread .fb-photo{grid-column:8/12;grid-row:2;margin-top:clamp(-2.5rem,-3vw,-1rem)}
+  .falls-spread .fa-photo{grid-column:2/6;grid-row:3;margin-top:clamp(-4rem,-5vw,-1.5rem)}
+  .falls-spread .fa-copy {grid-column:6/10;grid-row:3;align-self:center;
+                          margin-top:clamp(1rem,2.5vw,2rem)}
 
   /* 5 — a winter spread: heading and photograph across the top, the copy
      under it on the left, the sled riding out across the open snow. The
