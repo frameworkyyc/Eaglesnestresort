@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.0
+Current release: site live 6.1
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -345,6 +345,25 @@ against the Beef print's +1.9deg. At that angle it swings about
 48px above and below its own box, so it carries vertical margin to
 keep clear of the route band; reduce the angle and that margin can
 come back.
+
+
+COUNTING TAGS DOES NOT CATCH MIS-NESTING
+-------------------------------------------------------------------
+The falls section collapsed into one left-hand column because
+<div class="sp-head"> was never closed after the heading. It
+swallowed both photographs and both copies, so they were children of
+the heading — a single grid cell — instead of children of .spread.
+The grid was fine; nothing was in it.
+
+The audit had been comparing the NUMBER of <div> and </div> per
+page. That balanced, because the section's last closing div stood in
+for the missing one. A count can never see mis-nesting.
+
+The audit now walks a tag stack and reports any close that does not
+match the tag it closes, plus anything left open, and separately
+lists the DIRECT children of every .spread. If a grid section ever
+looks like a single column again, run that first — the cause will be
+in the markup, not the CSS.
 
 
 THE THINGS TO DO HERO TYPOGRAPHY
