@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.6
+Current release: site live 5.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -347,7 +347,38 @@ keep clear of the route band; reduce the angle and that margin can
 come back.
 
 
-THE TRAIL ROUTE HAS ITS OWN ROW
+ROUTES ARE ANCHORED TO THEIR PHOTOGRAPHS
+-------------------------------------------------------------------
+Every dotted route on this page is now a CHILD of the figure it
+belongs to, positioned in percentages of that figure. Percentages on
+an absolutely positioned element resolve against its containing
+block — the photograph — so each route starts at the same point on
+its photo and runs the same relative distance at any width. It
+cannot drift.
+
+The earlier overlays were siblings spanning the whole spread, so
+their endpoints were fixed to the SECTION. Any change in a
+paragraph's length moved the rows and left the line behind. That is
+why they stopped touching anything, twice.
+
+    .r-trail  in rr-photo   out of its lower right, under the copy
+    .r-fall   in fb-photo   down-left towards the Hotnarko print
+    .r-dock   in d-photo    towards the fish card
+    .r-sled   in s-photo    towards the sled illustration
+
+Wildlife and the frozen lake have no route, deliberately.
+
+WHEN ADDING OR MOVING ONE: check its box against every text block in
+that section. The dock route was landing on the fishing copy at 88%
+and had to come up to 76%.
+
+FALLS SECTION: the two copies were crossed — the Hotnarko text sat
+beside the Hunlen print. Fixed in both the grid AND the markup
+order; the grid only applies above 900px, so a phone was stacking
+the crossed pairing.
+
+
+
 -------------------------------------------------------------------
 The dotted route in Find a Trail was an absolutely positioned
 overlay spanning the whole spread. That is exactly why it kept
