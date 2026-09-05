@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 5.8
+Current release: site live 5.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -345,6 +345,29 @@ against the Beef print's +1.9deg. At that angle it swings about
 48px above and below its own box, so it carries vertical margin to
 keep clear of the route band; reduce the angle and that margin can
 come back.
+
+
+THE MAP SHEET'S TWO JOINS
+-------------------------------------------------------------------
+TOP. --map-overlap must equal the sheet's OPAQUE line, not where its
+art first appears. This sheet's ridge tips begin 31.5vw down but it
+is only opaque across its full width at 36.2vw, and the 4.7vw
+between them is where the section colour showed through the peaks.
+Overlap is 32.5vw, which puts the opaque line 1vw above the hero's
+bottom, and the colour change sits exactly there.
+
+    overlap 32.5vw | colour cut 3.7vw | section pull-up -4.7vw
+
+Those three move together. Change the artwork and re-measure the
+opaque line, not the first row of art — that was the mistake.
+
+BOTTOM. The sheet is taller than the section at wide viewports: at
+1920 it would run to 2256px inside an 1811px section, so the next
+section paints over its foot and cuts the parchment off with a
+straight edge before its own fade finishes. .ttd-mapped::after
+dissolves the artwork into the flat colour over the section's last
+90-260px, above the sheet and below the content. Fading the image
+file instead would have erased the compass.
 
 
 ROUTES ARE ANCHORED TO THEIR PHOTOGRAPHS
