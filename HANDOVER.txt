@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.3
+Current release: site live 6.4
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -345,6 +345,34 @@ against the Beef print's +1.9deg. At that angle it swings about
 48px above and below its own box, so it carries vertical margin to
 keep clear of the route band; reduce the angle and that margin can
 come back.
+
+
+COLUMN SPANS CAP max-width — CHECK BOTH
+-------------------------------------------------------------------
+Repeatedly now, a graphic has been asked to get bigger and the
+max-width alone did nothing, because the grid column span was the
+smaller of the two. The rendered width is the MINIMUM of three
+things: the max-width, the vw term, and the column span. Widen the
+span as well or nothing moves.
+
+Caught on the trout (max-width said 300px, its 3-column span allowed
+269), the snowmobile (560px vs 518) and the dock and cabin
+photographs.
+
+WILDLIFE, DOCK AND SLED — SIZES AND PLACEMENT
+  wildlife  pelican 235->269 (+15%), fox 265->369 (+39%),
+            hare 255->355 (+39%). Track notes removed from the page;
+            the five note-*.webp files are now unused.
+  dock      trout +30%, canoe graphic +15%, canoe photo +15%,
+            fish card turned to -6deg, "30 seconds" note removed.
+  sled      cabin photo 269->461 (+71%), snowmobile 518->634 (+22%)
+            and turned +3deg, copy slightly larger, hosts note
+            stepped in a column, route redrawn as a deeper curve.
+
+A NOTE ON REMOVING RULES WITH A REGEX. Stripping the .n-* track note
+rules left mangled selectors like ".wild-spread .wild-spread .w-fox"
+that CSS silently ignores. Both wildlife blocks had to be rewritten.
+Rewrite a block rather than pattern-deleting inside it.
 
 
 PULLING THE GLADE UP UNDER THE FALLS
