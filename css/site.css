@@ -1784,12 +1784,36 @@ body{overscroll-behavior-y:none;background:var(--paper);
                          justify-self:center}
   .dock-spread .d-canoe {grid-column:10/13;grid-row:1;margin-top:clamp(.6rem,2vw,1.6rem)}
   .dock-spread .a-canoe {grid-column:8/13;grid-row:2;margin-top:clamp(.6rem,1.5vw,1.4rem)}
-  .dock-spread .a-trout {grid-column:1/5;grid-row:3;margin-top:clamp(1.6rem,4vw,3.2rem)}
-  .dock-spread .d-fish  {grid-column:5/8;grid-row:3;margin-top:clamp(2.4rem,5.5vw,4.4rem)}
-  .dock-spread .a-card  {grid-column:8/11;grid-row:3;margin-top:clamp(1.2rem,3vw,2.4rem)}
-  .dock-spread .a-hook  {grid-column:10/12;grid-row:4;margin-top:clamp(.6rem,1.5vw,1.4rem)}
-  .dock-spread .d-lake  {grid-column:2/5;grid-row:4;margin-top:clamp(1.6rem,4vw,3.2rem)}
-  .dock-spread .h-explore{grid-column:5/7;grid-row:4;margin-top:clamp(3rem,7vw,5.4rem)}
+  /* The fishing group. Its ceiling is the CARD, not the trout: the card sits
+     in columns 8-11 under the canoe drawing, so it cannot rise past that
+     drawing's foot, and the trout and the note are brought down to meet it
+     rather than the other way round. The card also takes a small negative
+     left margin to come in toward the middle — small, because it is turned
+     -6deg and its bounding box already reaches 17px further left than the
+     card does, which is nearly the whole column gap.
+     Row 4 is where the empty ground was. The hook now carries a NEGATIVE top
+     margin so it tucks under the card's right shoulder — the card's low
+     corner is its bottom LEFT at this angle, so the right side has room the
+     hook can rise into — and the lake note and the handnote come up with it
+     instead of waiting most of a row below. */
+  .dock-spread .a-trout {grid-column:1/5;grid-row:3;margin-top:clamp(1rem,2.4vw,2.4rem)}
+  /* A bare negative margin-left does NOT just move a stretched grid item, it
+     makes it wider — the note's right edge stayed put and the card walked
+     into it. Paired margins move without resizing, which is what was wanted:
+     neither graphic changes size, the pair just sits further in. */
+  .dock-spread          {--d-shift:clamp(.5rem,1.1vw,1.2rem)}
+  .dock-spread .d-fish  {grid-column:5/8;grid-row:3;
+                         margin-top:clamp(1.6rem,3.4vw,3rem);
+                         margin-left:calc(-1 * var(--d-shift));
+                         margin-right:var(--d-shift)}
+  .dock-spread .a-card  {grid-column:8/11;grid-row:3;
+                         margin-top:clamp(.8rem,1.8vw,1.8rem);
+                         margin-left:calc(-1 * var(--d-shift));
+                         margin-right:var(--d-shift)}
+  .dock-spread .a-hook  {grid-column:10/12;grid-row:4;
+                         margin-top:clamp(.4rem,.9vw,1rem)}
+  .dock-spread .d-lake  {grid-column:2/5;grid-row:4;margin-top:clamp(.8rem,1.6vw,1.6rem)}
+  .dock-spread .h-explore{grid-column:5/7;grid-row:4;margin-top:clamp(1.2rem,2.6vw,2.4rem)}
 }
 
 @media (max-width:899px){

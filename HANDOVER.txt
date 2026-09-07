@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.7
+Current release: site live 6.8
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,55 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+TIGHTENING THE DOCK SPREAD, 6.8
+-------------------------------------------------------------------
+CSS only, min-width:900px block, dock-spread rules alone. Sub-900px
+geometry is byte-identical and no other section on the page moved.
+No graphic resized — checked by comparing rendered width and height
+of every dock graphic before and after at six widths.
+
+  fishing group   trout, note and card brought together and up
+  card            shifted in toward the middle with the note
+  hook            up under the card's right shoulder
+  lake note and
+  the handnote    up out of their own row band
+  section         1726 -> 1678px at 1366, 2020 -> 1981 at 1920
+
+A NEGATIVE MARGIN-LEFT DOES NOT JUST MOVE A STRETCHED GRID ITEM, IT
+WIDENS IT. Shifting the note and the card left by equal negative
+margins moved the card but left the note's right edge where it was,
+and the card walked into it. --d-shift applies the offset as a PAIR,
+negative left and positive right, which moves without resizing.
+
+THE FISHING GROUP'S CEILING IS THE CARD, NOT THE TROUT. The card
+sits in columns 8-11, under the canoe drawing, and cannot rise past
+that drawing's foot. The trout in columns 1-5 could rise about 240px
+— nothing is above it but the heading block — but that would leave
+the group behind, so the trout and the note are brought DOWN to the
+card instead. The empty ground on the left between the intro and the
+trout is the price of that grouping, not an oversight.
+
+THE HOOK CAN ONLY RISE ABOUT 10px. It shares columns 10-11 with the
+card, and although the card is turned -6deg so its LOW corner is
+bottom-left and its right side rides about 30px higher, the hook
+still runs into that right edge. A -3vw lift was tried and buried it
+29px into the card. It cannot move further right either: the lake
+sheet is decorated down both outer fifths and nothing may pass
+column 12.
+
+THE BOTTOM CANNOT BE TRIMMED. The ridge sheet's first haze already
+sits about 14px under the lake note's last line — the mountains are
+not floating below a gap, they are already hard against the copy.
+Cutting the section's padding-bottom pulls .ttd-ridge up and takes
+the sheet with it, straight onto the text. The mountains arrive
+sooner in 6.8 only because the CONTENT came up and the section is
+shorter; the clearance beneath it is unchanged.
+
+Polygon sweep 900-1960px in 20px steps: clean, worst separation
+7.8px against a shipped baseline of 8.8px. The r-dock route is
+untouched — nothing in row 1 moved.
 
 
 ROTATING THE WILDLIFE PRINTS, 6.7
@@ -1303,7 +1352,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=a53d9083 at the time of writing), so it changes only when
+(?v=1c3a5c3e at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
