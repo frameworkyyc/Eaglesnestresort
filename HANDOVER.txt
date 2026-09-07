@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.4
+Current release: site live 6.6
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,72 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+TIGHTENING THE WILDLIFE SPREAD, 6.6
+-------------------------------------------------------------------
+CSS only. No markup, no photograph resized, no copy or artwork
+touched. Everything sits inside the existing min-width:900px block,
+so below 900px the section is byte-identical — checked by diffing
+rendered geometry at 320, 375, 414, 600, 768, 860 and 899.
+
+THE CAUSE WAS THE ROW RULE AGAIN: a grid row is as tall as its
+tallest item. Row 1 is as deep as the pelican print, so the fox, the
+hare and the closing strip all waited on that print's foot and the
+section carried three bands of empty green. The cure is the signpost
+cure — let a photograph rise past its row line so it stops handing
+its height to everything underneath.
+
+    fox print    lifted under the heading block
+    fox note     held down to clear the pelican print, and switched
+                 from centred to top-aligned so it tracks the print
+                 rather than the row
+    hare group   lifted, print pulled .75vw toward its note
+    closing row  lifted; strip and card now read as one row
+
+Result: section 1838 -> 1716px at 1440 (-6.6%), -6.7% at 1280,
+-6.0% at 1920. Fox photo-to-text 29 -> 15px, hare 28 -> 18px, and
+the void between the two notes in the centre column 123 -> 48px.
+
+A FIXED LIFT IS WRONG. -3.4vw was tried and drove the fox print
+through the intro paragraph at EVERY width below 1170, because the
+heading block wraps taller than the pelican print down there and
+there is no ground to reclaim at all. The lift now reads off
+--w-slack, which traces the measured gap: nil to about 1020px, then
+roughly .3px per px of viewport, levelling near 88px once the wrap
+stops growing. The margin is whatever leaves 36px of clearance and
+never more than the original spacing. Swept every 20px from 900 to
+1960: no collisions, no overflow, clearances 22-44px.
+
+WHY THE SECTION WILL NOT GO MUCH SHORTER. What is left is a chain,
+not slack: pelican print (385px) -> fox note beneath it -> hare note
+beneath that -> hare print -> closing row. Every link is now 22-41px
+apart. The two large blocks remaining are the 39.5vw padding-top
+holding content clear of the treeline, and the pelican print itself.
+Another 150-200px means giving up one of those; nothing else is
+available.
+
+THE CLOSING ROW IS EXACTLY FULL. Strip, column gap and card sum to
+the content width at every width — zero spare. So the strip can only
+grow if the card gives up the difference. The card's body text is
+drawn into the file and renders at about 11px; a 15% cut takes it to
+9.4px, which is why it was not shrunk. The strip took the gap and a
+bounded slice of the wrap's side padding instead: +5.7% at 1440,
++6.4% at 1920, nil at 900 where there is no padding to spare.
+
+    --wild-bleed  max(0px, --pad - 2rem)
+
+Expressed against --pad so the card always keeps a 32px outer margin
+and the page can never reach horizontal overflow. The owner chose to
+keep the card at full size and accept the smaller enlargement; the
+alternatives, if it is ever revisited, were strip +15% with the card
+-21%, or the pair bleeding past the wrap and losing its left
+alignment with the heading and fox print.
+
+THE GLOBAL img{max-width:100%} IS THE BINDING CONSTRAINT on the
+strip, exactly as the column span was on the trout and the
+snowmobile. The width calc did nothing until max-width:none was set.
+Third time this family of caps has cost time — check all of them.
 
 
 THE WILDLIFE PAGE
@@ -1190,7 +1256,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=ffe03361 at the time of writing), so it changes only when
+(?v=b389f570 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
