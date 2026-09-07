@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.6
+Current release: site live 6.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,53 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+ROTATING THE WILDLIFE PRINTS, 6.7
+-------------------------------------------------------------------
+Owner's angles: pelican +10, fox -20, hare +15, and the pelican pair
+moved toward the right edge, away from the heading. CSS only, still
+inside the min-width:900px block. Below 900px nothing rotates and
+the geometry is byte-identical to 6.5 — the prints there run to 64%
+of a narrow column with only 4.5vw of page padding, and a 20 degree
+tilt would put a corner off the screen. Ask before extending it.
+
+BOUNDING-BOX COLLISION TESTS LIE ABOUT ROTATED ELEMENTS.
+getBoundingClientRect returns the axis-aligned box, which for the
+fox at -20 degrees is 59px wider than the print and includes four
+empty corner triangles. The old sweep reported 104 collisions; a
+polygon test (real quad from the transform matrix, separated with
+SAT) showed most were phantom and two were real. Use collide.py, not
+box overlap, whenever anything here is rotated.
+
+WHAT A ROTATION ACTUALLY COSTS. The grid never sees it — no row
+grows, no column moves — so every corner that leaves its box has to
+be bought with margin. Half the bounding-box growth is what the
+corner gains: (w*sin a + h*cos a - h)/2 down, (w*cos a + h*sin a
+- w)/2 sideways. Those are --w-pelican-swing, --w-fox-swing and
+--w-hare-swing, held in vw and capped where the prints' max-widths
+cap. The section grew 70-85px paying for them: 1716 -> 1801 at
+1440px. Still under the 1838 it was before 6.6 at desktop widths,
+but 1309 against 1267 at 900px, where there was no slack to give.
+
+THE MIDDLE COLUMN IS THE PINCH. Columns 5-8 carry all three notes,
+with the fox print swinging in from the left and the hare print from
+the right. The horizontal tightening done in 6.6 had to be undone —
+s-fox now takes a POSITIVE margin-left and the hare print translates
+right instead of left. Pulling a note toward a rotated print is
+exactly backwards.
+
+THE PELICAN PAIR. The note end-aligns in the columns it already had,
+which uses its 30ch spare and can never overrun the wrap. The print
+follows on translateX, not margin: margin against a stretched grid
+item eats the width and would have shrunk the photograph. --w-shift
+is capped at 92px, which is what leaves the print's swung corner
+clear of its own note — at 112px they closed to 7px.
+
+Verified: polygon sweep 900-1960px in 20px steps, no overlap
+anywhere, worst separation 10.8px, nothing off-canvas, no horizontal
+overflow, and no ancestor carries overflow:hidden that would clip a
+corner.
 
 
 TIGHTENING THE WILDLIFE SPREAD, 6.6
@@ -1256,7 +1303,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=b389f570 at the time of writing), so it changes only when
+(?v=a53d9083 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

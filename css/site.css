@@ -1645,10 +1645,24 @@ body{overscroll-behavior-y:none;background:var(--paper);
      margin, so it stops handing its own height to everything below it.
      Nothing here is resized except the closing strip, and nothing moves
      column. Every offset below is derived from a measured height. */
+  /* ROTATION IS APPLIED AFTER LAYOUT. None of the angles below change a row
+     height or a column, so the grid is unaware of them — every corner that
+     swings out of its own box has to be paid for with margin, and the figures
+     are rotated rather than the images because nothing in this section has a
+     route anchored inside it.
+
+     The pelican pair moves toward the right edge. The note simply end-aligns
+     in the columns it already had, which uses whatever spare room its 30ch
+     max-width leaves and can never push past the wrap. The print cannot use a
+     margin to follow it — margin against a stretched grid item eats the width
+     and would shrink the photograph — so it translates instead. --w-shift is
+     held just under the note's spare room at every width: nil at 900px, where
+     the note already fills its columns and neither can move at all. */
   .wild-spread .w-head    {grid-column:1/5;grid-row:1}
   .wild-spread .w-pelican {grid-column:5/8;grid-row:1;
-                           margin-top:clamp(-1rem,-1.5vw,-.4rem)}
-  .wild-spread .s-pelican {grid-column:8/13;grid-row:1;
+                           margin-top:clamp(-1rem,-1.5vw,-.4rem);
+                           transform:translateX(var(--w-shift)) rotate(10deg)}
+  .wild-spread .s-pelican {grid-column:8/13;grid-row:1;justify-self:end;
                            margin-top:clamp(1.4rem,3.5vw,3rem)}
 
   /* Row 2. The fox print only has to clear the HEADING BLOCK, which is what
@@ -1669,11 +1683,13 @@ body{overscroll-behavior-y:none;background:var(--paper);
      clearance, never more than the original spacing. Measured clearance now
      runs 22-44px across 900-1960px and never reaches zero. */
   .wild-spread .w-fox     {grid-column:1/5;grid-row:2;
-                           margin-top:min(clamp(1rem,2.5vw,2.2rem),
-                                          calc(36px - var(--w-slack)))}
+                           margin-top:calc(28px + var(--w-fox-swing)
+                                           - var(--w-slack));
+                           transform:rotate(-20deg)}
   .wild-spread .s-fox     {grid-column:5/8;grid-row:2;align-self:start;
-                           margin-top:clamp(1.6rem,2vw,2.4rem);
-                           margin-left:clamp(-1.1rem,-1vw,-.5rem)}
+                           margin-top:calc(clamp(1.6rem,2vw,2.4rem)
+                                           + var(--w-pelican-swing));
+                           margin-left:clamp(6px,1.1vw,16px)}
 
   /* Row 3. Same move one step down, and the stagger is preserved by keeping
      the hare a clear step below the fox rather than by leaving empty ground
@@ -1683,7 +1699,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
                            margin-top:clamp(1rem,1.6vw,1.6rem)}
   .wild-spread .w-hare    {grid-column:8/12;grid-row:3;
                            margin-top:clamp(-.5rem,-.3vw,-.1rem);
-                           margin-left:clamp(-1rem,-.75vw,-.4rem)}
+                           margin-bottom:var(--w-hare-swing);
+                           transform:translateX(clamp(6px,.9vw,13px)) rotate(15deg)}
 
   /* Row 4. The closing row is exactly as wide as the wrap already — strip,
      column gap and card add up to the content width with nothing spare — so
@@ -1695,8 +1712,16 @@ body{overscroll-behavior-y:none;background:var(--paper);
   /* the bleed is what is LEFT OVER of the wrap's side padding once a 2.4rem
      outer margin is reserved, so the card keeps a clear edge at every width
      and the page can never go into horizontal overflow. */
+  /* Swing allowances. Each is HALF the growth of the rotated bounding box,
+     which is what the corner actually gains: w*sin(a) + h*cos(a) - h, halved.
+     Held in vw because the prints are sized in vw, and capped where their
+     max-width caps. Measured against the real boxes, not estimated. */
   .wild-spread            {--wild-bleed:max(0px, calc(var(--pad) - 2rem));
-                           --w-slack:clamp(0px, calc((100vw - 1020px) * .3), 88px)}
+                           --w-slack:clamp(0px, calc((100vw - 1020px) * .3), 88px);
+                           --w-shift:clamp(12px, calc((100vw - 900px) * .3 + 12px), 92px);
+                           --w-pelican-swing:clamp(13px, 1.4vw, 19.5px);
+                           --w-fox-swing:clamp(36px, 4.1vw, 53px);
+                           --w-hare-swing:clamp(26px, 2.95vw, 42px)}
   /* the global img{max-width:100%} is the binding constraint here, exactly as
      it was on the trout and the snowmobile: the width below does nothing
      until the cap is lifted. */
