@@ -1460,15 +1460,41 @@ body{overscroll-behavior-y:none;background:var(--paper);
    single line. Two things carry it: a localised darkening that is heaviest
    where the picture is brightest, and a thin dark-green halo on the letters
    themselves, which works per-letter regardless of what is behind them. */
-.stay-hero.ttd .stay-hero-in{
-  background:
-    radial-gradient(125% 95% at 16% 32%,
-      rgba(14,27,19,.26) 0%, rgba(14,27,19,.15) 48%, rgba(14,27,19,0) 78%),
-    linear-gradient(180deg,transparent 40%,rgba(18,32,24,.30) 78%,rgba(18,32,24,.46) 100%)}
+/* THE HARD LINE WAS A CLIPPED GRADIENT. .stay-hero-in is a box pinned to the
+   foot of the hero, and the radial wash it carried was still about a quarter
+   opaque where the box began — so the box's top edge drew a straight dark
+   line across the whole picture, at 53% of the hero's height.
+
+   The wash still lives on that box, because the box is the only thing that
+   tracks the type: it is bottom-anchored and sized by its own content, so the
+   distance from the box to the words is the same at every viewport. The hero
+   is NOT a safe frame to hang it on — the text sits at 42% of the hero's
+   height on a short window and 82% on a tall one, and an ellipse pinned to
+   the hero drifts off the copy entirely.
+
+   The ellipse is now sized so it reaches full transparency at BOTH the top
+   and the bottom of the box: centred at 55% with a vertical radius of 45%, it
+   runs 10% to 100% and nothing is cut off. Horizontally it is wider than the
+   box and runs off the sides of the screen, which has no edge to show. The
+   extra top padding only grows the box upward — the type does not move — and
+   buys the fade a longer, gentler run-in. */
+.stay-hero.ttd .stay-hero-in{padding-top:clamp(5rem,14vw,10rem);
+  background:radial-gradient(112% 45% at 38% 55%,
+    rgba(12,24,17,.54) 0%,
+    rgba(12,24,17,.50) 30%,
+    rgba(12,24,17,.38) 56%,
+    rgba(12,24,17,.20) 78%,
+    rgba(12,24,17,.07) 91%,
+    rgba(12,24,17,0) 100%)}
 .stay-hero.ttd h1{color:var(--paper);
-  text-shadow:0 0 2px rgba(16,30,22,.62),0 1px 1px rgba(16,30,22,.55),
-              0 6px 20px rgba(16,30,22,.5)}
-.stay-hero.ttd .lede{text-shadow:0 1px 10px rgba(16,30,22,.7)}
+  text-shadow:0 0 3px rgba(12,24,17,.7),0 1px 2px rgba(12,24,17,.62),
+              0 8px 26px rgba(12,24,17,.52)}
+/* the lede was the hardest line to read: small, lowest, and crossing the
+   brightest water. Full cream rather than 90%, and a tighter halo than the
+   headline's because small type loses legibility to a wide blur. */
+.stay-hero.ttd .lede{color:#F5F1E6;
+  text-shadow:0 1px 2px rgba(12,24,17,.72),0 0 9px rgba(12,24,17,.8),
+              0 2px 18px rgba(12,24,17,.5)}
 
 /* the eyebrow was gold-light on a light patch of the engraving and barely
    read; a paler gold with a soft dark halo holds it at any crop */

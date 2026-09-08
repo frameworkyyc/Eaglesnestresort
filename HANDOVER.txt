@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.1
+Current release: site live 7.2
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,49 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+THE HERO SCRIM, 7.2
+-------------------------------------------------------------------
+CSS only, .stay-hero.ttd rules alone. No markup, no artwork, no
+sizes, and the eyebrow, headline and lede do not move by a single
+pixel — verified at five window sizes.
+
+THE STRAIGHT LINE ACROSS THE PICTURE WAS A CLIPPED GRADIENT, NOT A
+BOX. .stay-hero-in is pinned to the foot of the hero, and the radial
+wash it carried was still about a quarter opaque where the element
+began. The element's own top edge therefore drew a hard dark line
+across the full width at 53% of the hero's height. Nothing was
+"behind" the text as a rectangle; the rectangle WAS the gradient
+being cut off.
+
+DO NOT MOVE THE WASH ONTO THE HERO. That was tried first and it is
+wrong: the copy sits at 42% of the hero's height in a short window
+and 82% in a tall one, because the hero is clamp(520px,
+min(66vw,76vh), 900px) and its height answers to the window as well
+as the width. An ellipse pinned to the hero drifts straight off the
+type. .stay-hero-in is the only frame that tracks the copy — it is
+bottom-anchored and sized by its own content, so its distance to the
+words never changes.
+
+THE ELLIPSE IS SIZED TO DIE INSIDE THE BOX. Centred at 55% with a
+vertical radius of 45%, it runs from 10% to 100% of the element and
+reaches full transparency at both ends, so neither the top edge nor
+the hero's foot can show a line. Horizontally it is wider than the
+box and runs off the sides of the screen, which have no edge to
+show. The added top padding only grows the box upward — absolutely
+positioned and bottom-anchored, so the type stays put — and buys the
+fade a longer run-in.
+
+The wash is lighter than it was and the letters carry more of the
+load: a tighter halo on the lede, which is the hard line to read
+because it is small, lowest and crosses the brightest water, and it
+is now full cream rather than 90%.
+
+Checked in pixels, not by eye. The full-width row gradient at the old
+seam fell from 21.1 to 10.1, level with its neighbours; sampling
+narrow columns, the step fell from 112 to 14 at the far left and
+from 99 to 2 left of centre.
 
 
 THE ICE SECTION REBUILT TO THE OWNER'S REFERENCE, 7.1
@@ -1483,7 +1526,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=0d626595 at the time of writing), so it changes only when
+(?v=5f532737 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
