@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.8
+Current release: site live 6.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,44 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+MOVING THE HOOK, TURNING THE CARD, 6.9
+-------------------------------------------------------------------
+Owner's request: hook and line up under the "Start at the dock"
+copy, toward the middle of the screen; fish card turned about 10
+degrees clockwise.
+
+  .a-hook   row 4 columns 10-12  ->  row 2 columns 4-6
+  .a-card   rotate(-6deg)        ->  rotate(4deg)
+
+TWO COLUMNS, NOT THREE. Columns 4-7 would have put the hook's right
+edge nearer the screen centre, but a three-column span releases its
+max-width and the graphic grows about 17%. Columns 4-6 keep the span
+exactly two wide, which is what it had at 10-12, so the rendered
+width is unchanged at every viewport — verified, not assumed. The
+remaining distance to centre is bought with --hook-nudge, a paired
+margin, limited by the canoe photograph's left edge.
+
+THE GAP UNDER THE HEADING DOES NOT GROW SMOOTHLY. The hook's ceiling
+is the foot of row 1, which the canoe photograph usually sets — but
+around 900px the canoe NOTE wraps to another line and becomes the
+tallest thing in the row, so the gap is about 55px there, close to
+nothing at 1000px, and only settles above roughly 1400px. No single
+clamp tracks that. --hook-slack follows the settled part and the
+45px constant covers the rest; the sweep is what proves it, and the
+clearances now run 25-101px with nothing tight.
+
+THE CARD'S ANGLE IS A BASE RULE, NOT A DESKTOP ONE, and it is
+repeated in .a-card:hover — both were changed together or the card
+would have snapped back on hover. The new angle applies at every
+width. That is safe here, unlike the wildlife prints: 4deg swings
+LESS than the 6deg it replaced, so the card sits further inside the
+viewport than before, checked down to 320px.
+
+READ THE ANGLE CAREFULLY IF IT COMES UP AGAIN. "Turn it 10 degrees
+clockwise" was taken as ten degrees FROM WHERE IT WAS, so -6 became
++4. If the owner meant an absolute +10, that is a further 6 degrees.
 
 
 TIGHTENING THE DOCK SPREAD, 6.8
@@ -1352,7 +1390,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=1c3a5c3e at the time of writing), so it changes only when
+(?v=6bd9539a at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
