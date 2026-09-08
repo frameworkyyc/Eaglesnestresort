@@ -2101,3 +2101,74 @@ body{overscroll-behavior-y:none;background:var(--paper);
 /* --- closing call --- */
 .ttd-close{text-align:center}
 .ttd-close .btn-row{justify-content:center;margin-top:2rem}
+
+/* ======================================================================
+   THINGS TO DO — MOBILE TIGHTENING
+   Everything below is inside max-width:899px and touches nothing the
+   desktop layout uses. Desktop is finished and was diffed pixel-for-pixel
+   after this block was written.
+
+   Where the height was actually going, measured at 375px: the gaps between
+   items were already only 21px and the section top padding is NOT dead
+   space — every one of those bands is illustrated sheet artwork, and
+   sampling them shows real variation across the width, so pulling the copy
+   up into them puts text on a busy drawing. The height was in the pictures.
+   They were half the page: 4,041px of images inside 8,038px of content.
+   ====================================================================== */
+@media (max-width:899px){
+
+  /* the prints are capped by HEIGHT, not width. A single max-width cannot
+     serve both shapes here: at 64% the landscape prints come out 144px tall
+     and the portrait ones 342px, over half a phone screen. Capping the
+     height lets the portraits shrink to match while the landscape ones,
+     already well under the cap, do not move at all. width:auto with both
+     maxima keeps the aspect ratio — the browser fits the picture inside the
+     box rather than squashing it. */
+  .spread .sp-shot img,.spread [class$="-photo"] img{
+    width:auto;height:auto;max-width:100%;
+    max-height:clamp(186px,29vh,254px);margin-inline:auto}
+
+  /* the decorative pieces are the other half of the problem: they sit
+     between an activity's copy and the next activity's photograph, so every
+     pixel of them is a pixel pushing related things apart. */
+  .trailspread .t-signpost{max-width:min(54%,186px)}
+  .trailspread .t-worth   {max-width:min(36%,132px)}
+  .dock-spread .dock-art  {max-width:min(56%,205px)}
+  .dock-spread .a-card    {max-width:min(46%,178px)}
+  .sled-spread .sled-art  {max-width:min(62%,215px)}
+  .ice-spread  .a-skates  {max-width:min(58%,215px)}
+  .spread .say            {max-width:min(40%,150px)}
+  .wild-spread .wild-note {max-width:100%}
+
+  /* the snowmobile note sat between its own photograph and its copy and
+     split them; on one column it belongs after the pair */
+  .sled-spread .s-photo{order:1}
+  .sled-spread .s-copy {order:2}
+  .sled-spread .say-season{order:3}
+  .sled-spread .sled-art{order:4}
+  .sled-spread .s-hosts{order:5}
+
+  /* 21px between every item on a 375px screen is more air than the column
+     needs; the pairs read as pairs at 13 */
+  .spread{gap:clamp(.8rem,3.4vw,1.1rem)}
+
+  /* the Rainbow print is turned 20deg, and at a phone width its corner swung
+     15px past the left edge of the screen and was clipped. The figure is
+     inset by the swing rather than the picture being made smaller. */
+  .trailspread .rr-photo{margin-left:clamp(14px,4.5vw,22px)}
+
+  /* every picture was landing flush against the same left rail, which reads
+     as a list rather than a scrapbook. The second photograph of each pair
+     steps to the other side; the copy stays full width, so the eye zig-zags
+     down the column without anything moving off its own text. */
+  .trailspread .bt-photo,
+  .falls-spread .fa-photo,
+  .wild-spread .w-fox,
+  .wild-spread .w-hare,
+  .dock-spread .a-trout,
+  .ice-spread .a-skates{justify-self:end}
+
+  /* the closing panel carried 111px of padding above it and 106 below */
+  .ttd-cta{padding-bottom:clamp(1.6rem,6vw,2.6rem)}
+  .cta-spread{gap:clamp(.9rem,3.4vw,1.2rem)}
+}

@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.2
+Current release: site live 7.3
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,48 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+MOBILE TIGHTENING, 7.3
+-------------------------------------------------------------------
+Desktop is finished and was not to be touched. Everything added sits
+in one clearly marked max-width:899px block at the foot of the
+stylesheet. Page height at 375px: 10,247 -> 9,262.
+
+WHERE THE HEIGHT ACTUALLY WAS. Not the gaps — those were already
+only 21px. Not the section top padding either: every one of those
+bands is illustrated sheet artwork, checked by sampling the rendered
+pixels row by row across the width. Variation ran 22 to 41 in all
+seven of them, so pulling the copy up puts text on a busy drawing.
+They stay. The height was in the PICTURES: 4,041px of images inside
+8,038px of content.
+
+ONE MAX-WIDTH CANNOT SERVE BOTH SHAPES. At 64% the landscape prints
+came out 144px tall and the portrait ones 342px — over half a phone
+screen. The prints are now capped by HEIGHT instead, with width:auto
+and both maxima so the browser fits the picture and keeps its
+aspect. The portraits shrink to match; the landscape ones, already
+well under the cap, do not move at all.
+
+A ROTATED PRINT WAS BEING CLIPPED BY THE SCREEN. The Rainbow print
+is turned 20deg and its corner swung 15px past the left edge at
+phone widths — no scrollbar, so nothing flagged it; the corner was
+simply cut off. The figure is now inset by the swing. Two prints did
+this before; the sweep now reports nothing off-canvas from 320px up.
+
+THE SNOWMOBILE NOTE SPLIT ITS OWN PAIR. In one column the graphic
+fell between the photograph and the copy. Reordered with `order`,
+which the spread supports because it is still a grid on mobile.
+
+MEASURING DESKTOP FOR REGRESSIONS NEEDS FONTS AND IMAGES SETTLED.
+A naive comparison reported about 70 changed elements at desktop
+widths — and reported the SAME 70 comparing the baseline against
+itself. Web fonts and lazy decode both move layout while they
+settle. deskdiff.py awaits document.fonts.ready and decodes every
+image first, and prints the self-comparison as a noise floor beside
+the real one. With that in place the noise floor is 0 and desktop is
+identical across ten viewport sizes from 900 to 2100 wide. ALWAYS
+PRINT THE NOISE FLOOR; a diff with no control is not evidence.
 
 
 THE HERO SCRIM, 7.2
@@ -1526,7 +1568,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=5f532737 at the time of writing), so it changes only when
+(?v=28006b8a at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
