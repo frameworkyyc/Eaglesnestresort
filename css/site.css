@@ -1759,83 +1759,64 @@ body{overscroll-behavior-y:none;background:var(--paper);
 
 .dock-art{display:block;width:100%;height:auto;position:relative;z-index:1}
 .a-canoe{max-width:clamp(230px,30vw,425px)}
-.a-trout{max-width:clamp(200px,25vw,350px)}
-.a-hook {max-width:clamp(110px,14vw,190px);opacity:.9}
-.a-card {max-width:clamp(150px,19vw,270px);transform:rotate(4deg)}
+.a-trout{max-width:clamp(230px,28.75vw,402px)}
+.a-card {max-width:clamp(150px,19vw,270px);transform:rotate(14deg)}
 .a-card img{display:block;width:100%;height:auto}
-.a-card:hover{transform:rotate(4deg) translateY(-2px)}
+.a-card:hover{transform:rotate(14deg) translateY(-2px)}
 
 /* there is no script face on this site, so the two written notes are set in
    the body italic rather than pretending to match the supplied handwriting */
 .handnote{position:relative;z-index:1;margin:0;font-style:italic;line-height:1.35;
   font-size:clamp(.82rem,1.05vw,.95rem);color:var(--forest-soft)}
 .handnote svg{display:block;color:var(--gold);margin-top:.2rem}
-.h-explore{transform:rotate(-2.5deg)}
-.d-lake p{font-size:.92rem;line-height:1.58;color:var(--forest-soft);margin:0}
 
 @media (min-width:900px){
   /* the lake sheet is decorated down both outer fifths, so everything sits
      between columns 2 and 12 */
-  /* Several of these were capped by their column span rather than by their own
-     max-width, so raising the max-width alone would have changed nothing. The
-     spans were widened to match. */
+  .dock-spread          {--d-shift:clamp(.5rem,1.1vw,1.2rem);
+                         --row1-slack:clamp(0px, calc((100vw - 900px) * .14), 84px)}
+
   .dock-spread .d-head  {grid-column:2/6;grid-row:1}
   .dock-spread .d-photo {grid-column:6/10;grid-row:1;max-width:clamp(160px,20vw,290px);
                          justify-self:center}
   .dock-spread .d-canoe {grid-column:10/13;grid-row:1;margin-top:clamp(.6rem,2vw,1.6rem)}
   .dock-spread .a-canoe {grid-column:8/13;grid-row:2;margin-top:clamp(.6rem,1.5vw,1.4rem)}
-  /* The fishing group. Its ceiling is the CARD, not the trout: the card sits
-     in columns 8-11 under the canoe drawing, so it cannot rise past that
-     drawing's foot, and the trout and the note are brought down to meet it
-     rather than the other way round. The card also takes a small negative
-     left margin to come in toward the middle — small, because it is turned
-     -6deg and its bounding box already reaches 17px further left than the
-     card does, which is nearly the whole column gap.
-     Row 4 is where the empty ground was. The hook now carries a NEGATIVE top
-     margin so it tucks under the card's right shoulder — the card's low
-     corner is its bottom LEFT at this angle, so the right side has room the
-     hook can rise into — and the lake note and the handnote come up with it
-     instead of waiting most of a row below. */
-  .dock-spread .a-trout {grid-column:1/5;grid-row:3;margin-top:clamp(1rem,2.4vw,2.4rem)}
-  /* A bare negative margin-left does NOT just move a stretched grid item, it
-     makes it wider — the note's right edge stayed put and the card walked
-     into it. Paired margins move without resizing, which is what was wanted:
-     neither graphic changes size, the pair just sits further in. */
-  .dock-spread          {--d-shift:clamp(.5rem,1.1vw,1.2rem);
-                         --hook-nudge:clamp(1.4rem,2.6vw,2.2rem);
-                         --hook-slack:clamp(0px, calc((100vw - 900px) * .14), 84px)}
-  .dock-spread .d-fish  {grid-column:5/8;grid-row:3;
-                         margin-top:clamp(1.6rem,3.4vw,3rem);
-                         margin-left:calc(-1 * var(--d-shift));
-                         margin-right:var(--d-shift)}
+
+  /* The trout comes up under the heading with the fishing note beneath it, so
+     the left of the spread reads as one column: title, fish, copy.
+     COLUMNS 2-7, NOT 2-6 — the graphic is 15% larger and a four-column span
+     would cap it below its own max-width, which is the trap that has caught
+     the trout, the card and the wildlife strip before. Five columns leaves
+     the max-width binding, so the 15% is real at every viewport. Measured,
+     not assumed.
+     --row1-slack is the reading the hook used before it was removed: how far
+     the foot of row 1 sits below the foot of the heading. It does not grow
+     smoothly, because the canoe note wraps to another line near 900px and
+     becomes the tallest thing in that row. */
+  .dock-spread .a-trout {grid-column:2/7;grid-row:2;
+                         margin-top:calc(30px - var(--row1-slack))}
+  .dock-spread .d-fish  {grid-column:2/5;grid-row:3;
+                         margin-top:clamp(1rem,2vw,2rem)}
+
+  /* The trout is much the tallest thing in row 2, so row 3's line lands well
+     below the canoe drawing and the card would sit marooned near the foot of
+     the section. It is lifted back up beside the trout instead — different
+     columns, so nothing is in its way but the canoe drawing's foot, and the
+     lift stops short of that with room for the corner the 14deg turn throws
+     upward. */
   .dock-spread .a-card  {grid-column:8/11;grid-row:3;
-                         margin-top:clamp(.8rem,1.8vw,1.8rem);
+                         margin-top:clamp(-6.5rem,-7vw,-5rem);
                          margin-left:calc(-1 * var(--d-shift));
                          margin-right:var(--d-shift)}
-  /* The hook moves up under the heading block, into the open ground the canoe
-     drawing's row used to leave on this side. Columns 4-6 rather than 4-7: a
-     three-column span would let its max-width off the leash and the graphic
-     would grow about 17%, and it is not meant to change size. It is then
-     nudged in toward the middle of the screen by a PAIRED margin, as far as
-     the canoe photograph's left edge allows.
-     How far it can rise is the difference between the foot of row 1 and the
-     foot of the heading, and that difference does NOT grow smoothly — the
-     canoe note wraps to an extra line around 900px and takes over as the
-     tallest thing in the row, so the gap is wide there, nearly nothing at
-     1000px, and only settles above about 1400px. --hook-slack tracks the
-     settled part and the constant covers the rest; the sweep is what
-     confirms no width ends up tight. */
-  .dock-spread .a-hook  {grid-column:4/6;grid-row:2;
-                         margin-top:calc(45px - var(--hook-slack));
-                         margin-left:var(--hook-nudge);
-                         margin-right:calc(-1 * var(--hook-nudge))}
-  .dock-spread .d-lake  {grid-column:2/5;grid-row:4;margin-top:clamp(.8rem,1.6vw,1.6rem)}
-  .dock-spread .h-explore{grid-column:5/7;grid-row:4;margin-top:clamp(1.2rem,2.6vw,2.4rem)}
 }
 
 @media (max-width:899px){
   .dock-spread .dock-art{max-width:min(70%,300px)}
-  .dock-spread .a-card{max-width:min(60%,240px)}
+  /* at 14deg the card's corner swings about 13% of its own width past its
+     box, which took it off the left edge of the screen below 600px. The
+     inline margin pays for the swing; the card is not resized. */
+  .dock-spread .a-card{max-width:min(60%,240px);
+                       margin-left:clamp(1.4rem,5vw,2.4rem)}
 }
 
 /* --- the closing spread ------------------------------------------------

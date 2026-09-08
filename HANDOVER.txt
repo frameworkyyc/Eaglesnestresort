@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 6.9
+Current release: site live 7.0
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,55 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+REWORKING THE DOCK SPREAD, 7.0
+-------------------------------------------------------------------
+Owner's list: remove the hook, remove the ANAHIM LAKE block, remove
+"Explore a little further", bring the trout up under the heading at
+15% larger with the fishing note beneath it, and turn the card
+another 10 degrees clockwise.
+
+MARKUP CHANGED, so this went through build_ttd.py and NOT the HTML.
+Three elements deleted from the source: .a-hook, .d-lake,
+.h-explore. Round-trip re-verified afterwards.
+
+  .a-trout  max-width 25vw -> 28.75vw, row 3 cols 1-5 -> row 2 cols 2-7
+  .d-fish   row 3 cols 5-8 -> row 3 cols 2-5, under the trout
+  .a-card   rotate(4deg) -> rotate(14deg), lifted beside the trout
+  section   1678 -> 1583px at 1366, 1981 -> 1838 at 1920
+
+COLUMNS 2-7, NOT 2-6, FOR THE TROUT. A four-column span caps the
+graphic below its own max-width and the 15% would simply not have
+appeared — the same trap as the card, the strip and the trout
+itself, three releases running. Five columns leaves the max-width
+binding and the growth measures +14.9 to +15.2% at every viewport.
+MEASURE THE RENDERED WIDTH; do not trust the max-width.
+
+THE CARD IS LIFTED, NOT PLACED. The enlarged trout is much the
+tallest thing in row 2, so row 3's line falls a long way below the
+canoe drawing and the card would sit marooned near the foot of the
+section. A negative top margin brings it back up beside the trout —
+different columns, so its only obstacle is the canoe drawing's foot,
+and the lift stops short of it with room for the corner that 14deg
+throws upward.
+
+14deg TOOK THE CARD OFF THE LEFT EDGE ON PHONES. The corner swings
+about 13% of the card's own width past its box, which at 320-600px
+put it outside the viewport. The mobile rule now carries an inline
+margin to pay for the swing; the card is NOT resized. Checked from
+320px up: nothing off-canvas, no horizontal overflow.
+
+hook-note.webp is now unreferenced and can be deleted from the repo.
+.handnote is deliberately KEPT in the stylesheet although nothing
+uses it any more — "Trails lead to new stories." is still waiting
+for a home and will want it.
+
+METHOD NOTE, LEARNED THE HARD WAY THIS SESSION. Do not compare
+before and after by swapping stylesheets in and out of the live
+working copy; a script that failed to restore silently threw away
+finished work three times. Freeze a full copy of the shipped state
+somewhere else and measure that copy through its own file:// URL.
 
 
 MOVING THE HOOK, TURNING THE CARD, 6.9
@@ -1390,7 +1439,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=6bd9539a at the time of writing), so it changes only when
+(?v=8bce492b at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
