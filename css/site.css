@@ -1389,6 +1389,22 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .snow-sheet{position:absolute;left:0;right:0;
   top:calc(-1 * (10.5vw + var(--map-peaks)));
   width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+/* THE SNOW SHEET IS CUT OFF, NOT FADED OUT. It carries its own fade — alpha
+   falls away over its bottom fifth — but that fade is only about half done
+   where the section ends, and the CTA section's own background paints over
+   the rest of it. The result was a hard horizontal line right on the section
+   boundary. This lays the section's own colour over the last stretch of the
+   sheet so the illustration is already gone by the time the boundary
+   arrives; the CTA opens on the same colour, so nothing steps. It sits above
+   the sheet and below the copy, and is measured, not guessed — the residual
+   jump across the boundary is checked in pixels. */
+.ttd-snow::after{content:"";position:absolute;left:0;right:0;bottom:0;
+  height:clamp(130px,12vw,210px);z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(219,225,216,0) 0,
+    rgba(219,225,216,.62) 46%,
+    rgba(219,225,216,.93) 78%,
+    #DBE1D8 100%)}
 .ttd-snow > .wrap{position:relative;z-index:1}
 
 /* --- Things To Do: editorial scale --------------------------------------
@@ -1542,12 +1558,21 @@ body{overscroll-behavior-y:none;background:var(--paper);
      from 900 to 1960: this route is hidden below 1060px rather than allowed to
      cross the text. The other three have no such constraint. */
   .r-trail{display:none}
+  @media (max-width:1199px){.r-ice{display:none}}
   /* down-left from the Hunlen print towards the Hotnarko print */
   .r-fall {top:90%;left:-113%;width:111%;height:17%}
   /* off the dock print towards the fish card */
   .r-dock {top:76%;left:92%;width:112%;height:16%}
   /* out of the winter print towards the sled */
   .r-sled {top:52%;left:-18%;width:22%;height:26%}
+  /* Off the winter lodge print, down across the open snow to the skates. It
+     starts BELOW the ice-fishing copy, not beside it: that copy sits in the
+     columns the route crosses, and it wraps deeper as the viewport narrows —
+     its foot runs from 44% of the print's height at 1920 to 76% at 900. A
+     start at 34% looked right at one width and drew the dotted line straight
+     through the paragraph at every other. Like the Rainbow route, it is
+     hidden below 1200px rather than allowed to cross the text. */
+  .r-ice  {top:58%;left:99%;width:31%;height:74%}
 }
 
 .trail-art{display:block;width:100%;height:auto;position:relative;z-index:1}
@@ -1883,7 +1908,9 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .w-fox {max-width:clamp(210px,27vw,390px)}
 .w-hare{max-width:clamp(195px,25vw,355px)}
 .d-photo{max-width:clamp(130px,16vw,225px)}
-.i-photo-a{max-width:clamp(160px,22vw,310px)}
+.i-photo-a{max-width:clamp(240px,38vw,560px)}
+.ice-art{display:block;width:100%;height:auto;position:relative;z-index:1}
+.a-skates{max-width:clamp(220px,32vw,470px)}
 .i-photo-b{max-width:clamp(140px,19vw,265px)}
 .d-guide{max-width:20rem}
 
@@ -1925,17 +1952,27 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .sled-spread .sled-art{grid-column:6/13;grid-row:2;margin-top:clamp(1rem,2.5vw,2.2rem)}
   .sled-spread .s-hosts {grid-column:5/9;grid-row:3;margin-top:clamp(1.4rem,3.5vw,3rem)}
 
-  /* 6 — the ice pinwheels: photo, copy, copy, photo, opposite corners */
+  /* 6 — the ice, laid out to the owner's reference: the winter print large on
+     the left, the ice-fishing copy beside it, the skating copy below, and the
+     skates standing off to the bottom right with the route running down to
+     them. COLUMNS 1-7 FOR THE PRINT — it is 75% larger than it was and a
+     four-column span would cap it well under its own max-width, which is the
+     cap that has caught nearly every graphic on this page. */
   .ice-spread .i-head   {grid-column:4/10;grid-row:1;text-align:center}
-  .ice-spread .i-photo-a{grid-column:2/6;grid-row:2;margin-top:clamp(1.4rem,3.5vw,2.8rem)}
-  .ice-spread .i-fish   {grid-column:7/11;grid-row:2;margin-top:clamp(2.6rem,6vw,4.6rem)}
-  .ice-spread .i-skate  {grid-column:2/6;grid-row:3;margin-top:clamp(2rem,5vw,3.6rem)}
+  .ice-spread .i-photo-a{grid-column:1/7;grid-row:2;margin-top:clamp(1rem,2vw,2rem)}
+  .ice-spread .i-fish   {grid-column:7/12;grid-row:2;margin-top:clamp(2rem,4.2vw,3.6rem)}
+  .ice-spread .i-skate  {grid-column:3/8;grid-row:3;margin-top:clamp(1rem,2.2vw,2.2rem)}
+  /* the skates rise out of their own row so they stand beside the print's
+     foot rather than below the skating copy, as in the reference */
+  .ice-spread .a-skates {grid-column:8/13;grid-row:3;
+                         margin-top:clamp(-6rem,-5vw,-2.4rem)}
 }
 
 /* mobile keeps each photo with its own copy and drops the routes */
 @media (max-width:899px){
   .spread [class$="-photo"],.spread .sp-shot{max-width:min(64%,250px)}
   .wild-spread .w-head{text-align:left}
+  .ice-spread .a-skates{max-width:min(78%,320px)}
 }
 
 /* --- editorial split: photograph one side, copy the other --- */

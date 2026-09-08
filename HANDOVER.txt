@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.0
+Current release: site live 7.1
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,50 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+THE ICE SECTION REBUILT TO THE OWNER'S REFERENCE, 7.1
+-------------------------------------------------------------------
+Owner supplied a mockup of the finished layout and the skates
+artwork. Markup changed, so this went through build_ttd.py.
+
+  print     cols 2-6 -> 1-7, max-width 22vw -> 38vw (+75%)
+  i-fish    cols 7-11 -> 7-12
+  i-skate   cols 2-6 -> 3-8
+  a-skates  NEW, cols 8-13, lifted out of its row
+  r-ice     NEW dotted route, print down to the skates
+  section   1278 -> 1417px at 1366
+
+THE SKATES FILE ARRIVED WITH AN ALPHA CHANNEL ALREADY. It looks like
+white-on-white but the background is transparent with BLACK underneath.
+Converting to RGB to key out the white produced a solid black frame and
+a background mask of 0.0%. Read the alpha; do not key the colour. And
+resize PREMULTIPLIED — straight resizing drags that black into every
+soft edge as a halo. 1536x1024 -> cropped to ink -> 1100x683, q78.
+
+THE ROUTE CANNOT START BESIDE THE ICE-FISHING COPY. That copy sits in
+the columns the route crosses and it wraps deeper as the viewport
+narrows: its foot runs from 44% of the print's height at 1920 to 76%
+at 900. A start at 34% looked right at 1440 and drew the dotted line
+straight through the paragraph everywhere else. It now starts at 58%
+and, like the Rainbow route, is hidden below 1200px rather than
+allowed to cross the text. Swept every 20px from 900 to 1960.
+
+THE HARD LINE AT THE FOOT OF THE SNOW WAS THE SHEET BEING CUT OFF,
+NOT A COLOUR CHANGE. snow-sheet.webp carries its own fade — alpha
+falls away over its bottom fifth — but only about half of that fade
+has happened by the time the section ends, and the CTA section's
+background paints over the rest. The sheet was roughly 80% opaque at
+the cut. .ttd-snow::after now lays the section's own colour over the
+last stretch so the illustration is gone before the boundary
+arrives; the CTA opens on the same colour. Measured in pixels, not
+eyeballed: the colour step across the boundary fell from 107 to
+under 40, and what is left is the artwork's own detail.
+
+COLUMNS 1-7 FOR THE PRINT. At +75% a four-column span would have
+capped it well under its own max-width. That cap has now caught the
+trout twice, the card, the strip and this print. Always measure the
+rendered width after changing a max-width.
 
 
 REWORKING THE DOCK SPREAD, 7.0
@@ -1439,7 +1483,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=8bce492b at the time of writing), so it changes only when
+(?v=0d626595 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

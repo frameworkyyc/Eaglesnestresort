@@ -1,0 +1,124 @@
+EAGLE'S NEST RESORT — RELEASE 7.1 — CHANGE MANIFEST
+===================================================================
+Delta against 7.0. 21 files. Upload preserving directory structure.
+
+Stylesheet address moves:
+    ?v=8bce492b  ->  ?v=0d626595
+Re-derived from the files in this bundle as
+md5(css/site.css + js/site.js), first 8 characters.
+
+js/site.js unchanged and not included.
+
+
+NEW  (1 file)
+-------------------------------------------------------------------
+  images/skates-note.webp        1100 x 683, 232 KB
+        The skates you supplied, background removed and sized for
+        the page. things-to-do.html references it, so this file MUST
+        go up or the section shows a broken image.
+
+
+MODIFIED  (20 files)
+-------------------------------------------------------------------
+things-to-do.html
+      "Out on the lake" section only:
+        - the skates graphic added
+        - a dotted route added inside the winter print, running down
+          to the skates
+      Made through build_ttd.py; the builder still reproduces the
+      page byte-for-byte.
+
+css/site.css
+        winter print   75% larger and moved left — columns 2-6 to
+                       1-7, max-width 22vw to 38vw
+        ICE FISH       columns 7-11 to 7-12
+        SKATE THE LAKE columns 2-6 to 3-8
+        skates         new placement, columns 8-13, lifted out of
+                       its row so it stands beside the print's foot
+                       as in your reference
+        r-ice          new route
+        bottom edge    the hard horizontal line at the foot of the
+                       section is gone (see below)
+      No other section touched.
+
+index.html, lodge.html, hosts.html, getting-here.html, booking.html
+lodge/*.html  (12 files)
+      Address only — two ?v= references each.
+
+HANDOVER.txt
+      Release line 7.0 -> 7.1, address updated, the rework recorded.
+
+
+DELETED  (none)
+-------------------------------------------------------------------
+
+
+THE BOTTOM EDGE — WHAT IT ACTUALLY WAS
+-------------------------------------------------------------------
+Not a colour change. snow-sheet.webp carries its own fade at the
+bottom, but only about half that fade has happened by the time the
+section ends — the sheet was still roughly 80% opaque where the CTA
+section's background paints over it. That cut was the straight line.
+
+The section now lays its own colour over the last stretch of the
+sheet, so the illustration has gone before the boundary arrives, and
+the CTA opens on the same colour. Measured rather than eyeballed:
+sampling a column of pixels across the boundary, the colour step
+fell from 107 to under 40, and what remains is the artwork's own
+detail rather than a seam. Checked at three positions across the
+width.
+
+
+TWO THINGS I HAD TO WORK AROUND
+-------------------------------------------------------------------
+1. THE ROUTE COULD NOT START WHERE YOUR REFERENCE SHOWS IT. In the
+   reference it leaves the print about a third of the way down, but
+   the ICE FISH copy sits in the columns the route crosses and wraps
+   deeper as the window narrows — its foot runs from 44% of the
+   print's height on a wide screen to 76% on a narrow one. Starting
+   it high looked right at one width and drew the dotted line
+   straight through the paragraph at every other. It now leaves the
+   print a little lower, and like the Rainbow route on the trail
+   section it hides below 1200px rather than cross the text. Swept
+   every 20px from 900 to 1960 — it clears the copy by 25px at
+   worst.
+
+2. THE SKATES FILE ALREADY HAD A TRANSPARENT BACKGROUND. It looks
+   like white-on-white, but the background is transparent with black
+   underneath. My first pass tried to key out the white, produced a
+   solid black frame, and reported a background of 0.0%. Reading the
+   existing alpha instead, and resizing premultiplied so the black
+   could not bleed into the soft edges, gave a clean cut-out.
+
+
+AUDIT RUN ON THIS BUNDLE
+-------------------------------------------------------------------
+  tag-stack nesting, all 18 pages          clean
+  every src/href resolves                  0 unresolved
+  exactly one ?v= pair per page            18/18, all 0d626595
+  declared image w/h vs file on disk       0 mismatches, skates
+                                           included
+  sheet order intact                       yes
+  build_ttd.py round-trip                  byte-for-byte
+  other six sections                       unchanged at 375, 899,
+                                           1000, 1366 and 1920
+  route vs the ice-fishing copy            clear at every width
+                                           where it shows, 25px at
+                                           worst
+  skates on narrow screens                 inside the viewport from
+                                           320px up, no horizontal
+                                           overflow
+  colour step across the bottom boundary   107 -> under 40
+
+
+STILL OUTSTANDING
+-------------------------------------------------------------------
+  - "Trails lead to new stories." is still not placed anywhere.
+  - Copy unapproved: Hunlen Falls, "Out on the lake.", "The Beef
+    Trail", the pin labels, the wildlife opening line.
+  - info@eaglesnest-resort.com is in 41 mailto links and has never
+    been confirmed deliverable. Still the most important open item.
+  - Twelve unreferenced image files in the repo, hook-note.webp
+    included; the list is in the 6.6 manifest.
+    images/lg/lakeshore.jpg is NOT one of them.
+  - Wildlife prints do not rotate below 900px (from 6.7).
