@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.5
+Current release: site live 7.6
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,49 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+MOBILE SIZING AND PLACEMENT, 7.6
+-------------------------------------------------------------------
+Mobile only. Desktop identical across ten viewport sizes, markup
+move included.
+
+  carousel photographs   frame 268 -> 322 at 375px (+20%)
+  t-worth, say-season    removed on mobile
+  t-signpost             below its carousel, larger, centred
+  a-canoe                below its carousel, larger, centred
+  s-photo (winter)       +20%, centred
+  sled-art               much larger, centred; s-hosts centred
+
+TWO CAPS TO WATCH WHEN RESIZING ANYTHING HERE. Both bit in this one
+session:
+  - .spread .sp-shot carries max-width:min(64%,250px) from the 7.3
+    block. Setting a width on the slide frame did nothing until
+    max-width:none went with it — the frames came out 216, 237 and
+    264 instead of one uniform 322.
+  - The winter print is LANDSCAPE, so its width is what limits it. A
+    max-height was raised by 20% and changed nothing at all, because
+    the width cap was binding the whole time. Raise the dimension
+    that is actually binding, and measure the rendered box after.
+
+THE LEAD IMAGE OF EVERY SLIDE NOW TAKES THE SAME FRAME. Two
+carousels lead a slide with a drawing rather than a photograph — the
+trout and the skates — and those were sized by a max-height while
+the prints had a square frame, so the ice section stood its skates
+and its ice-fishing copy at two different heights. The copy now
+starts at an identical offset in all eleven slides, checked at five
+widths.
+
+aspect-ratio, NOT AN EXPLICIT HEIGHT, on the frame. At 320px the
+frame is wider than the screen allows; with a fixed height it would
+have stayed 322 tall while the width capped, and gone oblong. Width
+capped at 100% with the height following keeps it square.
+
+a-canoe MOVED IN THE MARKUP, out of its carousel slide and after the
+controls — CSS order cannot lift a descendant out of a slide. Safe
+on desktop only because .mcar and .mslide are display:contents
+there, so the item lands back in the same grid area either way;
+paint order was the risk and the diff confirmed nothing moved.
 
 
 UNIFORM CAROUSEL FRAMES, 7.5
@@ -1656,7 +1699,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=32acb6e4 at the time of writing), so it changes only when
+(?v=6f738b50 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

@@ -2146,16 +2146,25 @@ body{overscroll-behavior-y:none;background:var(--paper);
      take the edge with it. Contain keeps each print whole and gives them all
      the same footprint and the same longest side — which also stops the copy
      underneath jumping as you swipe. */
-  .mslide{--frame:clamp(228px,33vh,286px)}
-  .mslide .sp-shot{width:var(--frame);height:var(--frame);max-width:100%;
-    margin-inline:auto;display:grid;place-items:center}
+  /* the frame, 20% up on 7.5. aspect-ratio rather than an explicit height, so
+     that when the frame is wider than the screen allows it stays square
+     instead of overflowing: the width caps at 100% and the height follows. */
+  .mslide{--frame:clamp(274px,39.6vh,343px)}
+  .mslide .sp-shot{width:min(100%,var(--frame));max-width:none;aspect-ratio:1;
+    height:auto;margin-inline:auto;display:grid;place-items:center}
   .mslide .sp-shot img{width:100%;height:100%;object-fit:contain;
     max-height:none;margin:0}
-  .mslide .dock-art,.mslide .ice-art{max-width:100%;margin-inline:auto}
-  .mslide .dock-art img,.mslide .ice-art img,.mslide .a-card img{
-    width:auto;height:auto;max-width:100%;
-    max-height:clamp(170px,25vh,230px);margin-inline:auto}
-  .mslide .a-canoe{max-width:min(62%,215px)}
+
+  /* THE SLIDES MUST ALL BE THE SAME HEIGHT OR THE COPY STEPS AS YOU SWIPE.
+     Two of these carousels lead a slide with a drawing rather than a
+     photograph — the trout and the skates — and those were sized by a
+     max-height while the prints had a square frame, so the ice section put
+     its skates and its ice-fishing copy at two different heights. The lead
+     drawing of a slide now takes the same frame as a print. */
+  .mslide .a-trout,.mslide .a-skates{width:min(100%,var(--frame));max-width:none;
+    aspect-ratio:1;height:auto;object-fit:contain;margin-inline:auto;display:block}
+  .mslide .a-card{margin-inline:auto;max-width:min(58%,205px)}
+  .mslide .a-card img{width:100%;height:auto;max-height:none}
 
   /* EVERY PRINT SITS STRAIGHT. Only the CSS tilts are removed, and that is
      all that is needed: the prints are drawn square in their files. An
@@ -2166,7 +2175,6 @@ body{overscroll-behavior-y:none;background:var(--paper);
      level. Do not counter-rotate these; look at one before believing a
      number about it. */
   .mslide .ttd-shot,.mslide .ttd-shot img,.mslide .a-card{transform:none}
-  .mslide .a-card{margin-inline:auto;max-width:min(60%,215px)}
 
   /* controls: a step either side and a plain 1 / 3 so it is obvious there is
      more than one. Sized to the 44px touch target. */
@@ -2216,12 +2224,26 @@ body{overscroll-behavior-y:none;background:var(--paper);
   /* the decorative pieces are the other half of the problem: they sit
      between an activity's copy and the next activity's photograph, so every
      pixel of them is a pixel pushing related things apart. */
-  .trailspread .t-signpost{max-width:min(54%,186px)}
-  .trailspread .t-worth   {max-width:min(36%,132px)}
-  .dock-spread .dock-art  {max-width:min(56%,205px)}
-  .dock-spread .a-card    {max-width:min(46%,178px)}
-  .sled-spread .sled-art  {max-width:min(62%,215px)}
-  .ice-spread  .a-skates  {max-width:min(58%,215px)}
+  /* the two handwritten notes the owner asked to drop on mobile */
+  .trailspread .t-worth,.sled-spread .say-season{display:none}
+
+  /* the signpost and the canoe move BELOW their carousel and come up in
+     size, centred; both are section pieces rather than part of any one
+     activity, so they read better as a full-width closing mark */
+  .trailspread .t-signpost{max-width:min(76%,290px);margin-inline:auto;order:3}
+  .trailspread .sp-head   {order:0}
+  .trailspread .mcar      {order:1}
+  .trailspread .mcar-nav  {order:2}
+  .dock-spread .a-canoe   {max-width:min(88%,330px);margin-inline:auto}
+
+  /* winter: the print up 20% and centred, the snowmobile much larger, and
+     the hosts line centred under it */
+  /* the winter print is a landscape shape, so its WIDTH is what limits it —
+     the earlier max-height never came into play. 64% -> 77% is the 20%. */
+  .sled-spread .s-photo   {max-width:min(77%,300px);margin-inline:auto}
+  .sled-spread .sled-art  {max-width:min(94%,350px);margin-inline:auto}
+  .sled-spread .s-hosts   {text-align:center}
+
   .spread .say            {max-width:min(40%,150px)}
   .wild-spread .wild-note {max-width:100%}
 
