@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.8
+Current release: site live 7.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,24 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+RAINBOW RANGE BACK ON A TILT, 7.9
+-------------------------------------------------------------------
+Mobile only, one rule. rotate(-7deg) on the Rainbow print inside its
+carousel frame. Desktop identical across ten viewport sizes; the
+desktop print is untouched and still square.
+
+The turn is on the PICTURE, not the frame, so the frame stays square
+and the eleven slides keep their level copy line.
+
+IT NEEDED scale(.9) WITH IT. The picture fills its frame edge to
+edge, and a 7 degree turn grows a bounding box by about 12% each
+way: at full size it touched both screen edges and crossed 10px into
+the copy below. Scaled to .9 it clears the screen by the same 18px
+as the column margin and the copy by 9 to 14px. Any future tilt in
+these frames needs the same allowance — the frames are sized to the
+column, so there is no spare room in them.
 
 
 FISH CARD OFF THE PHONE, CANOE UP, 7.8
@@ -1760,7 +1778,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=077021cf at the time of writing), so it changes only when
+(?v=4280e46c at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

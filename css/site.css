@@ -2187,6 +2187,14 @@ body{overscroll-behavior-y:none;background:var(--paper);
      level. Do not counter-rotate these; look at one before believing a
      number about it. */
   .mslide .ttd-shot,.mslide .ttd-shot img,.mslide .a-card{transform:none}
+  /* the one print the owner wants on a tilt again. It turns inside its frame,
+     so the frame stays square and the slide heights stay level with the rest;
+     only the picture leans. */
+  /* scaled to .9 as well, because a 7deg turn grows this print's bounding box
+     by about 12% either way — at full size it touched the screen edges and
+     crossed into the copy below. The frame is unchanged, so the slide heights
+     stay level; the picture simply sits a little smaller within it. */
+  .mcar .mslide .rr-photo img{transform:rotate(-7deg) scale(.9)}
 
   /* controls: a step either side and a plain 1 / 3 so it is obvious there is
      more than one. Sized to the 44px touch target. */
