@@ -497,3 +497,115 @@
     });
   });
 })();
+
+
+/* ---- Things To Do: one-at-a-time carousels, mobile only ----------------
+   The swiping itself is native overflow scrolling with scroll-snap, so a
+   drag gets the platform's own physics and a keyboard gets scrolling for
+   free. This only drives the arrows and keeps the counter honest.
+
+   It is gated to the mobile breakpoint and torn down above it, because
+   above 899px .mcar is display:contents — the track has no box, scrollLeft
+   is meaningless, and marking slides aria-hidden there would hide copy from
+   assistive tech that is plainly visible on screen. */
+(function () {
+  "use strict";
+  var mq = window.matchMedia("(max-width:899px)");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var wired = [];
+
+  function setup(root) {
+    var slides = Array.prototype.slice.call(root.querySelectorAll(".mslide"));
+    var nav = root.parentNode.querySelector(".mcar-nav");
+    if (slides.length < 2 || !nav) return null;
+
+    var prev = nav.querySelector(".mprev");
+    var next = nav.querySelector(".mnext");
+    var now = nav.querySelector(".mnow");
+    var index = 0;
+
+    function mark(i) {
+      index = i;
+      if (now) now.textContent = String(i + 1);
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+      slides.forEach(function (s, n) {
+        s.setAttribute("aria-hidden", n === i ? "false" : "true");
+      });
+    }
+    /* offsetLeft is measured from the nearest positioned ancestor, which here
+       is .spread, not the track — and the track carries a negative margin and
+       a matching padding so the slides can bleed to the screen edge. That put
+       the arrow target 18px out; only scroll-snap was hiding it. Live rects
+       plus the current scrollLeft are agnostic to all of that. */
+    function offsetOf(i) {
+      var pad = parseFloat(getComputedStyle(root).paddingLeft) || 0;
+      return root.scrollLeft + slides[i].getBoundingClientRect().left
+             - root.getBoundingClientRect().left - pad;
+    }
+    function go(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      root.scrollTo({ left: offsetOf(i), behavior: reduceMotion ? "auto" : "smooth" });
+      mark(i);
+    }
+
+    var onPrev = function () { go(index - 1); };
+    var onNext = function () { go(index + 1); };
+    var t;
+    var onScroll = function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        /* nearest slide by position, not scrollLeft / clientWidth: the track
+           is padded and gapped, so the slide pitch is not the track width and
+           dividing by it drifts as the slide count grows */
+        var i = 0, best = Infinity, rootLeft = root.getBoundingClientRect().left;
+        slides.forEach(function (s, n) {
+          var d = Math.abs(s.getBoundingClientRect().left - rootLeft);
+          if (d < best) { best = d; i = n; }
+        });
+        if (i !== index) mark(i);
+      }, 90);
+    };
+    var onKey = function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
+    };
+
+    prev.addEventListener("click", onPrev);
+    next.addEventListener("click", onNext);
+    root.addEventListener("scroll", onScroll, { passive: true });
+    root.addEventListener("keydown", onKey);
+    root.setAttribute("tabindex", "0");
+    root.setAttribute("role", "group");
+    root.setAttribute("aria-roledescription", "carousel");
+    mark(0);
+
+    return function teardown() {
+      prev.removeEventListener("click", onPrev);
+      next.removeEventListener("click", onNext);
+      root.removeEventListener("scroll", onScroll);
+      root.removeEventListener("keydown", onKey);
+      root.removeAttribute("tabindex");
+      root.removeAttribute("role");
+      root.removeAttribute("aria-roledescription");
+      root.scrollLeft = 0;
+      slides.forEach(function (s) { s.removeAttribute("aria-hidden"); });
+    };
+  }
+
+  function sync() {
+    if (mq.matches && !wired.length) {
+      document.querySelectorAll("[data-mcar]").forEach(function (root) {
+        var down = setup(root);
+        if (down) wired.push(down);
+      });
+    } else if (!mq.matches && wired.length) {
+      wired.forEach(function (down) { down(); });
+      wired = [];
+    }
+  }
+
+  sync();
+  if (mq.addEventListener) mq.addEventListener("change", sync);
+  else if (mq.addListener) mq.addListener(sync);
+})();
