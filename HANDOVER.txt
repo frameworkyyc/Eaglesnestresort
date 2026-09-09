@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.3
+Current release: site live 7.4
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,58 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+MOBILE CAROUSELS, 7.4
+-------------------------------------------------------------------
+Five sections became one-item-at-a-time carousels on mobile: trail
+(2), falls (2), wildlife (3), dock (2), ice (2). Ridge and the
+closing panel have a single item each and stay as they are. Page
+height at 375px: 9,262 -> 7,501. Against where this started, 10,247.
+
+THE WRAPPERS ARE INVISIBLE TO DESKTOP AND THAT IS THE WHOLE TRICK.
+.mcar and .mslide are display:contents outside the mobile query,
+which dissolves them: the items inside become grid items of .spread
+exactly as before, every grid-column and grid-row rule still matches
+by descendant selector, and source order — so paint order — is
+untouched. The nav is display:none. Desktop measured identical at
+ten viewport sizes from 900 to 2100 wide.
+
+SWIPING IS NATIVE OVERFLOW SCROLLING WITH SCROLL-SNAP, not a JS
+drag. The platform's own physics and momentum come free, the track
+is keyboard scrollable, and the script only drives the arrows and
+keeps the counter honest. Reduced-motion is respected.
+
+THE SCRIPT IS GATED TO THE BREAKPOINT AND TORN DOWN ABOVE IT.
+Above 899px the track is display:contents, so it has no box,
+scrollLeft is meaningless, and — the part that matters — marking
+slides aria-hidden there would hide copy from assistive tech that is
+plainly visible on screen. It listens for the media query and
+unbinds.
+
+offsetLeft IS MEASURED FROM .spread, NOT THE TRACK, because .spread
+is the nearest positioned ancestor. The track also carries a
+negative margin and a matching padding so slides can bleed to the
+screen edge. Together that put the arrow target 18px out and only
+scroll-snap was hiding it. Both the arrows and the scroll handler
+now work from live getBoundingClientRect values plus scrollLeft,
+which are agnostic to all of it.
+
+TWO TESTING TRAPS WORTH REMEMBERING:
+  - A mouse drag does NOT scroll a native overflow container. It is
+    touch behaviour. Mouse-drag tests will report a dead carousel
+    that works fine on a phone.
+  - The counter updates after a 90ms debounce on top of a smooth
+    scroll animation. A 500ms wait reports failure; 1,200ms reports
+    the truth. Do not conclude the handler is broken without
+    allowing for the animation.
+
+AND THE ONE THAT COST THE MOST TIME: deskdiff.py keyed elements by
+their index in document order, so INSERTING the wrappers shifted
+every index after them and reported 186 changed elements on a
+desktop that had not moved at all. It now keys on class name plus
+occurrence, and skips the wrapper classes. The self-comparison noise
+floor is what proved the diff was real or not — keep printing it.
 
 
 MOBILE TIGHTENING, 7.3
@@ -1568,7 +1620,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=28006b8a at the time of writing), so it changes only when
+(?v=792e3549 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

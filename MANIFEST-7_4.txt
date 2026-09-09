@@ -1,0 +1,140 @@
+EAGLE'S NEST RESORT — RELEASE 7.4 — CHANGE MANIFEST
+===================================================================
+Mobile carousels. Delta against 7.3. 21 files.
+Upload preserving directory structure.
+
+Stylesheet address moves:
+    ?v=28006b8a  ->  ?v=792e3549
+Re-derived from the files in this bundle as
+md5(css/site.css + js/site.js), first 8 characters.
+
+*** js/site.js IS IN THIS BUNDLE. ***
+It has not changed since 6.5, so it is easy to skip out of habit.
+The carousels do not work without it — the arrows and the 1 / 3
+counter simply will not appear. Please make sure it goes up.
+
+No images in this release.
+
+
+DESKTOP IS UNTOUCHED — MEASURED, NOT ASSUMED
+-------------------------------------------------------------------
+The carousel wrappers sit in the shared markup, so this needed
+proving rather than asserting. Outside the mobile query .mcar and
+.mslide are display:contents, which dissolves them completely: the
+items inside become grid items exactly as they were, every
+grid-column and grid-row rule still matches, and source order — so
+paint order — is unchanged. The controls are not rendered at all.
+
+All 204 elements were compared against 7.3 at ten viewport sizes
+from 900x900 to 2100x1200: zero differences, with a self-comparison
+noise floor of zero beside it. The other 17 pages are unchanged at
+both 375px and 1366px, and no page throws a JS error.
+
+
+NEW  (none)          DELETED  (none)
+-------------------------------------------------------------------
+
+
+MODIFIED  (21 files)
+-------------------------------------------------------------------
+things-to-do.html
+      Each activity's photograph and copy wrapped into a slide, with
+      a track and a set of controls per section. Made through
+      build_ttd.py; the builder still reproduces the page
+      byte-for-byte.
+
+        Find a trail       Rainbow Range / Beef Trail        1 / 2
+        Chase a waterfall  Hunlen Falls / Hotnarko Falls     1 / 2
+        Who's around       Pelican / Fox / Snowshoe hare     1 / 3
+        Start at the dock  Canoes & pedal boats / Fishing    1 / 2
+        Out on the lake    Ice fish / Skate the lake         1 / 2
+
+      Winter and the closing panel have a single item each and stay
+      as plain blocks, as you asked.
+
+css/site.css
+      One new block: the track, the slides, and the controls. All
+      inside max-width:899px apart from the two display:contents
+      lines that keep desktop clear of it.
+
+js/site.js
+      A separate module for these carousels. The existing homepage
+      carousel is not touched.
+
+index.html, lodge.html, hosts.html, getting-here.html, booking.html
+lodge/*.html  (12 files)
+      Address only — two ?v= references each.
+
+HANDOVER.txt
+      Release line 7.3 -> 7.4, address updated, the work recorded.
+
+
+HOW IT BEHAVES
+-------------------------------------------------------------------
+  - Swiping is native scrolling with scroll-snap, not a JS drag, so
+    it uses the phone's own physics and momentum and feels like the
+    rest of the platform.
+  - Arrows step one item at a time and grey out at each end, so it
+    is clear where you are in the set.
+  - A plain "1 / 3" sits between them.
+  - The text under the photo is part of the slide, so it changes
+    with the picture.
+  - The track takes keyboard focus and answers to left/right arrow
+    keys.
+  - Reduced-motion preferences are respected.
+  - Above 899px the script unbinds itself completely.
+
+Page height at 375px: 9,262 -> 7,501. From where this started before
+the mobile work, 10,247.
+
+
+THREE THINGS THAT WENT WRONG ON THE WAY
+-------------------------------------------------------------------
+1. MY DESKTOP CHECK REPORTED 186 CHANGED ELEMENTS ON A DESKTOP THAT
+   HAD NOT MOVED. It keyed each element by its position in document
+   order, and inserting the wrappers shifted every index after them.
+   It now keys on class name plus occurrence. This is the second
+   time that test has needed fixing before it could be trusted; the
+   self-comparison it prints beside the real one is what catches it.
+
+2. THE ARROWS WERE LANDING 18px OFF and scroll-snap was quietly
+   covering for it. The offset the code used is measured from the
+   spread, not from the track, and the track carries a negative
+   margin so the slides can bleed to the screen edge. Both the
+   arrows and the counter now work from live measurements instead.
+
+3. A MOUSE DRAG DOES NOT SCROLL A NATIVE OVERFLOW CONTAINER — that
+   is touch behaviour. My first swipe test reported a dead carousel
+   that was in fact working. Worth knowing before anyone concludes
+   the same thing.
+
+
+AUDIT RUN ON THIS BUNDLE
+-------------------------------------------------------------------
+  tag-stack nesting, all 18 pages          clean
+  every src/href resolves                  0 unresolved
+  exactly one ?v= pair per page            18/18, all 792e3549
+  declared image w/h vs file on disk       0 mismatches
+  sheet order intact                       yes
+  build_ttd.py round-trip                  byte-for-byte
+  5 tracks, 11 slides, 5 sets of controls  present
+  desktop geometry, 10 viewport sizes      identical, noise floor 0
+  other 17 pages, 375px and 1366px         unchanged, no JS errors
+  horizontal overflow, 320-899px           none at any width
+  content off-canvas or clipped            none
+  carousels live below 900px               5 of 5 at every width
+  carousels torn down at 1200px            yes, and no slide left
+                                           marked aria-hidden
+
+
+STILL OUTSTANDING
+-------------------------------------------------------------------
+  - "Trails lead to new stories." is still not placed anywhere.
+  - Copy unapproved: Hunlen Falls, "Out on the lake.", "The Beef
+    Trail", the pin labels, the wildlife opening line.
+  - info@eaglesnest-resort.com is in 41 mailto links and has never
+    been confirmed deliverable. Still the most important open item.
+  - Twelve unreferenced image files in the repo, hook-note.webp
+    included; the list is in the 6.6 manifest.
+    images/lg/lakeshore.jpg is NOT one of them.
+  - Wildlife prints do not rotate below 900px (from 6.7).
