@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.2
+Current release: site live 8.3
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,30 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+GALLERY BAND CORRECTED, 8.3
+-------------------------------------------------------------------
+The gallery section on index.html now carries class="band-2".
+index.html is the only changed file; no address bump (css and js
+untouched, still 53a54ae6).
+
+THE RIDGE DIVIDER DICTATES THE BAND BELOW IT. The wave under the
+hero is filled with --near:var(--paper-2), so whatever follows it
+must be a band-2 section or the colour steps at the base of the
+wave. The gallery went in as a plain section and stepped from
+rgb(231,224,206) to rgb(241,236,223) right where the wave lands.
+
+Adding band-2 fixes it and costs nothing: the section that follows
+is also band-2, so the two run on as one continuous band with no
+seam between them. Both joins measure a step of 0.0 at 375, 1024,
+1440 and 1920.
+
+WHEN INSERTING A SECTION ANYWHERE ON THIS SITE, check the divider
+above it and the section below it. The bands alternate paper /
+paper-2 and the ridge SVGs are coloured to match their neighbours —
+dropping a section in without matching the band leaves a hard line
+that is easy to miss on a screenshot and obvious on a screen.
 
 
 GALLERY ON THE LANDING PAGE, 8.2

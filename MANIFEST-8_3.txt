@@ -1,0 +1,60 @@
+EAGLE'S NEST RESORT — RELEASE 8.3 — CHANGE MANIFEST
+===================================================================
+Delta against 8.2. TWO files. Upload preserving directory structure.
+
+*** NO ADDRESS CHANGE ***
+    ?v= stays at 53a54ae6 on every page.
+css/site.css and js/site.js are untouched. Do not re-upload the
+other 17 pages — they are unchanged.
+
+
+MODIFIED  (2 files)
+-------------------------------------------------------------------
+index.html     The gallery section now carries the band-2
+               background, so it matches the wave above it.
+HANDOVER.txt   Release line 8.2 -> 8.3.
+
+
+WHAT WAS WRONG
+-------------------------------------------------------------------
+The wave divider under the hero is filled with the darker cream, so
+whatever sits below it has to be a band-2 section. I put the gallery
+in as a plain section, so the colour stepped from rgb(231,224,206)
+to rgb(241,236,223) right at the base of the wave — a hard line
+across the full width.
+
+The gallery is now band-2. The section that follows it is band-2 as
+well, so the two simply run on as one continuous band with nothing
+visible between them.
+
+Measured at the two joins, at 375, 1024, 1440 and 1920:
+
+    wave into gallery        step 0.0
+    gallery into next        step 0.0
+
+My mistake, and an avoidable one: the bands on this site alternate
+and the wave dividers are coloured to match their neighbours, so any
+new section has to be checked against the divider above it and the
+section below it. That is now written into the handover.
+
+
+AUDIT RUN ON THIS BUNDLE
+-------------------------------------------------------------------
+  tag-stack nesting, all 18 pages          clean
+  every src/href resolves                  0 unresolved
+  duplicate ids on index.html              none
+  ?v= on every page                        53a54ae6, unchanged
+  css+js hash                              53a54ae6, confirms no bump
+  colour step at both gallery joins        0.0 at four widths
+  lodge.html                                untouched
+
+
+STILL OUTSTANDING
+-------------------------------------------------------------------
+  - "Trails lead to new stories." is still not placed anywhere.
+  - Copy unapproved: Hunlen Falls, "Out on the lake.", "The Beef
+    Trail", the pin labels, the wildlife opening line.
+  - info@eaglesnest-resort.com is in 41 mailto links and has never
+    been confirmed deliverable. Still the most important open item.
+  - Twelve unreferenced image files in the repo; the list is in the
+    6.6 manifest. images/lg/lakeshore.jpg is NOT one of them.
