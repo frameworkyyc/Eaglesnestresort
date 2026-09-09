@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.7
+Current release: site live 7.8
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,24 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+FISH CARD OFF THE PHONE, CANOE UP, 7.8
+-------------------------------------------------------------------
+Mobile only, CSS only. Desktop identical across ten viewport sizes.
+
+  .a-card    display:none below 900px. It stays in the markup and on
+             desktop — this only stops it being drawn on the phone.
+  .a-canoe   fills the column: 297 -> 338 at 375px, 330 -> 460 at
+             540px and above.
+
+margin-inline:auto CANNOT CENTRE A BOX WIDER THAN ITS CONTAINER. A
+bleed past the column was tried, to get the canoe larger still —
+width:calc(100% + var(--pad)). The auto margins resolved to zero and
+the drawing ran flush to the right edge of the screen at every phone
+width, centred nowhere. Going wider than the container needs
+symmetric NEGATIVE margins, not auto ones. Backed out; the canoe
+fills the column and stops there.
 
 
 MOBILE PHOTOGRAPHS FILL THE COLUMN, 7.7
@@ -1742,7 +1760,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=cb98a37d at the time of writing), so it changes only when
+(?v=077021cf at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

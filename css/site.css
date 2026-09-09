@@ -2172,13 +2172,11 @@ body{overscroll-behavior-y:none;background:var(--paper);
      drawing of a slide now takes the same frame as a print. */
   .mslide .a-trout,.mslide .a-skates{width:min(100%,var(--frame));max-width:none;
     aspect-ratio:1;height:auto;object-fit:contain;margin-inline:auto;display:block}
-  /* the fish card and the canoe both sit below the carousel now. The card
-     was the reason the dock's second slide ran taller than its first, which
-     left a long drop between the copy of slide one and the controls: a track
-     is as tall as its tallest slide. Out of the slide, the two match. */
-  .dock-spread .a-card{max-width:min(56%,205px);margin-inline:auto;
-    display:block;transform:none}
-  .dock-spread .a-card img{width:100%;height:auto;max-height:none}
+  /* the fish card comes off the phone entirely. It stays in the markup and on
+     desktop; this only hides it below 900px. Moving it out of the carousel
+     slide in 7.7 is what levelled the two dock slides, and that still holds —
+     the card is simply no longer drawn here. */
+  .dock-spread .a-card{display:none}
 
   /* EVERY PRINT SITS STRAIGHT. Only the CSS tilts are removed, and that is
      all that is needed: the prints are drawn square in their files. An
@@ -2248,7 +2246,12 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .trailspread .sp-head   {order:0}
   .trailspread .mcar      {order:1}
   .trailspread .mcar-nav  {order:2}
-  .dock-spread .a-canoe   {max-width:min(88%,330px);margin-inline:auto}
+  /* the canoe fills the column. A bleed past it was tried and abandoned:
+     margin-inline:auto cannot centre a box wider than its container — the
+     auto margins resolve to zero and the drawing ran to the right edge of
+     the screen. Wider than the column needs symmetric negative margins, and
+     it is not worth the asymmetry here. */
+  .dock-spread .a-canoe   {max-width:min(100%,460px);margin-inline:auto}
 
   /* winter: the print up 20% and centred, the snowmobile much larger, and
      the hosts line centred under it */
