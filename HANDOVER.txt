@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.0
+Current release: site live 8.1
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,42 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+SECONDARY COPY CONTRAST, FOREST SEAM, 8.1
+-------------------------------------------------------------------
+.sub was 4.4:1 on a phone and 4.6:1 on desktop against the cream —
+either side of the 4.5:1 body text needs, which is why the dock
+intro read faint. The background behind it is FLAT, not busy, so it
+was contrast and nothing else; there was no point reaching for a
+scrim. #3E5544 gives 5.3 to 6.4:1 on every cream this class sits on
+and stays well clear of the heading green at 9:1, so the hierarchy
+holds. Scoped .ttd:not(.on-dark) .sub — the dark wildlife panel
+keeps its own colour and no other page is touched. Geometry is
+unchanged, so deskdiff cannot see this one: it is a colour change to
+desktop as well, and deliberate.
+
+THE FOREST SHEET WAS CUT OFF, NOT FADED OUT — the third sheet to do
+this, after snow in 7.1. It carries its own fade over its bottom
+sixth, but .ttd-forested has margin-bottom:-11vw, so the glade's
+background paints over the last of it while it is still about half
+opaque. Both sections meet on the SAME cream, which is why it was
+easy to miss: the step is purely the illustration being sliced. 12
+points of colour across the full width at 1920px, down to 1.8 with
+a fade laid over the last 17vw, ending at bottom:11vw — exactly
+where the glade's background begins.
+
+WHY IT ONLY SHOWED ON WIDE SCREENS. The sheet is sized to the
+viewport width but the section's height is set by its content, so
+how much of the sheet's fade survives to the join changes with the
+window. At 1440 the sheet has already reached zero before the join
+and there is nothing to see; at 1920 it has not. Sweep the widths
+before concluding a seam is absent — a single screenshot said clean.
+
+MEASURING A SEAM: use the MEDIAN row-to-row change across the
+width, not the mean. Text edges move a few columns and swamp a mean;
+a real seam moves most of the width at once. Fraction of columns
+changing is the confirming number.
 
 
 CLOSING PANEL ON MOBILE, 8.0
@@ -1815,7 +1851,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=da8534f4 at the time of writing), so it changes only when
+(?v=53a54ae6 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

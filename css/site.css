@@ -1940,6 +1940,37 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .i-photo-b{max-width:clamp(140px,19vw,265px)}
 .d-guide{max-width:20rem}
 
+/* The secondary copy on the cream sections was sitting at 4.4:1 against its
+   background on a phone and 4.6:1 on desktop — either side of the 4.5:1 that
+   body text needs, which is why "Some of the best of it is thirty seconds
+   from your door." read as faint. The background behind it is flat, not busy,
+   so this is contrast and nothing else. #3E5544 gives 5.4 to 6.6:1 across
+   every cream this class sits on, and stays well clear of the heading green
+   (#1F3327, 9:1) so the hierarchy still reads. Scoped to this page's light
+   sections: the dark wildlife panel keeps its own colour, and no other page
+   is touched. */
+.ttd:not(.on-dark) .sub{color:#3E5544}
+
+@media (min-width:900px){
+  /* THE FOREST SHEET IS CUT OFF, NOT FADED OUT — the same fault the snow
+     sheet had in 7.1. It carries its own fade over its bottom sixth, but the
+     glade section is pulled up 11vw by a negative margin and its background
+     paints over the rest while the sheet is still about half opaque. Both
+     sections meet on the same cream, so the step is purely the illustration
+     being sliced: 12 points of colour across the full width at 1920px.
+     This lays the section's own colour over the last stretch so the drawing
+     has gone before the join arrives. It ends at bottom:11vw, which is
+     exactly where the glade's background starts. Desktop only, as asked —
+     the same join measures under 4 points on a phone. */
+  .ttd-forested::after{content:"";position:absolute;left:0;right:0;
+    bottom:11vw;height:17vw;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(245,230,208,0) 0,
+      rgba(245,230,208,.5) 45%,
+      rgba(245,230,208,.88) 78%,
+      #F5E6D0 100%)}
+}
+
 @media (min-width:900px){
   /* the column gap is published as a variable because the wildlife section's
      closing row needs to measure against it — see .wild-spread .eye-out.
