@@ -2149,11 +2149,20 @@ body{overscroll-behavior-y:none;background:var(--paper);
   /* the frame, 20% up on 7.5. aspect-ratio rather than an explicit height, so
      that when the frame is wider than the screen allows it stays square
      instead of overflowing: the width caps at 100% and the height follows. */
-  .mslide{--frame:clamp(274px,39.6vh,343px)}
-  .mslide .sp-shot{width:min(100%,var(--frame));max-width:none;aspect-ratio:1;
-    height:auto;margin-inline:auto;display:grid;place-items:center}
-  .mslide .sp-shot img{width:100%;height:100%;object-fit:contain;
-    max-height:none;margin:0}
+  /* the frame fills the column now: a landscape print runs edge to edge with
+     the paragraph under it, and a portrait one gains about 45% on 7.6.
+     .mcar in front of the selector below is not decoration — .spread .sp-shot
+     img sets a max-height of 29vh and, at equal specificity, was winning on
+     source order and holding every picture to 235px inside a 322px frame. */
+  .mslide{--frame:clamp(300px,46vh,420px)}
+  /* the picture is taken OUT OF FLOW inside the frame. In flow, its
+     height:100% is an indefinite percentage, so the browser falls back to the
+     intrinsic height — a portrait print then stretched the frame to 507px and
+     the square was lost. Absolutely positioned, it cannot size its parent. */
+  .mslide .sp-shot{position:relative;width:min(100%,var(--frame));max-width:none;
+    aspect-ratio:1;height:auto;margin-inline:auto}
+  .mcar .mslide .sp-shot img{position:absolute;inset:0;width:100%;height:100%;
+    object-fit:contain;max-height:none;margin:0}
 
   /* THE SLIDES MUST ALL BE THE SAME HEIGHT OR THE COPY STEPS AS YOU SWIPE.
      Two of these carousels lead a slide with a drawing rather than a
@@ -2163,8 +2172,13 @@ body{overscroll-behavior-y:none;background:var(--paper);
      drawing of a slide now takes the same frame as a print. */
   .mslide .a-trout,.mslide .a-skates{width:min(100%,var(--frame));max-width:none;
     aspect-ratio:1;height:auto;object-fit:contain;margin-inline:auto;display:block}
-  .mslide .a-card{margin-inline:auto;max-width:min(58%,205px)}
-  .mslide .a-card img{width:100%;height:auto;max-height:none}
+  /* the fish card and the canoe both sit below the carousel now. The card
+     was the reason the dock's second slide ran taller than its first, which
+     left a long drop between the copy of slide one and the controls: a track
+     is as tall as its tallest slide. Out of the slide, the two match. */
+  .dock-spread .a-card{max-width:min(56%,205px);margin-inline:auto;
+    display:block;transform:none}
+  .dock-spread .a-card img{width:100%;height:auto;max-height:none}
 
   /* EVERY PRINT SITS STRAIGHT. Only the CSS tilts are removed, and that is
      all that is needed: the prints are drawn square in their files. An
@@ -2243,6 +2257,14 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .sled-spread .s-photo   {max-width:min(77%,300px);margin-inline:auto}
   .sled-spread .sled-art  {max-width:min(94%,350px);margin-inline:auto}
   .sled-spread .s-hosts   {text-align:center}
+  .sled-spread .s-hosts > *{margin-inline:auto}
+
+  /* the closing panel reads better centred on a phone, and the owner asked
+     for the handwritten note to come off */
+  .ttd-cta .cta-left,.ttd-cta .cta-right{text-align:center}
+  .ttd-cta .cta-left > *,.ttd-cta .cta-right > *{margin-inline:auto}
+  .ttd-cta .btn-row{justify-content:center}
+  .ttd-cta .say-good{display:none}
 
   .spread .say            {max-width:min(40%,150px)}
   .wild-spread .wild-note {max-width:100%}

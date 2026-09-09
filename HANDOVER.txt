@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.6
+Current release: site live 7.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,49 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+MOBILE PHOTOGRAPHS FILL THE COLUMN, 7.7
+-------------------------------------------------------------------
+Mobile only. Desktop identical across ten viewport sizes, both
+markup moves included.
+
+  carousel frame     322 -> 338 at 375px, the full column width
+  landscape prints   338x225 — edge to edge with the paragraph
+  portrait prints    225x338, up about 45% on 7.6
+  a-card             moved out of its slide, below the carousel
+  s-hosts children   centred
+  closing panel      centred; say-good removed
+
+TWO CAPS, ONE ROOT CAUSE, AGAIN. The frame was already 322 square in
+7.6 but the PICTURE inside it was only 235px tall, because
+.spread .sp-shot img sets max-height:29vh and won on source order at
+equal specificity — the carousel rule sat earlier in the file. It
+needed .mcar in front of the selector to take it. If a picture will
+not grow, find what is still capping it before touching the number
+you meant to change.
+
+aspect-ratio IS A PREFERENCE, NOT A LIMIT. With the height cap gone,
+the img's height:100% became an indefinite percentage, the browser
+fell back to the intrinsic height, and a portrait print stretched
+its "square" frame to 507px. The picture is now absolutely
+positioned inside the frame so it cannot size its own parent. Any
+box that must hold its shape against replaced content needs the
+content out of flow.
+
+A TRACK IS AS TALL AS ITS TALLEST SLIDE. The dock section left a
+251px drop between the copy of slide one and the controls, purely
+because slide two carried the fish card as a third item. Nothing was
+wrong with the spacing — the slide was short and the track was not.
+The card moved out below the carousel, next to the canoe, and the
+slack fell to 0 and 23. Look at the OTHER slide when one slide has
+too much room under it.
+
+CENTRING A BLOCK IS NOT CENTRING ITS CONTENTS. .s-hosts had
+text-align:center and sat full width, but its children carry a
+max-width and no auto margin, so the text was centred inside a box
+pinned to the left of the column. The children need margin-inline:
+auto as well. Same fix for the closing panel.
 
 
 MOBILE SIZING AND PLACEMENT, 7.6
@@ -1699,7 +1742,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=6f738b50 at the time of writing), so it changes only when
+(?v=cb98a37d at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
