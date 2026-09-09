@@ -2275,7 +2275,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .ttd-cta .cta-left,.ttd-cta .cta-right{text-align:center}
   .ttd-cta .cta-left > *,.ttd-cta .cta-right > *{margin-inline:auto}
   .ttd-cta .btn-row{justify-content:center}
-  .ttd-cta .say-good{display:none}
+  .ttd-cta .say-good,.ttd-cta .say-ask{display:none}
 
   .spread .say            {max-width:min(40%,150px)}
   .wild-spread .wild-note {max-width:100%}
@@ -2296,7 +2296,23 @@ body{overscroll-behavior-y:none;background:var(--paper);
      Rainbow print's rotated corner on screen are both gone: with the prints
      straight and in one uniform frame, everything is centred instead. */
 
-  /* the closing panel carried 111px of padding above it and 106 below */
-  .ttd-cta{padding-bottom:clamp(1.6rem,6vw,2.6rem)}
+  /* THE CLOSING PANEL HAS TWO CLEAR BANDS, NOT ONE: a strip of pale sky
+     before the sheet's mountains come in, and open ground below them.
+     Together they cannot hold the whole block, so the heading takes the
+     upper band and the copy and buttons take the lower, with the ridge
+     between them.
+
+     Both bands were measured off the rendered background with the copy
+     hidden — the only way to see what is actually behind it — and they sit
+     at 13-53vw and from 79vw down, holding across the whole mobile range.
+
+     THE COPY IS ANCHORED TO A vw POSITION, NOT STACKED ON A MARGIN. The
+     heading's height is in px and does not scale, so a margin-based stack
+     drifted the copy back onto the ridge as the viewport widened: 60
+     variance behind it at 899px against 0.7 at 375. A vw min-height on the
+     heading fixes where the copy starts whatever the heading does. */
+  .ttd-cta{padding-top:15vw;padding-bottom:clamp(1.6rem,6vw,2.6rem)}
+  .ttd-cta .cta-left{min-height:51vw}
+  .ttd-cta .cta-right{margin-top:12vw}
   .cta-spread{gap:clamp(.9rem,3.4vw,1.2rem)}
 }

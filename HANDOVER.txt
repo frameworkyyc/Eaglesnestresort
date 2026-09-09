@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.9
+Current release: site live 8.0
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,43 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+CLOSING PANEL ON MOBILE, 8.0
+-------------------------------------------------------------------
+Mobile only. say-ask hidden; the heading lifted into the clear sky
+above the sheet's ridge and the copy anchored below it. Desktop
+identical across ten viewport sizes.
+
+THE PANEL HAS TWO CLEAR BANDS, NOT ONE. A strip of pale sky before
+the mountains come in, and open ground below them. Together they
+cannot hold the whole block, so the heading takes the upper and the
+copy and buttons take the lower, with the ridge between.
+
+MEASURE THE BACKGROUND WITH THE COPY HIDDEN. Sampling variance at
+the section's EDGES was misleading — the artwork lives at the edges
+and the copy is centred and narrow, so it reported the copy as
+sitting on a busy ground when it was not, and the reverse at wide
+widths. Setting visibility:hidden on the spread and sampling the
+region behind each block is the only reading that means anything.
+The bands are 13-53vw and 79vw down, and they hold from 320 to
+899px.
+
+ANCHOR THE COPY TO A vw POSITION, NOT A MARGIN STACK. The heading's
+height is in px and does not scale, so padding + heading + margin
+drifted the copy back onto the ridge as the viewport widened: 60
+variance behind it at 899px against 0.7 at 375. A vw min-height on
+.cta-left fixes where .cta-right starts whatever the heading does.
+Behind the type it is now 0.7 at every width.
+
+A CSS COMMENT THAT DOES NOT CLOSE TAKES THE REST OF THE FILE WITH
+IT. Twice in this session I appended prose to a block whose comment
+had already closed, leaving text and a stray */ in the middle of the
+stylesheet. Everything after it stopped parsing, the mobile layout
+silently reverted, and the measurements looked like a failed change
+rather than broken CSS. After ANY hand edit to site.css, check that
+/* and */ counts match and that braces balance — it takes a second
+and it caught both.
 
 
 RAINBOW RANGE BACK ON A TILT, 7.9
@@ -1778,7 +1815,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=4280e46c at the time of writing), so it changes only when
+(?v=da8534f4 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
