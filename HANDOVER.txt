@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.1
+Current release: site live 8.2
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,37 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+GALLERY ON THE LANDING PAGE, 8.2
+-------------------------------------------------------------------
+The lodge page's expandable gallery added to index.html as the first
+content section, directly under the hero's Booking / See The Lodge
+buttons. index.html is the ONLY changed file.
+
+NO ADDRESS BUMP THIS RELEASE. css/site.css and js/site.js were not
+touched, so md5(css+js) is unchanged at 53a54ae6 and every page
+keeps the ?v= it already has. Do not "helpfully" recompute it — a
+new address here would only bust caches for nothing.
+
+THE LIGHTBOX IS MARKUP, NOT SCRIPT. Copying the gallery section
+alone gets you a grid that expands and does nothing when tapped: the
+viewer is a <div class="lb" id="lightbox"> that lives at the foot of
+lodge.html, and site.js only wires what it finds. Both blocks have
+to travel together. The toggle is keyed to the ids resort-gallery
+and gal-toggle, which is fine because there is one gallery per page
+— checked for duplicate ids after the insert.
+
+Everything else on the landing page is unchanged bar one thing: the
+"Where this is" band gained 42px of top padding, because it now
+follows a section rather than the hero's ridge divider. That is the
+normal adjacency spacing, not a fault.
+
+COMPARING A PAGE AGAINST A COPY OF ITSELF: put the copy where its
+assets resolve. A before/after diff run against /tmp/index-before
+.html reported 173 changed elements including the nav — the copy had
+no stylesheet at that path. Copy the whole site directory and swap
+the one file.
 
 
 SECONDARY COPY CONTRAST, FOREST SEAM, 8.1

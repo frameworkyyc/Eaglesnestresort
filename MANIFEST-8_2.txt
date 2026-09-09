@@ -1,0 +1,93 @@
+EAGLE'S NEST RESORT — RELEASE 8.2 — CHANGE MANIFEST
+===================================================================
+Delta against 8.1. TWO files. Upload preserving directory structure.
+
+*** NO ADDRESS CHANGE THIS RELEASE ***
+    ?v= stays at 53a54ae6 on every page.
+
+css/site.css and js/site.js were not touched, so the address they
+are stamped with is still correct and no page needs re-uploading for
+it. This is the first release in a while where that is true — please
+do not re-upload the other 17 pages, they are unchanged.
+
+
+MODIFIED  (2 files)
+-------------------------------------------------------------------
+index.html     The lodge page's expandable gallery added as the
+               first content section, directly below the Booking and
+               See The Lodge buttons. Also carries the photograph
+               viewer markup that the gallery needs.
+
+HANDOVER.txt   Release line 8.1 -> 8.2.
+
+
+NEW  (none)          DELETED  (none)
+-------------------------------------------------------------------
+No new images. The gallery uses the same photographs as the lodge
+page, which are already on the server — images/gal for the grid and
+images/lg for the enlargements.
+
+
+WHAT WENT IN
+-------------------------------------------------------------------
+The same section, verbatim: "Have a look around.", all 34
+photographs, the collapsed grid with its fade, the View full gallery
+button and the "34 photographs in all" line. Tapping a photograph
+opens the same viewer with the same captions, arrows and counter.
+
+It sits after the hero's ridge divider, which makes it the first
+thing below the two buttons. Putting it inside the hero itself would
+have dropped a photo grid on top of the engraving.
+
+Checked at 375px and 1440px: expands and collapses, all 34 images
+load, the viewer opens on the right photograph, the arrows step, the
+counter reads 1 / 34, Escape closes it, no console errors and no
+horizontal overflow.
+
+
+ONE THING THAT IS EASY TO MISS IF THIS IS EVER REPEATED
+-------------------------------------------------------------------
+The photograph viewer is MARKUP, not something the script builds.
+Copying just the gallery section gets you a grid that expands and
+then does nothing when you tap a picture. The viewer is a separate
+block at the foot of lodge.html and had to come across as well. My
+first pass moved only the gallery and the viewer silently did not
+exist.
+
+
+THE REST OF THE PAGE
+-------------------------------------------------------------------
+Unchanged, with one expected exception: the "Where this is" band
+gained 42px of top padding, because it now follows a section rather
+than the hero's ridge divider. That is the normal spacing between
+adjacent sections, not a fault. Everything else measures identical
+at 375, 1024, 1440 and 1920.
+
+lodge.html is untouched — it still has its own copy of the gallery.
+
+
+AUDIT RUN ON THIS BUNDLE
+-------------------------------------------------------------------
+  tag-stack nesting, all 18 pages          clean
+  every src/href resolves                  0 unresolved
+  duplicate ids on index.html              none
+  ?v= on every page                        53a54ae6, unchanged
+  css+js hash                              53a54ae6, confirms no
+                                           address bump is needed
+  build_ttd.py round-trip                  byte-for-byte
+  gallery expand / collapse                works, 375 and 1440
+  viewer open, arrows, counter, Escape     works, 375 and 1440
+  broken images in the gallery             none of 34
+  console errors                           none
+  horizontal overflow                      none
+
+
+STILL OUTSTANDING
+-------------------------------------------------------------------
+  - "Trails lead to new stories." is still not placed anywhere.
+  - Copy unapproved: Hunlen Falls, "Out on the lake.", "The Beef
+    Trail", the pin labels, the wildlife opening line.
+  - info@eaglesnest-resort.com is in 41 mailto links and has never
+    been confirmed deliverable. Still the most important open item.
+  - Twelve unreferenced image files in the repo; the list is in the
+    6.6 manifest. images/lg/lakeshore.jpg is NOT one of them.
