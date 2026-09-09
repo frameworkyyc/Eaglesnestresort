@@ -2139,15 +2139,34 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .mslide > .ttd-shot,.mslide > .dock-art,.mslide > .ice-art{order:1}
   .mslide > .a-card{order:3}
 
-  /* one picture at a time, sized so the whole slide is readable without
-     scrolling it out of view */
-  .mslide .sp-shot,.mslide .dock-art,.mslide .ice-art{
-    max-width:100%;justify-self:center;margin-inline:auto}
-  .mslide .sp-shot img,.mslide img{
+  /* ONE FRAME, THE SAME FOR EVERY PICTURE. The prints run 0.67, 0.94 and 1.50
+     to one, so nothing but a fixed square treats them alike. object-fit is
+     CONTAIN, not cover: these are weathered prints with the torn paper edge
+     drawn into the file, and cover would crop 33% off every photograph and
+     take the edge with it. Contain keeps each print whole and gives them all
+     the same footprint and the same longest side — which also stops the copy
+     underneath jumping as you swipe. */
+  .mslide{--frame:clamp(228px,33vh,286px)}
+  .mslide .sp-shot{width:var(--frame);height:var(--frame);max-width:100%;
+    margin-inline:auto;display:grid;place-items:center}
+  .mslide .sp-shot img{width:100%;height:100%;object-fit:contain;
+    max-height:none;margin:0}
+  .mslide .dock-art,.mslide .ice-art{max-width:100%;margin-inline:auto}
+  .mslide .dock-art img,.mslide .ice-art img,.mslide .a-card img{
     width:auto;height:auto;max-width:100%;
-    max-height:clamp(200px,32vh,290px);margin-inline:auto}
+    max-height:clamp(170px,25vh,230px);margin-inline:auto}
   .mslide .a-canoe{max-width:min(62%,215px)}
-  .mslide .a-card img{max-height:clamp(170px,25vh,230px)}
+
+  /* EVERY PRINT SITS STRAIGHT. Only the CSS tilts are removed, and that is
+     all that is needed: the prints are drawn square in their files. An
+     earlier pass measured the artwork's own edges and counter-rotated each
+     one by up to 7.8deg — the estimator was reading the torn, curled corners
+     of the paper as the edge of the picture and reporting a slant that was
+     not there. Rotating them back visibly tipped photographs that had been
+     level. Do not counter-rotate these; look at one before believing a
+     number about it. */
+  .mslide .ttd-shot,.mslide .ttd-shot img,.mslide .a-card{transform:none}
+  .mslide .a-card{margin-inline:auto;max-width:min(60%,215px)}
 
   /* controls: a step either side and a plain 1 / 3 so it is obvious there is
      more than one. Sized to the 44px touch target. */
@@ -2218,21 +2237,9 @@ body{overscroll-behavior-y:none;background:var(--paper);
      needs; the pairs read as pairs at 13 */
   .spread{gap:clamp(.8rem,3.4vw,1.1rem)}
 
-  /* the Rainbow print is turned 20deg, and at a phone width its corner swung
-     15px past the left edge of the screen and was clipped. The figure is
-     inset by the swing rather than the picture being made smaller. */
-  .trailspread .rr-photo{margin-left:clamp(14px,4.5vw,22px)}
-
-  /* every picture was landing flush against the same left rail, which reads
-     as a list rather than a scrapbook. The second photograph of each pair
-     steps to the other side; the copy stays full width, so the eye zig-zags
-     down the column without anything moving off its own text. */
-  .trailspread .bt-photo,
-  .falls-spread .fa-photo,
-  .wild-spread .w-fox,
-  .wild-spread .w-hare,
-  .dock-spread .a-trout,
-  .ice-spread .a-skates{justify-self:end}
+  /* The alternating left/right offset from 7.3 and the inset that kept the
+     Rainbow print's rotated corner on screen are both gone: with the prints
+     straight and in one uniform frame, everything is centred instead. */
 
   /* the closing panel carried 111px of padding above it and 106 below */
   .ttd-cta{padding-bottom:clamp(1.6rem,6vw,2.6rem)}

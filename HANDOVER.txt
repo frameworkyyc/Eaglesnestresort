@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 7.4
+Current release: site live 7.5
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,42 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+UNIFORM CAROUSEL FRAMES, 7.5
+-------------------------------------------------------------------
+Mobile only, CSS only. Every photograph in the carousels now sits in
+the same 268x268 frame, centred, with no rotation. Desktop identical
+across ten viewport sizes.
+
+CONTAIN, NOT COVER. The prints run 0.67, 0.94 and 1.50 to one, so
+only a fixed square treats them alike — but these are weathered
+prints with the torn paper edge drawn into the file, and cover would
+crop about a third off every photograph and take the edge with it.
+Contain keeps each print whole, gives them all the same footprint
+and the same longest side, and stops the copy underneath jumping as
+you swipe.
+
+DO NOT COUNTER-ROTATE THESE PRINTS. Removing the CSS tilts is all
+that is wanted. A pass in this session measured each file's own
+artwork orientation from the alpha channel and turned every print
+back by up to 7.8 degrees. It was wrong. minAreaRect reads the torn,
+CURLED CORNERS of the paper as the edge of the picture, so it
+reports a slant on photographs that are perfectly level — the
+Rainbow Range print measured +6.6 degrees and is dead straight. On
+the near-square files the long and short axes also swap, which
+flips the sign. Rotating them back visibly tipped level photographs.
+Rendering the candidates side by side and LOOKING at them settled in
+one minute what the estimator had got wrong three times.
+
+Some prints genuinely are drawn a degree or two off square. That is
+in the pixels, it is the scrapbook idiom, and it cannot be corrected
+in CSS without new artwork. Leave it.
+
+Also removed as now obsolete: the alternating left/right offset from
+7.3, and the inset that kept the Rainbow print's ROTATED corner on
+screen — with the prints straight and framed alike, everything is
+centred.
 
 
 MOBILE CAROUSELS, 7.4
@@ -1620,7 +1656,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=792e3549 at the time of writing), so it changes only when
+(?v=32acb6e4 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
