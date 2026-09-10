@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.3
+Current release: site live 8.4
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,38 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+ROOMS CAROUSEL REPHOTOGRAPHED, 8.4
+-------------------------------------------------------------------
+The carousel beside "See rooms & rates" on index.html now shows the
+first photograph from each of the eleven accommodation pages, in the
+lodge page's own card order: Den Suite, Chilcotin, Tucson, Pine,
+Pelican, Blue Heron, Green, The Cottage, Eagle Cabin, Heritage 1,
+Heritage 2. Five slides became eleven, and the dots with them.
+
+index.html is the only changed file. No address bump — css and js
+untouched, still 53a54ae6.
+
+TAKEN FROM THE PAGES, NOT RETYPED. Each slide's src and alt were
+lifted from the accommodation page's own first photograph, so the
+alt text is the copy already approved for that room. The width and
+height were MEASURED off the files with PIL rather than copied from
+the source page — the audit checks declared dimensions against disk
+and this way it cannot drift.
+
+THE DOTS ARE STATIC MARKUP. site.js wires whatever .cdot elements it
+finds and does not create them, so the count has to be written out
+to match the slides or the last few are unreachable by dot.
+
+Mixed shapes are fine here: .carousel-track is aspect-ratio 3/4 and
+.cslide img is object-fit:cover, so landscape room shots and the
+portrait cabin shot all crop to the same portrait frame. Checked all
+eleven crops by eye.
+
+CAMPING IS NOT INCLUDED — the owner asked for suites and cabins, and
+the copy beside the carousel says "Eleven places to sleep", which is
+exactly the eleven. Camping is the twelfth card on the lodge page.
 
 
 GALLERY BAND CORRECTED, 8.3
