@@ -470,17 +470,29 @@
   var btn = document.getElementById("gal-toggle");
   if (!gal || !btn) return;
 
+  /* The wording is read off the button so a page can name its own, which the
+     homepage does ("View all 34 photos"). Falling back to the originals keeps
+     the lodge page reading exactly as it did. */
+  var moreLabel = btn.getAttribute("data-label-more") || "View full gallery";
+  var lessLabel = btn.getAttribute("data-label-less") || "Show less";
+
   function expand() {
     if (!gal.classList.contains("collapsed")) return;
     gal.classList.remove("collapsed");
-    btn.textContent = "Show less";
+    btn.textContent = lessLabel;
     btn.setAttribute("aria-expanded", "true");
   }
   function collapse() {
     gal.classList.add("collapsed");
-    btn.textContent = "View full gallery";
+    btn.textContent = moreLabel;
     btn.setAttribute("aria-expanded", "false");
-    gal.scrollIntoView({ behavior: "smooth", block: "start" });
+    /* the homepage keeps its preview in view above the button, so only scroll
+       back when the whole gallery was the thing that opened */
+    if (!btn.hasAttribute("data-label-more")) {
+      gal.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      btn.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   }
   btn.addEventListener("click", function () {
     gal.classList.contains("collapsed") ? expand() : collapse();

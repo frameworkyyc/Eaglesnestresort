@@ -2347,3 +2347,57 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .ttd-cta .cta-right{margin-top:12vw}
   .cta-spread{gap:clamp(.9rem,3.4vw,1.2rem)}
 }
+
+/* ======================================================================
+   HOMEPAGE GALLERY — "Have a look around."
+   Scoped to .gal-home so the lodge page's own gallery, which shares the
+   #gallery and #resort-gallery ids, is untouched: it keeps .gal-clip and
+   .masonry and this file never mentions them here.
+   ====================================================================== */
+.gal-home .gal-note{display:flex;align-items:center;gap:.5rem;
+  margin:1.5rem 0 0;color:var(--forest-soft)}
+.gal-home .gal-note span{font-family:var(--body);font-style:italic;
+  font-size:1.02rem;letter-spacing:.01em;transform:rotate(-1.6deg)}
+.gal-home .gal-note svg{flex:none;color:var(--gold);opacity:.85;
+  width:clamp(64px,8vw,104px);height:auto}
+
+/* the featured set. Twelve cells on a four-column grid — one photograph two
+   wide and two tall, six single, one two wide — so the rows fill exactly and
+   there are no holes to pack around. Plain square corners and a hairline
+   rule: the weathered treatment belongs on Things To Do, not here. */
+.gal-home .pick,.gal-home .pick-rest{
+  --pg:clamp(.55rem,1.1vw,.9rem);
+  display:grid;grid-template-columns:repeat(2,1fr);gap:var(--pg);
+  grid-auto-rows:clamp(104px,13.5vw,190px)}
+.gal-home .pick{margin-top:1.5rem}
+.gal-home .pick-rest{margin-top:var(--pg)}
+.gal-home .pick-rest.collapsed{display:none}
+@media (min-width:700px){
+  .gal-home .pick,.gal-home .pick-rest{grid-template-columns:repeat(4,1fr)}
+}
+.gal-home .p-big {grid-column:span 2;grid-row:span 2}
+.gal-home .p-wide{grid-column:span 2}
+
+.gal-home .gitem{position:relative;display:block;margin:0;padding:0;
+  border:1px solid rgba(31,51,39,.16);background:var(--paper);
+  cursor:zoom-in;overflow:hidden;border-radius:0}
+.gal-home .gitem img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease}
+.gal-home .gitem:hover img,.gal-home .gitem:focus-visible img{transform:scale(1.04)}
+.gal-home .gitem:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.gal-home .gitem .cap{position:absolute;left:0;right:0;bottom:0;
+  font-family:var(--label);font-weight:500;font-size:.62rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--paper);text-align:left;
+  padding:1.6rem .7rem .55rem;
+  background:linear-gradient(180deg,rgba(20,32,24,0),rgba(20,32,24,.72))}
+@media (prefers-reduced-motion:reduce){.gal-home .gitem img{transition:none}
+  .gal-home .gitem:hover img{transform:none}}
+
+/* no fade over the foot of the preview, and the closing space trimmed so the
+   band runs on into the next section instead of leaving a hole */
+.gal-home .gal-toggle{margin-top:clamp(1.2rem,2.6vw,1.8rem);
+  display:flex;justify-content:center}
+/* this section and the one after it are both band-2, so their padding meets
+   with no colour change to break it up — 104px each read as one 227px hole
+   under the button. Trimming this side leaves a single normal gap. */
+.gal-home{padding-bottom:clamp(.8rem,1.4vw,1.3rem)}
