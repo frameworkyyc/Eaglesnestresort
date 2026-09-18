@@ -2393,6 +2393,29 @@ body{overscroll-behavior-y:none;background:var(--paper);
 @media (prefers-reduced-motion:reduce){.gal-home .gitem img{transition:none}
   .gal-home .gitem:hover img{transform:none}}
 
+/* ON A PHONE THE PREVIEW GOES ONE PHOTOGRAPH TO A ROW, at its own shape.
+   Two columns put each picture at about 164px across, too small to read a
+   dock or a garden in. Desktop is untouched: this block only exists below
+   700px, which is where the grid drops to two columns anyway.
+
+   The span resets matter. .p-big carries grid-column:span 2 and .p-wide the
+   same; left in place on a single-column grid they would conjure an implicit
+   second column and undo the whole thing. And grid-auto-rows has to go to
+   auto, or the fixed row height crops the taller photographs — the point
+   here is that each one keeps its own proportions. */
+@media (max-width:699px){
+  .gal-home .pick{grid-template-columns:1fr;grid-auto-rows:auto;
+    gap:clamp(.32rem,1.7vw,.55rem)}
+  /* a ceiling on the width, or the tall photographs run away: at 699px a
+     0.67 portrait at full bleed is 993px high on its own and the preview
+     passes 5,000px. Below about 440px of content this does nothing at all,
+     so on a phone the pictures still run edge to edge. */
+  .gal-home .pick .gitem{grid-column:auto;grid-row:auto;
+    max-width:min(100%,440px);margin-inline:auto}
+  .gal-home .pick .gitem img{height:auto;object-fit:fill}
+  .gal-home .pick .cap{font-size:.66rem;padding:2rem .85rem .7rem}
+}
+
 /* no fade over the foot of the preview, and the closing space trimmed so the
    band runs on into the next section instead of leaving a hole */
 .gal-home .gal-toggle{margin-top:clamp(1.2rem,2.6vw,1.8rem);

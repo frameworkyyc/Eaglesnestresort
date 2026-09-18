@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.5
+Current release: site live 8.6
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,39 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+HOMEPAGE GALLERY, ONE PER ROW ON PHONES, 8.6
+-------------------------------------------------------------------
+Mobile only. The eight featured photographs now run one to a row at
+their own proportions below 700px. css/site.css is the only real
+change; js untouched. Address 8c264e7e -> 8767bb37.
+
+Desktop verified identical from 700px to 1920px — all 330 elements
+on index.html, noise floor 0.
+
+TWO RESETS THE SINGLE COLUMN NEEDS, and both are easy to forget:
+  - .p-big and .p-wide carry grid-column:span 2. Left in place on a
+    one-column grid they CONJURE AN IMPLICIT SECOND COLUMN and the
+    layout silently stays two-up.
+  - grid-auto-rows must go to auto. The fixed row height is what
+    made object-fit:cover crop; with each photograph keeping its own
+    shape there is nothing to crop to.
+
+A WIDTH CEILING ON THE ITEM, NOT A HEIGHT. At 699px a 0.67 portrait
+at full bleed is 993px tall on its own and the preview passed 5,000.
+max-width:min(100%,440px) does nothing below about 440px of content
+— so a phone still gets edge-to-edge pictures — and holds the large
+end steady. Capping the HEIGHT instead would have meant cropping,
+which is the one thing the owner asked to avoid.
+
+The preview is long by design now: 2,860px at 375px against about
+900 before. That is what eight full-width photographs at their own
+proportions costs, three of them portrait. The gap between them was
+tightened to about 6px to claw some of it back.
+
+The remaining twenty-six stay two-up when expanded. Thirty-four
+photographs at full width would be roughly 11,000px.
 
 
 HOMEPAGE GALLERY REWORKED, 8.5
@@ -1976,7 +2009,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=8c264e7e at the time of writing), so it changes only when
+(?v=8767bb37 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
