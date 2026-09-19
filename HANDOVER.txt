@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.6
+Current release: site live 8.7
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,37 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+PHONE PREVIEW IS ITS OWN SIX, 8.7
+-------------------------------------------------------------------
+The homepage gallery preview now shows a different set on a phone
+from the one on desktop: aerial, the window wall, canoes, cabin on
+the water, Eagle Cabin, the Cottage at dusk. All thirty-four are
+still there and still open. index.html and css/site.css changed; js
+untouched. Address 8767bb37 -> 556612e0.
+
+NOTHING WAS MOVED AND NOTHING DUPLICATED. Three of the six live in
+.pick-rest, which is display:none while collapsed, so they cannot
+simply be shown. While the rest is collapsed BOTH containers go
+display:contents, which makes all thirty-four items of one column;
+every one is then hidden and the six are shown and ordered. Open the
+gallery and the containers snap back — .pick one to a row, the rest
+two up — so the full set reads exactly as before. The DOM never
+changes, so the viewer still counts 1 / 34 from any photograph.
+
+Duplicating the three into .pick was the obvious move and is wrong:
+the viewer counts .gitem elements, so the total would have read 37.
+
+:has() ON THE WRAPPER, NOT A CLASS ON THE CONTAINERS. The collapsed
+state lives on .pick-rest, which comes AFTER .pick in the markup, and
+no sibling combinator reaches backwards. The fallback if :has() is
+ever missing is benign: none of the collapsed rules apply and the
+phone shows the previous eight-photograph preview.
+
+Desktop verified identical in BOTH states — collapsed and expanded —
+across six widths from 700 to 1920, 330 elements, noise floor 0.
+Check both states when the change is about what a toggle reveals.
 
 
 HOMEPAGE GALLERY, ONE PER ROW ON PHONES, 8.6
@@ -2009,7 +2040,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=8767bb37 at the time of writing), so it changes only when
+(?v=556612e0 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

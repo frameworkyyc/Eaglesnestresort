@@ -2414,6 +2414,30 @@ body{overscroll-behavior-y:none;background:var(--paper);
     max-width:min(100%,440px);margin-inline:auto}
   .gal-home .pick .gitem img{height:auto;object-fit:fill}
   .gal-home .pick .cap{font-size:.66rem;padding:2rem .85rem .7rem}
+
+  /* THE PHONE PREVIEW IS A DIFFERENT SIX, and three of them live in the part
+     of the gallery that only opens on demand. Nothing is moved and nothing is
+     duplicated: while the rest is collapsed, both containers go
+     display:contents so all thirty-four become items of one column, every
+     one is hidden, and the six are shown and ordered. Open the gallery and
+     the containers snap back — .pick one to a row, the rest two up — so the
+     full thirty-four read exactly as they did.
+
+     This is why it is done with :has() on the wrapper rather than a class on
+     the containers: the state lives on .pick-rest, which comes AFTER .pick in
+     the markup, and no sibling combinator reaches backwards. */
+  .gal-home .pick-wrap:has(.pick-rest.collapsed){display:grid;
+    grid-template-columns:1fr;gap:clamp(.32rem,1.7vw,.55rem);margin-top:1.5rem}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick,
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick-rest.collapsed{display:contents}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .gitem{display:none}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick{display:block;
+    grid-column:auto;grid-row:auto;max-width:min(100%,440px);margin-inline:auto}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick img{height:auto;object-fit:fill}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick .cap{
+    font-size:.66rem;padding:2rem .85rem .7rem}
+  .gal-home .m-1{order:1}.gal-home .m-2{order:2}.gal-home .m-3{order:3}
+  .gal-home .m-4{order:4}.gal-home .m-5{order:5}.gal-home .m-6{order:6}
 }
 
 /* no fade over the foot of the preview, and the closing space trimmed so the
