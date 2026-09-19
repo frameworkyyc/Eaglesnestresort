@@ -2354,6 +2354,7 @@ body{overscroll-behavior-y:none;background:var(--paper);
    #gallery and #resort-gallery ids, is untouched: it keeps .gal-clip and
    .masonry and this file never mentions them here.
    ====================================================================== */
+.gal-home .gcar-nav{display:none}
 .gal-home .gal-note{display:flex;align-items:center;gap:.5rem;
   margin:1.5rem 0 0;color:var(--forest-soft)}
 .gal-home .gal-note span{font-family:var(--body);font-style:italic;
@@ -2415,29 +2416,62 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .gal-home .pick .gitem img{height:auto;object-fit:fill}
   .gal-home .pick .cap{font-size:.66rem;padding:2rem .85rem .7rem}
 
-  /* THE PHONE PREVIEW IS A DIFFERENT SIX, and three of them live in the part
-     of the gallery that only opens on demand. Nothing is moved and nothing is
-     duplicated: while the rest is collapsed, both containers go
-     display:contents so all thirty-four become items of one column, every
-     one is hidden, and the six are shown and ordered. Open the gallery and
-     the containers snap back — .pick one to a row, the rest two up — so the
-     full thirty-four read exactly as they did.
+  /* THE PHONE PREVIEW IS A CAROUSEL: one landscape photograph at a time.
+     Three of the six live in .pick-rest, which is display:none while
+     collapsed, so nothing can simply be shown. While the rest is collapsed
+     BOTH containers go display:contents and all thirty-four become children
+     of one flex track; every one is hidden, and the six are shown and
+     ordered. Open the gallery and the containers snap back, so the full set
+     is untouched and the viewer still counts 1 / 34.
 
-     This is why it is done with :has() on the wrapper rather than a class on
-     the containers: the state lives on .pick-rest, which comes AFTER .pick in
-     the markup, and no sibling combinator reaches backwards. */
-  .gal-home .pick-wrap:has(.pick-rest.collapsed){display:grid;
-    grid-template-columns:1fr;gap:clamp(.32rem,1.7vw,.55rem);margin-top:1.5rem}
+     :has() on the wrapper rather than a class on the containers, because the
+     collapsed state lives on .pick-rest, which comes AFTER .pick, and no
+     sibling combinator reaches backwards. If :has() is ever missing the page
+     falls back to the stacked preview rather than breaking. */
+  .gal-home .pick-wrap:has(.pick-rest.collapsed){display:flex;margin-top:1.4rem;
+    overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;
+    gap:.45rem;margin-inline:calc(-1 * var(--pad));padding-inline:var(--pad)}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed)::-webkit-scrollbar{display:none}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick,
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick-rest.collapsed{display:contents}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .gitem{display:none}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick{display:block;
-    grid-column:auto;grid-row:auto;max-width:min(100%,440px);margin-inline:auto}
-  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick img{height:auto;object-fit:fill}
+    flex:0 0 100%;max-width:100%;margin:0;grid-column:auto;grid-row:auto;
+    scroll-snap-align:center;scroll-snap-stop:always;aspect-ratio:3/2}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick img{
+    width:100%;height:100%;object-fit:cover}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick .cap{
     font-size:.66rem;padding:2rem .85rem .7rem}
   .gal-home .m-1{order:1}.gal-home .m-2{order:2}.gal-home .m-3{order:3}
   .gal-home .m-4{order:4}.gal-home .m-5{order:5}.gal-home .m-6{order:6}
+
+  /* where each photograph sits inside the 3:2 window. Three of the six are
+     2:3 portraits losing 56% of their height, so the centre is the wrong
+     place for all of them — these were chosen by cropping each one at five
+     positions and looking. */
+  .gal-home .m-2 img{object-position:50% 65%}   /* the window wall, not the sky */
+  .gal-home .m-3 img{object-position:50% 75%}   /* the canoe on the dock */
+  .gal-home .m-5 img{object-position:50% 32%}   /* the cabin, above the woodpile */
+
+  .gal-home .gcar-nav{display:flex;align-items:center;justify-content:center;
+    gap:.8rem;margin-top:.85rem}
+  .gal-home .gcar-arrow{width:38px;height:38px;flex:none;display:grid;
+    place-items:center;padding:0;cursor:pointer;border-radius:50%;
+    border:1px solid rgba(31,51,39,.3);background:transparent;color:var(--forest);
+    -webkit-tap-highlight-color:transparent}
+  .gal-home .gcar-arrow:disabled{opacity:.3;cursor:default}
+  .gal-home .gcar-arrow:focus-visible,.gal-home .gcar-dot:focus-visible{
+    outline:2px solid var(--gold);outline-offset:3px}
+  .gal-home .gcar-dots{display:flex;align-items:center;gap:.42rem}
+  .gal-home .gcar-dot{width:7px;height:7px;padding:0;border-radius:50%;
+    border:0;cursor:pointer;background:rgba(31,51,39,.26);
+    transition:background .25s ease,transform .25s ease;
+    -webkit-tap-highlight-color:transparent}
+  .gal-home .gcar-dot[aria-current="true"]{background:var(--gold);transform:scale(1.35)}
+  @media (prefers-reduced-motion:reduce){
+    .gal-home .pick-wrap:has(.pick-rest.collapsed){scroll-behavior:auto}
+    .gal-home .gcar-dot{transition:none}}
 }
 
 /* no fade over the foot of the preview, and the closing space trimmed so the

@@ -494,7 +494,17 @@
       btn.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
+  /* On a phone the homepage gallery is a carousel, and "View all 34 photos"
+     opens the viewer rather than unrolling thirty-four pictures down the
+     page. Clicking the first item is all it takes — the viewer already
+     collects every photograph in the gallery, so it opens at 1 of 34.
+     Guarded by a data attribute so the lodge page is untouched. */
+  var opensViewer = btn.getAttribute("data-mobile-opens-viewer");
   btn.addEventListener("click", function () {
+    if (opensViewer && window.matchMedia(opensViewer).matches) {
+      var first = gal.parentNode.querySelector(".gitem");
+      if (first) { first.click(); return; }
+    }
     gal.classList.contains("collapsed") ? expand() : collapse();
   });
 
@@ -616,6 +626,114 @@
       wired = [];
     }
   }
+
+  sync();
+  if (mq.addEventListener) mq.addEventListener("change", sync);
+  else if (mq.addListener) mq.addListener(sync);
+})();
+
+
+/* ---- homepage gallery carousel, phones only -----------------------------
+   Native scroll-snap does the swiping, so the gesture keeps the platform's
+   own physics and a tap still reaches the photograph underneath and opens the
+   viewer. This only drives the arrows and the dots.
+
+   Gated at 699px, which is where the CSS hands the gallery back to the
+   desktop grid, and unbound above it: up there the track is a plain grid and
+   its scrollLeft means nothing. */
+(function () {
+  "use strict";
+  var wrap = document.querySelector(".gal-home .pick-wrap");
+  var nav = document.querySelector(".gal-home .gcar-nav");
+  if (!wrap || !nav) return;
+
+  var mq = window.matchMedia("(max-width:699px)");
+  var prev = nav.querySelector(".gcar-prev");
+  var next = nav.querySelector(".gcar-next");
+  var dots = [].slice.call(nav.querySelectorAll(".gcar-dot"));
+  var index = 0;
+  var bound = false;
+
+  function slides() {
+    return [].slice.call(wrap.querySelectorAll(".m-pick"))
+      .filter(function (s) { return s.offsetParent !== null; })
+      .sort(function (a, b) {
+        return a.getBoundingClientRect().left - b.getBoundingClientRect().left;
+      });
+  }
+  function mark(i) {
+    index = i;
+    dots.forEach(function (d, n) {
+      if (n === i) d.setAttribute("aria-current", "true");
+      else d.removeAttribute("aria-current");
+    });
+    prev.disabled = i === 0;
+    next.disabled = i === dots.length - 1;
+  }
+  function go(i) {
+    var s = slides();
+    i = Math.max(0, Math.min(s.length - 1, i));
+    if (!s[i]) return;
+    var pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
+    wrap.scrollTo({
+      left: wrap.scrollLeft + s[i].getBoundingClientRect().left
+            - wrap.getBoundingClientRect().left - pad,
+      behavior: "smooth"
+    });
+    mark(i);
+  }
+
+  var onPrev = function () { go(index - 1); };
+  var onNext = function () { go(index + 1); };
+  var dotHandlers = dots.map(function (d, n) {
+    return function () { go(n); };
+  });
+  var t;
+  var onScroll = function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var s = slides(), left = wrap.getBoundingClientRect().left;
+      var best = Infinity, i = 0;
+      s.forEach(function (el, n) {
+        var d = Math.abs(el.getBoundingClientRect().left - left);
+        if (d < best) { best = d; i = n; }
+      });
+      if (i !== index) mark(i);
+    }, 90);
+  };
+  var onKey = function (e) {
+    if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
+  };
+
+  function bind() {
+    if (bound) return;
+    prev.addEventListener("click", onPrev);
+    next.addEventListener("click", onNext);
+    dots.forEach(function (d, n) { d.addEventListener("click", dotHandlers[n]); });
+    wrap.addEventListener("scroll", onScroll, { passive: true });
+    wrap.addEventListener("keydown", onKey);
+    wrap.setAttribute("tabindex", "0");
+    wrap.setAttribute("role", "group");
+    wrap.setAttribute("aria-roledescription", "carousel");
+    mark(0);
+    bound = true;
+  }
+  function unbind() {
+    if (!bound) return;
+    prev.removeEventListener("click", onPrev);
+    next.removeEventListener("click", onNext);
+    dots.forEach(function (d, n) { d.removeEventListener("click", dotHandlers[n]); });
+    wrap.removeEventListener("scroll", onScroll);
+    wrap.removeEventListener("keydown", onKey);
+    wrap.removeAttribute("tabindex");
+    wrap.removeAttribute("role");
+    wrap.removeAttribute("aria-roledescription");
+    dots.forEach(function (d) { d.removeAttribute("aria-current"); });
+    wrap.scrollLeft = 0;
+    bound = false;
+  }
+  function sync() { if (mq.matches) bind(); else unbind(); }
 
   sync();
   if (mq.addEventListener) mq.addEventListener("change", sync);

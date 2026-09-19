@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bevan&family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=556612e0">
+<link rel="stylesheet" href="css/site.css?v=69146f56">
 
 <script type="application/ld+json">
 {
@@ -321,8 +321,28 @@
       </div>
     </div>
 
+    <div class="gcar-nav">
+      <button class="gcar-arrow gcar-prev" type="button" aria-label="Previous photograph">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M15 4 7 12l8 8"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round"/></svg></button>
+      <div class="gcar-dots" role="tablist" aria-label="Choose a photograph">
+        <button class="gcar-dot" type="button" aria-label="Photograph 1 of 6"></button>
+        <button class="gcar-dot" type="button" aria-label="Photograph 2 of 6"></button>
+        <button class="gcar-dot" type="button" aria-label="Photograph 3 of 6"></button>
+        <button class="gcar-dot" type="button" aria-label="Photograph 4 of 6"></button>
+        <button class="gcar-dot" type="button" aria-label="Photograph 5 of 6"></button>
+        <button class="gcar-dot" type="button" aria-label="Photograph 6 of 6"></button>
+      </div>
+      <button class="gcar-arrow gcar-next" type="button" aria-label="Next photograph">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M9 4l8 8-8 8"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round"/></svg></button>
+    </div>
+
     <div class="gal-toggle">
       <button class="btn btn-ghost" id="gal-toggle" type="button" aria-expanded="false"
+              data-mobile-opens-viewer="(max-width:699px)"
               aria-controls="resort-gallery"
               data-label-more="View all 34 photos" data-label-less="Show less">View all 34 photos</button>
     </div>
@@ -588,6 +608,6 @@
   <p class="lb-count" id="lb-count"></p>
 </div>
 
-<script src="js/site.js?v=556612e0"></script>
+<script src="js/site.js?v=69146f56"></script>
 </body>
 </html>

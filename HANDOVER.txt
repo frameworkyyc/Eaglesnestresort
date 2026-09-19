@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.7
+Current release: site live 8.8
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,42 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+PHONE GALLERY IS A CAROUSEL, 8.8
+-------------------------------------------------------------------
+The homepage preview is one 3:2 photograph at a time on a phone,
+with arrows and dots, and the button opens the viewer instead of
+unrolling thirty-four pictures down the page. Section height at
+375px: 2,728 -> 667. index.html, css and js changed. Address
+556612e0 -> 69146f56.
+
+Desktop verified identical in BOTH states, six widths 700-1920, 330
+elements, noise floor 0. The lodge gallery still expands in place on
+every width — its button has no data-mobile-opens-viewer.
+
+THE BUTTON OPENS THE VIEWER BY CLICKING THE FIRST PHOTOGRAPH. The
+viewer already gathers every .gitem in the gallery, so there is no
+new API to call and the count still reads 1 / 34. Guarded by
+data-mobile-opens-viewer, whose value is the media query itself, so
+the breakpoint lives in the markup beside the thing it governs.
+
+CROPS WERE CHOSEN BY LOOKING, NOT BY CENTRING. Three of the six are
+2:3 portraits and lose 56% of their height in a 3:2 window. Each was
+cropped at five vertical positions and eyeballed: the window wall
+wants 65% or the frame fills with sky, the canoe wants 75% or it
+falls off the bottom edge, Eagle Cabin wants 32% or you get the
+woodpile instead of the cabin. Centring all three would have been
+wrong for all three.
+
+SWIPING IS NATIVE SCROLL-SNAP, which matters here beyond physics: a
+tap still reaches the photograph underneath and opens the viewer. A
+JS drag handler would have had to disentangle tap from swipe itself.
+
+The carousel module is gated at 699px — NOT the 899px the Things To
+Do carousels use — because that is where the CSS hands this gallery
+back to the desktop grid. Above it the track is a plain grid and
+scrollLeft is meaningless, so it unbinds.
 
 
 PHONE PREVIEW IS ITS OWN SIX, 8.7
@@ -2040,7 +2076,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=556612e0 at the time of writing), so it changes only when
+(?v=69146f56 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 
