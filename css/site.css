@@ -2405,16 +2405,20 @@ body{overscroll-behavior-y:none;background:var(--paper);
    auto, or the fixed row height crops the taller photographs — the point
    here is that each one keeps its own proportions. */
 @media (max-width:699px){
-  .gal-home .pick{grid-template-columns:1fr;grid-auto-rows:auto;
-    gap:clamp(.32rem,1.7vw,.55rem)}
-  /* a ceiling on the width, or the tall photographs run away: at 699px a
-     0.67 portrait at full bleed is 993px high on its own and the preview
-     passes 5,000px. Below about 440px of content this does nothing at all,
-     so on a phone the pictures still run edge to edge. */
-  .gal-home .pick .gitem{grid-column:auto;grid-row:auto;
-    max-width:min(100%,440px);margin-inline:auto}
-  .gal-home .pick .gitem img{height:auto;object-fit:fill}
-  .gal-home .pick .cap{font-size:.66rem;padding:2rem .85rem .7rem}
+  /* OPENED, THE PHONE GALLERY IS THE LODGE PAGE'S GALLERY: a two-column
+     masonry of all thirty-four at their own heights, scrolled down the page.
+     Same construction as .masonry — columns plus break-inside:avoid — so the
+     two read alike. Both containers dissolve with display:contents, which is
+     what lets one column flow run through the eight and the twenty-six as a
+     single set; without it they would be two stacked blocks. */
+  .gal-home .pick-wrap{--mg:clamp(.32rem,1.6vw,.6rem);
+    display:block;columns:2;column-gap:var(--mg);margin-top:1.4rem}
+  .gal-home .pick,.gal-home .pick-rest{display:contents}
+  .gal-home .pick-wrap .gitem{display:block;break-inside:avoid;
+    margin:0 0 var(--mg);width:auto;max-width:none;aspect-ratio:auto;
+    grid-column:auto;grid-row:auto}
+  .gal-home .pick-wrap .gitem img{width:100%;height:auto;object-fit:fill}
+  .gal-home .pick-wrap .cap{font-size:.62rem;padding:1.6rem .6rem .5rem}
 
   /* THE PHONE PREVIEW IS A CAROUSEL: one landscape photograph at a time.
      Three of the six live in .pick-rest, which is display:none while
@@ -2428,7 +2432,8 @@ body{overscroll-behavior-y:none;background:var(--paper);
      collapsed state lives on .pick-rest, which comes AFTER .pick, and no
      sibling combinator reaches backwards. If :has() is ever missing the page
      falls back to the stacked preview rather than breaking. */
-  .gal-home .pick-wrap:has(.pick-rest.collapsed){display:flex;margin-top:1.4rem;
+  .gal-home .pick-wrap:has(.pick-rest.collapsed){display:flex;columns:auto;
+    margin-top:1.4rem;
     overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
     scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;
     gap:.45rem;margin-inline:calc(-1 * var(--pad));padding-inline:var(--pad)}
@@ -2437,10 +2442,11 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick-rest.collapsed{display:contents}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .gitem{display:none}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick{display:block;
-    flex:0 0 100%;max-width:100%;margin:0;grid-column:auto;grid-row:auto;
+    flex:0 0 100%;width:auto;max-width:100%;margin:0;grid-column:auto;grid-row:auto;
     scroll-snap-align:center;scroll-snap-stop:always;aspect-ratio:3/2}
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick img{
     width:100%;height:100%;object-fit:cover}
+
   .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick .cap{
     font-size:.66rem;padding:2rem .85rem .7rem}
   .gal-home .m-1{order:1}.gal-home .m-2{order:2}.gal-home .m-3{order:3}
@@ -2454,8 +2460,17 @@ body{overscroll-behavior-y:none;background:var(--paper);
   .gal-home .m-3 img{object-position:50% 75%}   /* the canoe on the dock */
   .gal-home .m-5 img{object-position:50% 32%}   /* the cabin, above the woodpile */
 
-  .gal-home .gcar-nav{display:flex;align-items:center;justify-content:center;
+  /* The arrows and dots belong to the carousel, so they go when it does —
+     but this one is driven by a CLASS the script sets, not by :has(). The
+     layout rules above use :has() on .pick-wrap and restyle correctly, yet
+     the same construction with the subject a DESCENDANT of the anchor
+     (.gal-home:has(...) .gcar-nav) does not repaint when the class changes:
+     the selector stops matching, matches() agrees, and the computed display
+     stays flex. Verified against the browser's own matched-rule list, which
+     showed only the display:none rules applying while it rendered flex. */
+  .gal-home .gcar-nav{display:none;align-items:center;justify-content:center;
     gap:.8rem;margin-top:.85rem}
+  .gal-home:not(.gal-open) .gcar-nav{display:flex}
   .gal-home .gcar-arrow{width:38px;height:38px;flex:none;display:grid;
     place-items:center;padding:0;cursor:pointer;border-radius:50%;
     border:1px solid rgba(31,51,39,.3);background:transparent;color:var(--forest);

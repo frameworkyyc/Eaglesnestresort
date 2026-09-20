@@ -1,6 +1,6 @@
 EAGLE'S NEST RESORT — HANDOVER NOTE
 ==================================================================
-Current release: site live 8.8
+Current release: site live 8.9
 Host: Cloudflare Pages, deployed from GitHub.
 
 Uploads are incremental: only changed files go to GitHub. The
@@ -280,6 +280,46 @@ Bird watching moved from the lake section up into "Who's around?"
 on the glade sheet, so all the bird content sits together. Its type
 had to be recoloured for the dark ground — it read 1.07:1 for body
 copy there.
+
+
+PHONE GALLERY OPENS INTO A MASONRY, 8.9
+-------------------------------------------------------------------
+"View all 34 photos" expands the homepage gallery in place on a
+phone again, into the lodge page's two-column masonry, instead of
+opening the viewer. The carousel is still the closed state. index,
+css and js changed. Address 69146f56 -> 9b0bdf51.
+
+Desktop identical in both states, six widths 700-1920, 344 elements,
+noise floor 0. The lodge gallery is unaffected.
+
+BOTH CONTAINERS DISSOLVE FOR THE OPEN STATE TOO. display:contents on
+.pick and .pick-rest is what lets one column flow run through the
+eight and the twenty-six as a single masonry; without it they are
+two stacked blocks with a seam. Same trick as the carousel, other
+layout.
+
+columns:2, NOT columns:2 140px. The lodge's form needs two lots of
+140px plus the gap, which a 320px screen cannot give, so it silently
+drops to one column and the gallery runs to 11,700px. A bare column
+count always gives two.
+
+A :has() BUG COST AN HOUR — WORTH KNOWING THE SHAPE OF IT. The
+layout rules use .pick-wrap:has(.pick-rest.collapsed) and restyle
+correctly when the class changes. The SAME construction with the
+subject a descendant of the anchor —
+.gal-home:has(.pick-rest.collapsed) .gcar-nav — does not repaint.
+The selector genuinely stops matching (element.matches() agrees, and
+the browser's own matched-rule list showed only the display:none
+rules applying) while it carried on rendering display:flex. The
+arrows and dots are now driven by a .gal-open class the script sets
+on the section. If a :has() rule ever seems to be ignored, check
+whether its subject is inside the anchor before doubting the
+selector.
+
+Reading document.styleSheets to debug this is a dead end on
+file:// — cssRules throws and the walk comes back empty, which looks
+like "no rule exists". CDP's CSS.getMatchedStylesForNode is the one
+that tells the truth.
 
 
 PHONE GALLERY IS A CAROUSEL, 8.8
@@ -2076,7 +2116,7 @@ Upload the whole folder, not just the .html files. css, js and
 images must go up together.
 
 The stylesheet address carries a hash of the css and js content
-(?v=69146f56 at the time of writing), so it changes only when
+(?v=9b0bdf51 at the time of writing), so it changes only when
 those files change. _headers tells Cloudflare to revalidate css
 and js on every request.
 

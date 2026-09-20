@@ -494,17 +494,7 @@
       btn.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
-  /* On a phone the homepage gallery is a carousel, and "View all 34 photos"
-     opens the viewer rather than unrolling thirty-four pictures down the
-     page. Clicking the first item is all it takes — the viewer already
-     collects every photograph in the gallery, so it opens at 1 of 34.
-     Guarded by a data attribute so the lodge page is untouched. */
-  var opensViewer = btn.getAttribute("data-mobile-opens-viewer");
   btn.addEventListener("click", function () {
-    if (opensViewer && window.matchMedia(opensViewer).matches) {
-      var first = gal.parentNode.querySelector(".gitem");
-      if (first) { first.click(); return; }
-    }
     gal.classList.contains("collapsed") ? expand() : collapse();
   });
 
@@ -734,6 +724,23 @@
     bound = false;
   }
   function sync() { if (mq.matches) bind(); else unbind(); }
+
+  /* Opening the gallery swaps the track from a carousel to a masonry and
+     closing it swaps back. Reset to the first photograph on the way, or the
+     dots keep reporting wherever the carousel was left standing. */
+  var section = wrap.closest(".gal-home");
+  var toggle = document.getElementById("gal-toggle");
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      setTimeout(function () {
+        var open = !wrap.querySelector(".pick-rest").classList.contains("collapsed");
+        if (section) section.classList.toggle("gal-open", open);
+        if (!mq.matches || !bound) return;
+        wrap.scrollLeft = 0;
+        mark(0);
+      }, 0);
+    });
+  }
 
   sync();
   if (mq.addEventListener) mq.addEventListener("change", sync);
