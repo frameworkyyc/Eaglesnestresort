@@ -1220,38 +1220,817 @@ body{overscroll-behavior-y:none;background:var(--paper);
    winter. Everything here is namespaced .ttd- so it cannot leak
    into the rest of the site.
    ============================================================ */
-.ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712}
+.ttd{--water:#6C8A93;--water-deep:#4E6B75;--ice:#DFE4E0;--night:#0E1712;
+  --map-paper:#F0D5B4;--map-peaks:clamp(20px,3vw,60px);
+  --map-overlap:32.5vw}
 
-/* --- torn paper ridge at the foot of the hero -------------------------
-   Not a divider sitting between two bands: it is the next section's paper,
-   cut to a skyline and laid over the bottom of the hero. The fill is
-   var(--paper), the same colour as the section below, and the element sits
-   flush to the hero's bottom edge, so the two meet with no seam and no
-   straight horizontal line anywhere.
+/* --- the map sheet ---------------------------------------------------
+   The illustrated map page is the background of the first section, and its
+   drawn mountains rise out of the section to overlap the foot of the hero.
+   It is an <img> rather than a CSS background so it keeps its own aspect
+   ratio at every width and never stretches.
 
-   It paints above .stay-hero-in, so the hero's dark text scrim is covered by
-   the paper rather than muddying it — which is why the hero copy is given
-   bottom clearance equal to the ridge height. The peaks rise inside the hero
-   box, so .stay-hero's overflow:hidden never clips them. */
-.stay-hero{--paper-ridge-h:clamp(88px,12vw,180px)}
-.paper-ridge{position:absolute;left:0;right:0;bottom:-1px;z-index:4;
-  height:var(--paper-ridge-h);line-height:0;pointer-events:none}
-.paper-ridge svg{display:block;width:100%;height:100%}
-.paper-ridge .mass{fill:var(--paper)}
-.paper-ridge .spur{fill:none;stroke:var(--paper-3);stroke-width:2;opacity:.7;
-  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
-/* The copy is lifted clear of the peaks, and the scrim is rebuilt for this
-   hero. Two problems the default caused here: padded to clear the ridge it
-   grew to nearly the full height of the hero and washed the whole engraving
-   grey, and its hard bottom edge drew a straight horizontal line across the
-   image between the peaks — the one thing this transition exists to avoid.
-   So it is shorter, and it fades back to nothing at the foot, with the tail
-   landing inside the ridge band where the paper hides it. */
-.stay-hero.ttd .stay-hero-in{
-  padding-bottom:calc(var(--paper-ridge-h) * .62);
+   The overlap has to clear the sheet's own empty margin before the drawn
+   peaks begin: the art starts a tenth of the way down the file, so at any
+   width that margin is about 12.5vw. --map-overlap is 18vw, which spends the
+   first 12.5 reaching the peaks and the remainder pushing them up into the
+   hero. --map-peaks is roughly that remainder, and is what the hero copy is
+   held clear of.
+
+   The sheet is a fixed portrait but the section it backs is a variable
+   height, so its foot is faded out in the file itself and the section's own
+   background — the same paper tone — carries on underneath. That way the art
+   ends without a seam however tall the section grows. On a phone the section
+   runs far taller than the sheet, so most of it is the flat tone. */
+/* On the tan map paper the site's gold drops to about 2:1, so the eyebrow
+   above the heading was barely there — true of the previous artwork as well.
+   A darker gold inside this section only; the rest of the site is untouched. */
+/* The sheets are hard cut-outs, not fades. Above each sheet's drawn edge the
+   section keeps the colour of the section above it; below the line where the
+   artwork becomes opaque right across its width, it switches to its own — a
+   two-stop gradient with both stops at the same position, so the switch is a
+   hard edge hidden behind the art. Nothing blends, and no band of a third
+   colour appears between the two.
+
+   The cut line per sheet, measured as the first row opaque edge to edge:
+       map 4.7   forest 14.8   glade 17.9
+       basin 0.9  ridge 4.5    snow 9.9      (vw below the section top)
+
+   The first section is transparent above its line rather than a colour, so
+   the hero photograph itself shows through to the mountain outline. */
+/* --- the sheets meet as cut-outs ---------------------------
+   Each sheet's treeline is ragged: it starts as tree tips against nothing and
+   only becomes solid paper some way down. A flat background colour on the
+   section drew a hard horizontal line across that gap, visible between the
+   trees, because the colour changed at the section's top edge while the art
+   did not.
+
+   So each section starts in the PREVIOUS section's colour and blends to its
+   own over exactly the depth its own treeline takes to go solid. Measured per
+   sheet, in vw so it holds at every width:
+
+       map     4.3vw    forest  14.5vw    glade  17.4vw
+       basin   0.8vw    ridge    4.3vw    snow    9.7vw
+
+   The hero is the exception: what sits above the map section is a photograph,
+   not a flat colour, and its bottom edge changes with the crop — 140/122/84
+   at desktop, 99/91/62 on a phone. There is no colour to blend from. Instead
+   that section is pulled up over the hero by its own band depth and starts
+   transparent, so the photograph itself shows through the treeline. Only 4.3vw,
+   small enough not to reach the hero's copy. Its sheet offset is reduced by
+   the same amount so the peaks do not move.
+   ------------------------------------------------------------------ */
+
+.ttd-mapped{--gold:#7C5414}
+
+.ttd-mapped{position:relative;margin-top:-4.7vw;
+  background:linear-gradient(180deg,transparent 0,transparent 3.7vw,
+    var(--map-paper) 3.7vw,var(--map-paper) 100%)}
+.map-sheet{position:absolute;left:0;right:0;top:calc(-1 * var(--map-overlap));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-mapped > .wrap{position:relative;z-index:1}
+.ttd-mapped::after{content:'';position:absolute;left:0;right:0;bottom:0;
+  height:clamp(90px,14vw,260px);z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(240,213,180,0) 0,var(--map-paper) 88%,
+    var(--map-paper) 100%)}
+
+/* --- the forest sheet ------------------------------------------------
+   The second illustrated page, treeline overlapping the map section above.
+   Handled exactly like the map sheet: section background set to the sheet's
+   own paper, the sheet top-anchored over it, its foot faded out in the file
+   so the art dissolves into that tone however tall the section grows.
+
+   The previous artwork could not work this way — its paper was #A19D8A and
+   body copy fell to 2.4:1 on it, so the drawing had to be an illustrated
+   head with the content pushed below. This one is #F5E6D0: headings 11:1,
+   body 5.4:1, small text 4.6:1. Only the gold needs help, as on the map
+   sheet, and gets the same darker value.
+
+   Geometry: trees begin 13.8% down a sheet 1.243x its width, so the overlap
+   spends 17.2vw reaching them. Re-measure if the artwork changes. */
+.ttd-forested{position:relative;--gold:#7C5414;
+  background:linear-gradient(180deg,#F0D5B4 0,#F0D5B4 14.8vw,#F5E6D0 14.8vw,#F5E6D0 100%)}
+.forest-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (17.2vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-forested > .wrap{position:relative;z-index:1}
+
+/* --- the glade sheet -------------------------------------------------
+   Third illustrated page, backing "Go a little farther", its treeline
+   overlapping the forest sheet above.
+
+   This one is dark: its paper is #4E5D4B, so the section is treated like the
+   night band rather than the paper ones — light type on dark ground. The
+   defaults still needed lifting for it. On this green, .sub at 72% opacity
+   reads 4.03:1 and the gold-light eyebrow 3.34:1, both short of the mark at
+   the sizes they are set in, so both are raised here.
+
+   The section is given a height because the artwork is much taller than its
+   copy: without it only the treeline would show and the glade, the river and
+   the deer would sit behind the section below. 74vw shows the drawing down
+   to the open meadow.
+
+   Geometry: trees begin 15.2% down a sheet 1.242x its width, so the overlap
+   spends 18.9vw reaching them. */
+.ttd-glade{position:relative;min-height:74vw;--gold-light:#EBC97F;
+  background:linear-gradient(180deg,#F5E6D0 0,#F5E6D0 17.9vw,#4E5D4B 17.9vw,#4E5D4B 100%)}
+.ttd-glade .sub{color:rgba(243,238,225,.92)}
+.glade-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (18.9vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-glade > .wrap{position:relative;z-index:1}
+
+/* --- the basin sheet -------------------------------------------------
+   Fourth illustrated page, backing "Chase a waterfall", its horizon
+   overlapping the glade above. Paper #D8DBC8, a pale sage — light enough to
+   sit behind text, and handled like the map and forest sheets.
+
+   Its own paper is BRIGHTER than the transparency checkerboard that came
+   baked into the file, so brightness alone would have keyed the paper away
+   too. Saturation separated them: the paper carries about 17 levels of
+   spread, the checker is perfectly neutral.
+
+   Contrast here: headings 9.5:1, body 4.7:1. The small figcaption grey lands
+   at 4.02:1, just short at that size, so it is darkened inside the section,
+   and gold takes the same darker value as the other light sheets.
+
+   Geometry: art begins 21.7% down a sheet 1.242x its width, so the overlap
+   spends 27vw reaching it. */
+.ttd-basin{position:relative;--gold:#7C5414;--muted:#4C5648;
+  background:linear-gradient(180deg,#4E5D4B 0,#4E5D4B 0.9vw,#D8DBC8 0.9vw,#D8DBC8 100%)}
+.basin-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (27vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-basin > .wrap{position:relative;z-index:1}
+
+/* --- the ridge and snow sheets ---------------------------------------
+   Fifth and sixth illustrated pages: snowbound peaks behind "Find a trail",
+   the frozen lake behind the winter section, each overlapping the one above.
+
+   Snow scenes are the hardest to key. The artwork is nearly white AND nearly
+   neutral, so tone alone cannot separate it from the transparency
+   checkerboard baked into the file. What does separate them is that the
+   checker is exactly neutral while snow keeps a faint blue cast and paper
+   grain, so the saturation cut is tightened to under 4 levels.
+
+   Both papers are light — headings above 10:1, body copy near 5:1 — so only
+   gold needs the darker value, as on the other light sheets. The snow
+   sheet's figcaption grey lands at 4.26:1, short at that size, so it is
+   darkened too. */
+.ttd-ridge{position:relative;--gold:#7C5414;
+  background:linear-gradient(180deg,#D8DBC8 0,#D8DBC8 4.5vw,#E5E9EA 4.5vw,#E5E9EA 100%)}
+.ridge-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (12.5vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-ridge > .wrap{position:relative;z-index:1}
+
+.ttd-snow{position:relative;--gold:#7C5414;--muted:#4C5648;
+  background:linear-gradient(180deg,#E5E9EA 0,#E5E9EA 9.9vw,#DBE1D8 9.9vw,#DBE1D8 100%)}
+.snow-sheet{position:absolute;left:0;right:0;
+  top:calc(-1 * (10.5vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+/* THE SNOW SHEET IS CUT OFF, NOT FADED OUT. It carries its own fade — alpha
+   falls away over its bottom fifth — but that fade is only about half done
+   where the section ends, and the CTA section's own background paints over
+   the rest of it. The result was a hard horizontal line right on the section
+   boundary. This lays the section's own colour over the last stretch of the
+   sheet so the illustration is already gone by the time the boundary
+   arrives; the CTA opens on the same colour, so nothing steps. It sits above
+   the sheet and below the copy, and is measured, not guessed — the residual
+   jump across the boundary is checked in pixels. */
+.ttd-snow::after{content:"";position:absolute;left:0;right:0;bottom:0;
+  height:clamp(130px,12vw,210px);z-index:0;pointer-events:none;
   background:linear-gradient(180deg,
-    transparent 0%, rgba(18,32,24,.34) 30%, rgba(18,32,24,.80) 54%,
-    rgba(18,32,24,.80) 70%, rgba(18,32,24,.30) 88%, transparent 100%)}
+    rgba(219,225,216,0) 0,
+    rgba(219,225,216,.62) 46%,
+    rgba(219,225,216,.93) 78%,
+    #DBE1D8 100%)}
+.ttd-snow > .wrap{position:relative;z-index:1}
+
+/* --- Things To Do: editorial scale --------------------------------------
+   The brief: printed snapshots scattered through an illustrated landscape,
+   not hero images stacked down a column. So the prints are capped well below
+   the column width, related activities sit three across, and the vertical
+   rhythm is tightened so the artwork stays visible around the content. */
+.ttd-row{display:grid;gap:clamp(1.5rem,3vw,2.4rem);margin-top:clamp(1.6rem,3.4vw,2.4rem)}
+@media (min-width:820px){
+  .ttd-row{grid-template-columns:repeat(3,1fr);align-items:start}
+  .ttd-row.two{grid-template-columns:repeat(2,1fr);max-width:60rem}
+}
+.ttd-item{margin:0}
+.ttd-item h3{font-family:var(--display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.02rem,1.5vw,1.3rem);line-height:1.06;letter-spacing:-.005em;
+  margin:0 0 .55rem}
+.ttd-item p{font-size:.94rem;line-height:1.6;max-width:32ch;margin:0;color:var(--forest-soft)}
+.ttd-item .ttd-shot{margin:0 0 .9rem}
+.ttd-item .ttd-shot figcaption{margin-top:.45rem}
+
+/* snapshots, not hero images */
+.ttd-shot{max-width:clamp(200px,26vw,340px)}
+.ttd-row .ttd-shot{max-width:min(100%,300px)}
+.ttd-split{gap:clamp(1.4rem,3vw,2.6rem);margin-top:clamp(1.6rem,3.4vw,2.6rem)}
+@media (min-width:860px){.ttd-split{grid-template-columns:auto 1fr}}
+.ttd-copy p{max-width:40ch}
+.ttd-guide{margin-top:1.4rem;max-width:22rem;padding:clamp(1rem,2vw,1.4rem)}
+
+/* the field-guide bird strip, tightened */
+.ttd-birds{gap:clamp(.9rem,2vw,1.6rem);margin-top:1.8rem;
+  padding-block:clamp(1.4rem,3vw,2rem)}
+.ttd-bird svg{width:58px;height:58px;margin-bottom:.6rem}
+
+/* --- Things To Do hero, desktop only ------------------------------------
+   The hero was clamped to 620px, which at 1440 showed less than half the
+   engraving: the sheet is 3:2, so filling the width makes it 960px tall and
+   everything below the midline was being cut. Desktop now takes the lesser of
+   66vw (the image's own full height at that width) and 76vh, so it shows far
+   more of the sky, the lake and the far shore without stretching anything.
+   The copy is repadded to suit. Mobile is deliberately untouched. */
+@media (min-width:900px){
+  .stay-hero.ttd img{height:clamp(520px,min(66vw,76vh),900px);object-position:center 50%}
+  /* the whole block lifts 70px clear of the peaks; eyebrow, headline and lede
+     move together because they share this one padding */
+  .stay-hero.ttd .stay-hero-in{padding-bottom:calc(var(--map-peaks) + 2.2rem + 70px)}
+  /* 6% smaller and tighter tracking, so the line stops reaching so far right.
+     Its left edge is the wrap's, and stays put. */
+  .stay-hero.ttd h1{font-size:clamp(2.1rem,5.6vw,3.95rem);letter-spacing:-.032em}
+}
+
+/* The engraving runs from a bright sunset sky on the left to dark timber on
+   the right, so cream type crosses a 4x swing in background luminance along a
+   single line. Two things carry it: a localised darkening that is heaviest
+   where the picture is brightest, and a thin dark-green halo on the letters
+   themselves, which works per-letter regardless of what is behind them. */
+/* THE HARD LINE WAS A CLIPPED GRADIENT. .stay-hero-in is a box pinned to the
+   foot of the hero, and the radial wash it carried was still about a quarter
+   opaque where the box began — so the box's top edge drew a straight dark
+   line across the whole picture, at 53% of the hero's height.
+
+   The wash still lives on that box, because the box is the only thing that
+   tracks the type: it is bottom-anchored and sized by its own content, so the
+   distance from the box to the words is the same at every viewport. The hero
+   is NOT a safe frame to hang it on — the text sits at 42% of the hero's
+   height on a short window and 82% on a tall one, and an ellipse pinned to
+   the hero drifts off the copy entirely.
+
+   The ellipse is now sized so it reaches full transparency at BOTH the top
+   and the bottom of the box: centred at 55% with a vertical radius of 45%, it
+   runs 10% to 100% and nothing is cut off. Horizontally it is wider than the
+   box and runs off the sides of the screen, which has no edge to show. The
+   extra top padding only grows the box upward — the type does not move — and
+   buys the fade a longer, gentler run-in. */
+.stay-hero.ttd .stay-hero-in{padding-top:clamp(5rem,14vw,10rem);
+  background:radial-gradient(112% 45% at 38% 55%,
+    rgba(12,24,17,.54) 0%,
+    rgba(12,24,17,.50) 30%,
+    rgba(12,24,17,.38) 56%,
+    rgba(12,24,17,.20) 78%,
+    rgba(12,24,17,.07) 91%,
+    rgba(12,24,17,0) 100%)}
+.stay-hero.ttd h1{color:var(--paper);
+  text-shadow:0 0 3px rgba(12,24,17,.7),0 1px 2px rgba(12,24,17,.62),
+              0 8px 26px rgba(12,24,17,.52)}
+/* the lede was the hardest line to read: small, lowest, and crossing the
+   brightest water. Full cream rather than 90%, and a tighter halo than the
+   headline's because small type loses legibility to a wide blur. */
+.stay-hero.ttd .lede{color:#F5F1E6;
+  text-shadow:0 1px 2px rgba(12,24,17,.72),0 0 9px rgba(12,24,17,.8),
+              0 2px 18px rgba(12,24,17,.5)}
+
+/* the eyebrow was gold-light on a light patch of the engraving and barely
+   read; a paler gold with a soft dark halo holds it at any crop */
+.stay-hero.ttd .eyebrow{color:#F4DEAC;
+  text-shadow:0 1px 10px rgba(18,32,24,.85),0 0 3px rgba(18,32,24,.7)}
+
+/* --- content sits on the open paper, not on the scenery ----------------
+   Each sheet is busiest through its drawn band and quiet below it. Measured
+   per sheet as the depth from the section's top at which the local contrast
+   drops away, so headings and copy start on open paper rather than over
+   trees, waterfalls or wildlife:
+
+       map 35.5   forest 54.0   glade 39.5
+       basin 47.1  ridge 44.7   snow 43.8      (vw below the section top)
+
+   In vw, so it tracks the artwork at every width. The two the owner called
+   out as cramped — the waterfall sheet and the snowy mountains — also get a
+   min-height, which pushes the section below them farther down the page and
+   leaves open ground for their content. */
+.ttd-mapped  {padding-top:34vw;padding-bottom:clamp(1.6rem,3.5vw,3rem)}
+/* the waterfall pairs are tighter than the section was built for, so it
+   was ending well below its own content. Pulling the next section up by
+   11vw brings the glade's treeline to just under the Hotnarko copy;
+   min-height comes down to match so it cannot re-open the gap. */
+.ttd-forested{padding-top:54vw;min-height:88vw;margin-bottom:-11vw}
+.ttd-glade   {padding-top:39.5vw}
+.ttd-basin   {padding-top:47vw}
+.ttd-ridge   {padding-top:44.7vw;min-height:96vw}
+.ttd-snow    {padding-top:43.8vw}
+
+/* the bird-watching item moved onto the dark wildlife sheet, so its type has
+   to come with it: body copy read 1.07:1 there, the figcaption 1.24:1 and the
+   callout label 2.39:1 */
+.ttd-glade .ttd-item p{color:rgba(243,238,225,.9)}
+.ttd-glade .ttd-shot figcaption{color:rgba(243,238,225,.72)}
+.ttd-glade .ttd-callout p{color:rgba(243,238,225,.9)}
+.ttd-glade .ttd-callout .lbl{color:var(--gold-light)}
+.ttd-glade .ttd-callout{border-left-color:var(--gold-light)}
+
+
+/* --- the prints sit as if tossed down ----------------------------------
+   A small rotation each, alternating direction so no two side by side lean
+   the same way, and four different angles so a row of three or four never
+   repeats. The artwork already carries its own slight tilt; this varies it
+   rather than replacing it. */
+.ttd-row > :nth-child(4n+1) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+1){transform:rotate(-1.8deg)}
+.ttd-row > :nth-child(4n+2) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+2){transform:rotate(1.3deg)}
+.ttd-row > :nth-child(4n+3) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+3){transform:rotate(-1.1deg)}
+.ttd-row > :nth-child(4n+4) .ttd-shot,
+.ttd-row > figure.ttd-shot:nth-child(4n+4){transform:rotate(2deg)}
+.ttd-split .ttd-shot{transform:rotate(-1.5deg)}
+.ttd-shot{transform-origin:50% 55%}
+
+/* --- Find a Trail: an annotated map page --------------------------------
+   The route is the thing that kept going wrong here. Previously it was an
+   absolutely positioned overlay spanning the whole spread, which is exactly
+   why it drifted behind headings and copy: it had no relationship to where
+   the text actually ended up. It now occupies its OWN grid row, in the empty
+   band between the two features, so it cannot run behind anything — the
+   layout reserves the space for it. One continuous curve, left to right,
+   Rainbow Range to Beef Trail, with a marker at its midpoint. */
+/* --- routes anchored to their photographs -------------------------------
+   Each dotted route is a CHILD of the figure it belongs to, positioned in
+   percentages of that figure. Percentages on an absolutely positioned element
+   resolve against its containing block, which here is the photograph itself —
+   so a route starts at the same point on its photo and runs the same relative
+   distance at every width, and cannot drift when a paragraph gains a line.
+
+   The previous overlays were siblings spanning the whole spread, so their ends
+   were fixed to the SECTION and moved whenever the rows changed height. That
+   is why they stopped touching anything.
+
+   Each is placed to clear its own section's copy; the numbers below are
+   derived from the photo's size, not chosen by eye. */
+.shot-route{position:absolute;display:none;pointer-events:none;z-index:0;
+  color:var(--gold);opacity:.62}
+
+@media (min-width:900px){
+  .shot-route{display:block}
+  /* The Rainbow route runs to the right of its print, which is the copy's own
+     space, so it has to sit below that copy. Below about 1055px the copy wraps
+     to seven or eight lines and grows taller than the print itself — there is
+     then no room beneath it inside the row, at any offset. Swept every width
+     from 900 to 1960: this route is hidden below 1060px rather than allowed to
+     cross the text. The other three have no such constraint. */
+  .r-trail{display:none}
+  @media (max-width:1199px){.r-ice{display:none}}
+  /* down-left from the Hunlen print towards the Hotnarko print */
+  .r-fall {top:90%;left:-113%;width:111%;height:17%}
+  /* off the dock print towards the fish card */
+  .r-dock {top:76%;left:92%;width:112%;height:16%}
+  /* out of the winter print towards the sled */
+  .r-sled {top:52%;left:-18%;width:22%;height:26%}
+  /* Off the winter lodge print, down across the open snow to the skates. It
+     starts BELOW the ice-fishing copy, not beside it: that copy sits in the
+     columns the route crosses, and it wraps deeper as the viewport narrows —
+     its foot runs from 44% of the print's height at 1920 to 76% at 900. A
+     start at 34% looked right at one width and drew the dotted line straight
+     through the paragraph at every other. Like the Rainbow route, it is
+     hidden below 1200px rather than allowed to cross the text. */
+  .r-ice  {top:58%;left:99%;width:31%;height:74%}
+}
+
+.trail-art{display:block;width:100%;height:auto;position:relative;z-index:1}
+.t-signpost{max-width:clamp(300px,44vw,700px)}
+.t-worth   {max-width:clamp(130px,17vw,250px)}
+.trail-copy{max-width:34ch;position:relative;z-index:1}
+.trail-copy h3{font-family:var(--display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(1.1rem,1.7vw,1.42rem);line-height:1.06;margin:.15rem 0 .55rem}
+.trail-copy p{font-size:.95rem;line-height:1.62;color:var(--forest-soft);margin:0}
+.pinlabel{display:flex;align-items:center;gap:.42rem;margin:0;
+  font-family:var(--ui);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted)}
+.pinlabel .pin{color:var(--gold);flex:none}
+/* the two prints leant the same way, which read as mechanical. The Rainbow
+   print now turns anti-clockwise against the Beef Trail print's clockwise
+   lean, on top of the tilt already drawn into each file. */
+/* the Rainbow print turns hard anti-clockwise against the Beef print's small
+   clockwise lean. At 20deg it swings about 48px above and below its own box,
+   so it carries margin to keep that clear of the route band underneath. */
+/* rotate the IMAGE, not the figure: the figure is the positioning context for
+   its route, and a transform on it turns the route too. */
+.rr-photo{max-width:clamp(180px,24vw,350px)}
+.rr-photo > img{transform:rotate(-20deg)}
+.bt-photo{max-width:clamp(150px,17vw,245px);transform:rotate(1.9deg)}
+
+@media (min-width:900px){
+  /* The route now lives INSIDE the Rainbow copy, after the paragraph, so it
+     sits just under the text by construction. It was previously a separate
+     grid row pulled up by a negative margin sized against an assumed 190px
+     copy — but in a three-column well that paragraph wraps to nearer 340px,
+     so the line landed in the middle of it. Nothing here now depends on
+     guessing how tall the text is.
+
+     The copy is also wider: four columns rather than three, so the paragraph
+     runs across instead of down a narrow well. */
+  .trailspread .t-intro   {grid-column:2/7;grid-row:1;align-self:center}
+  .trailspread .t-signpost{grid-column:7/13;grid-row:1;justify-self:end;
+                           margin-top:clamp(-5rem,-6vw,-2rem);margin-bottom:0}
+  .trailspread .t-worth   {grid-column:1/3;grid-row:2;align-self:center}
+  .trailspread .rr-photo  {grid-column:3/7;grid-row:2;justify-self:start;
+                           margin:clamp(.6rem,1.5vw,1.4rem) 0 clamp(1rem,2vw,1.6rem)}
+  .trailspread .rr-copy   {grid-column:7/11;grid-row:2;align-self:center}
+    /* the trail route hangs a little past its own row, so the Beef block starts
+     below it rather than at the row boundary */
+  .trailspread .bt-copy   {grid-column:6/10;grid-row:3;align-self:start;
+                           margin-top:clamp(1.6rem,2.8vw,2.6rem)}
+  .trailspread .bt-photo  {grid-column:10/13;grid-row:3;justify-self:end;
+                           margin-top:clamp(-8rem,-6.5vw,-3rem)}
+}
+
+@media (min-width:1060px){
+  .r-trail{display:block;top:96%;left:88%;width:118%;height:12%}
+}
+
+@media (max-width:899px){
+  .trailspread .rr-photo,.trailspread .bt-photo{max-width:min(62%,240px)}
+  .trailspread .t-signpost{max-width:min(72%,300px)}
+  .trailspread .t-worth{max-width:min(48%,200px)}
+}
+
+/* --- the wildlife page: a naturalist's spread ---------------------------
+   Photographs pinned across the page with their field notes beside them,
+   tracks and handwriting scattered between, and the two supplied panels
+   closing it off. Nothing sits in a card; the copy lies straight on the
+   forest ground.
+
+   The section heading was dark green on dark green — .on-dark never set a
+   heading colour, so it was invisible. Cream here. */
+.ttd-glade h2,.ttd-glade h3{color:var(--paper)}
+.species{max-width:30ch;position:relative;z-index:1}
+.sp-name{display:flex;align-items:center;gap:.4rem;margin:0 0 .1rem;
+  font-family:var(--ui);font-size:.82rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--gold-light)}
+.sp-name .pin{color:var(--gold-light);flex:none}
+.sp-habitat{margin:0 0 .5rem;font-style:italic;font-size:.92rem;
+  color:rgba(243,238,225,.82)}
+.sp-note{margin:0;font-size:.93rem;line-height:1.6;color:rgba(243,238,225,.92)}
+
+
+.eye-out{display:block;width:100%;height:auto;position:relative;z-index:1}
+.wild-note{display:block;width:100%;height:auto;position:relative;z-index:1;
+  transform:rotate(-1.6deg)}
+
+@media (min-width:900px){
+  /* The photographs carry this section, so they are the largest things in it.
+     Each species note sits directly beside its own photograph and the pairs
+     step down the page: pelican across the top, fox on the left with its note
+     beside it, then the hare's note with its photograph out to the right. */
+  /* THE ROW HEIGHT IS SET BY THE TALLEST ITEM IN IT — the same lesson as the
+     trail signpost. Row 1 is as deep as the pelican photograph, so every row
+     under it used to start below that print's foot and the section carried a
+     band of empty green under the heading, under the fox note and again above
+     the closing strip. The fix is not smaller elements or trimmed margins: it
+     is letting each photograph rise past the row line with a negative top
+     margin, so it stops handing its own height to everything below it.
+     Nothing here is resized except the closing strip, and nothing moves
+     column. Every offset below is derived from a measured height. */
+  /* ROTATION IS APPLIED AFTER LAYOUT. None of the angles below change a row
+     height or a column, so the grid is unaware of them — every corner that
+     swings out of its own box has to be paid for with margin, and the figures
+     are rotated rather than the images because nothing in this section has a
+     route anchored inside it.
+
+     The pelican pair moves toward the right edge. The note simply end-aligns
+     in the columns it already had, which uses whatever spare room its 30ch
+     max-width leaves and can never push past the wrap. The print cannot use a
+     margin to follow it — margin against a stretched grid item eats the width
+     and would shrink the photograph — so it translates instead. --w-shift is
+     held just under the note's spare room at every width: nil at 900px, where
+     the note already fills its columns and neither can move at all. */
+  .wild-spread .w-head    {grid-column:1/5;grid-row:1}
+  .wild-spread .w-pelican {grid-column:5/8;grid-row:1;
+                           margin-top:clamp(-1rem,-1.5vw,-.4rem);
+                           transform:translateX(var(--w-shift)) rotate(10deg)}
+  .wild-spread .s-pelican {grid-column:8/13;grid-row:1;justify-self:end;
+                           margin-top:clamp(1.4rem,3.5vw,3rem)}
+
+  /* Row 2. The fox print only has to clear the HEADING BLOCK, which is what
+     sits above it in columns 1-5 — not the pelican print, which is two
+     columns to its right. Lifting it past the row line closes that gap.
+     Its note cannot come with it: the note IS under the pelican print, so it
+     is held down to clear that print's foot, and switches from centred to
+     top-aligned so it tracks the print rather than the row's height.
+
+     THE LIFT CANNOT BE A FIXED FIGURE. How much empty ground sits under the
+     heading is the difference between the pelican print's height and the
+     heading block's, and the heading block WRAPS — below about 1170px it is
+     the taller of the two and there is no ground to reclaim at all. A flat
+     -3.4vw was tried and drove the print through the intro paragraph at every
+     width under 1170. --w-slack traces the measured gap instead (0 to about
+     1020px, then roughly .3px per px of viewport, levelling near 88px once
+     the wrap stops growing), and the margin is whatever leaves a 36px
+     clearance, never more than the original spacing. Measured clearance now
+     runs 22-44px across 900-1960px and never reaches zero. */
+  .wild-spread .w-fox     {grid-column:1/5;grid-row:2;
+                           margin-top:calc(28px + var(--w-fox-swing)
+                                           - var(--w-slack));
+                           transform:rotate(-20deg)}
+  .wild-spread .s-fox     {grid-column:5/8;grid-row:2;align-self:start;
+                           margin-top:calc(clamp(1.6rem,2vw,2.4rem)
+                                           + var(--w-pelican-swing));
+                           margin-left:clamp(6px,1.1vw,16px)}
+
+  /* Row 3. Same move one step down, and the stagger is preserved by keeping
+     the hare a clear step below the fox rather than by leaving empty ground
+     between them. The print carries a small negative left margin so it reads
+     as one group with its note. */
+  .wild-spread .s-hare    {grid-column:5/8;grid-row:3;align-self:start;
+                           margin-top:clamp(1rem,1.6vw,1.6rem)}
+  .wild-spread .w-hare    {grid-column:8/12;grid-row:3;
+                           margin-top:clamp(-.5rem,-.3vw,-.1rem);
+                           margin-bottom:var(--w-hare-swing);
+                           transform:translateX(clamp(6px,.9vw,13px)) rotate(15deg)}
+
+  /* Row 4. The closing row is exactly as wide as the wrap already — strip,
+     column gap and card add up to the content width with nothing spare — so
+     the strip can only grow by taking the gap between them and a slice of the
+     wrap's own side padding. The card keeps its size: its text is drawn into
+     the file, so shrinking it would take that text below reading size. The
+     bleed is a fraction of --pad, never a fixed value, so it can never reach
+     past the padding and put the page into horizontal overflow. */
+  /* the bleed is what is LEFT OVER of the wrap's side padding once a 2.4rem
+     outer margin is reserved, so the card keeps a clear edge at every width
+     and the page can never go into horizontal overflow. */
+  /* Swing allowances. Each is HALF the growth of the rotated bounding box,
+     which is what the corner actually gains: w*sin(a) + h*cos(a) - h, halved.
+     Held in vw because the prints are sized in vw, and capped where their
+     max-width caps. Measured against the real boxes, not estimated. */
+  .wild-spread            {--wild-bleed:max(0px, calc(var(--pad) - 2rem));
+                           --w-slack:clamp(0px, calc((100vw - 1020px) * .3), 88px);
+                           --w-shift:clamp(12px, calc((100vw - 900px) * .3 + 12px), 92px);
+                           --w-pelican-swing:clamp(13px, 1.4vw, 19.5px);
+                           --w-fox-swing:clamp(36px, 4.1vw, 53px);
+                           --w-hare-swing:clamp(26px, 2.95vw, 42px)}
+  /* the global img{max-width:100%} is the binding constraint here, exactly as
+     it was on the trout and the snowmobile: the width below does nothing
+     until the cap is lifted. */
+  .wild-spread .eye-out   {grid-column:1/8;grid-row:4;
+                           margin-top:clamp(1.4rem,3vw,2.6rem);
+                           max-width:none;
+                           width:calc(100% + var(--cgap) + var(--wild-bleed) - 1.5rem)}
+  .wild-spread .wild-note {grid-column:8/13;grid-row:4;align-self:end;
+                           margin-top:clamp(1.4rem,3vw,2.6rem);
+                           margin-left:var(--wild-bleed);
+                           margin-right:calc(-1 * var(--wild-bleed))}
+}
+
+@media (max-width:899px){
+  .wild-spread .w-head{text-align:left}
+  .wild-spread .eye-out,.wild-spread .wild-note{max-width:100%}
+}
+
+/* --- the dock page: a lakeside journal ---------------------------------
+   Owner-supplied illustrations laid over the existing lake sheet, with the
+   copy in the open middle. The fish card carries its own text, including the
+   regulations line, so the old HTML guide box is gone — but the link went
+   with it, so the card itself is the link now. Its alt text says where it
+   goes; nothing on the page repeats what the card already says. */
+/* the supplied snowmobile illustration: the largest decorative graphic on the
+   page, but still smaller than the heading it sits under */
+.sled-art{display:block;width:100%;height:auto;position:relative;z-index:1;
+  max-width:clamp(300px,44vw,660px);transform:rotate(3deg)}
+.s-hosts p{font-size:.92rem;line-height:1.55;color:var(--forest-soft);margin:0;max-width:26ch}
+/* the sled block is the section's only activity, so it carries a little more
+   weight than copy elsewhere on the page */
+.sled-spread .s-copy p{font-size:1.02rem;line-height:1.6}
+.sled-spread .s-copy h3{font-size:clamp(1.2rem,1.9vw,1.6rem)}
+.sled-spread .s-copy{max-width:38ch}
+
+.dock-art{display:block;width:100%;height:auto;position:relative;z-index:1}
+.a-canoe{max-width:clamp(230px,30vw,425px)}
+.a-trout{max-width:clamp(230px,28.75vw,402px)}
+.a-card {max-width:clamp(150px,19vw,270px);transform:rotate(14deg)}
+.a-card img{display:block;width:100%;height:auto}
+.a-card:hover{transform:rotate(14deg) translateY(-2px)}
+
+/* there is no script face on this site, so the two written notes are set in
+   the body italic rather than pretending to match the supplied handwriting */
+.handnote{position:relative;z-index:1;margin:0;font-style:italic;line-height:1.35;
+  font-size:clamp(.82rem,1.05vw,.95rem);color:var(--forest-soft)}
+.handnote svg{display:block;color:var(--gold);margin-top:.2rem}
+
+@media (min-width:900px){
+  /* the lake sheet is decorated down both outer fifths, so everything sits
+     between columns 2 and 12 */
+  .dock-spread          {--d-shift:clamp(.5rem,1.1vw,1.2rem);
+                         --row1-slack:clamp(0px, calc((100vw - 900px) * .14), 84px)}
+
+  .dock-spread .d-head  {grid-column:2/6;grid-row:1}
+  .dock-spread .d-photo {grid-column:6/10;grid-row:1;max-width:clamp(160px,20vw,290px);
+                         justify-self:center}
+  .dock-spread .d-canoe {grid-column:10/13;grid-row:1;margin-top:clamp(.6rem,2vw,1.6rem)}
+  .dock-spread .a-canoe {grid-column:8/13;grid-row:2;margin-top:clamp(.6rem,1.5vw,1.4rem)}
+
+  /* The trout comes up under the heading with the fishing note beneath it, so
+     the left of the spread reads as one column: title, fish, copy.
+     COLUMNS 2-7, NOT 2-6 — the graphic is 15% larger and a four-column span
+     would cap it below its own max-width, which is the trap that has caught
+     the trout, the card and the wildlife strip before. Five columns leaves
+     the max-width binding, so the 15% is real at every viewport. Measured,
+     not assumed.
+     --row1-slack is the reading the hook used before it was removed: how far
+     the foot of row 1 sits below the foot of the heading. It does not grow
+     smoothly, because the canoe note wraps to another line near 900px and
+     becomes the tallest thing in that row. */
+  .dock-spread .a-trout {grid-column:2/7;grid-row:2;
+                         margin-top:calc(30px - var(--row1-slack))}
+  .dock-spread .d-fish  {grid-column:2/5;grid-row:3;
+                         margin-top:clamp(1rem,2vw,2rem)}
+
+  /* The trout is much the tallest thing in row 2, so row 3's line lands well
+     below the canoe drawing and the card would sit marooned near the foot of
+     the section. It is lifted back up beside the trout instead — different
+     columns, so nothing is in its way but the canoe drawing's foot, and the
+     lift stops short of that with room for the corner the 14deg turn throws
+     upward. */
+  .dock-spread .a-card  {grid-column:8/11;grid-row:3;
+                         margin-top:clamp(-6.5rem,-7vw,-5rem);
+                         margin-left:calc(-1 * var(--d-shift));
+                         margin-right:var(--d-shift)}
+}
+
+@media (max-width:899px){
+  .dock-spread .dock-art{max-width:min(70%,300px)}
+  /* at 14deg the card's corner swings about 13% of its own width past its
+     box, which took it off the left edge of the screen below 600px. The
+     inline margin pays for the swing; the card is not resized. */
+  .dock-spread .a-card{max-width:min(60%,240px);
+                       margin-left:clamp(1.4rem,5vw,2.4rem)}
+}
+
+/* --- the closing spread ------------------------------------------------
+   The replacement sheet is nearly square, so at full width it is ~98vw tall.
+   Everything below is measured off the file rather than guessed:
+
+     16.2vw   its drawn ridge begins
+     27.2vw   it is opaque right across its width
+     29.5vw   the open parchment starts
+     82.6vw   the bottom mountains start
+     98.3vw   the foot of the sheet
+
+   From those: the overlap is 16.2vw plus --map-peaks, so the ridge rises into
+   the winter section above; the colour switches at 27.2vw minus the overlap,
+   hidden behind the art, so there is no seam; the content starts below 29.5vw
+   so it sits on open parchment; and the section is tall enough that the
+   mountains land inside it instead of being clipped.
+
+   Parchment is #F6F0E5 — headings 11.9:1, body 5.8:1. The site gold falls to
+   2.59:1 on it, so this section keeps the darker gold. */
+.ttd-cta{position:relative;--gold:#7C5414;--glyph-bg:#F6F0E5;
+  padding-top:calc(35vw - var(--map-peaks));
+  padding-bottom:0;
+  min-height:calc(84vw - var(--map-peaks));
+  background:linear-gradient(180deg,
+    #DBE1D8 0,#DBE1D8 calc(27.2vw - 16.2vw - var(--map-peaks)),
+    #F6F0E5 calc(27.2vw - 16.2vw - var(--map-peaks)),#F6F0E5 100%)}
+.cta-sheet{position:absolute;left:0;right:0;top:calc(-1 * (16.2vw + var(--map-peaks)));
+  width:100%;height:auto;z-index:0;pointer-events:none;user-select:none}
+.ttd-cta > .wrap{position:relative;z-index:1}
+.cta-lede{font-family:var(--body);font-size:clamp(1.22rem,2vw,1.66rem);line-height:1.3;
+  color:var(--forest);margin:0 0 .7rem;max-width:23ch}
+.cta-sub{font-size:1rem;color:var(--forest-soft);margin:0 0 1.4rem}
+.say{display:block;width:100%;height:auto;position:relative;z-index:1}
+.say-ask{max-width:clamp(180px,22vw,320px);margin-top:clamp(1rem,2.5vw,1.8rem)}
+.say-good{max-width:clamp(120px,15vw,215px)}
+.say-season{max-width:clamp(150px,20vw,290px)}
+
+@media (min-width:900px){
+  .cta-spread{grid-template-columns:repeat(12,1fr);align-items:start;
+    column-gap:clamp(1rem,2vw,2rem)}
+  .cta-left {grid-column:2/6;grid-row:1}
+  .cta-right{grid-column:7/11;grid-row:1;padding-left:clamp(1.4rem,3vw,2.6rem);
+    border-left:1px solid rgba(31,51,39,.2)}
+  .say-good {grid-column:11/13;grid-row:1;margin-top:clamp(3.5rem,9vw,7rem)}
+}
+@media (max-width:899px){
+  .cta-spread .say-ask{max-width:min(64%,250px)}
+  .cta-spread .say-good{max-width:min(44%,180px);margin-top:1.4rem}
+
+}
+
+.spread{position:relative;display:grid;gap:clamp(1.3rem,3vw,1.9rem)}
+.sp-head .sub{margin-top:.85rem;font-size:1.02rem;max-width:44ch}
+.trailspread .sp-head .sub{margin-top:.7rem;max-width:40ch}
+.sp-shot{margin:0;position:relative;z-index:1}
+.spread .trail-copy,.spread .sp-head,.spread .ttd-guide{position:relative;z-index:1}
+
+/* photo scale varies by section, never uniform */
+.fb-photo{max-width:clamp(150px,18.5vw,256px)}
+.fb-photo > img{transform:rotate(15deg)}
+.fa-photo{max-width:clamp(165px,21vw,294px);transform:rotate(-5deg)}
+.w-pelican{max-width:clamp(150px,19vw,270px)}
+.w-fox {max-width:clamp(210px,27vw,390px)}
+.w-hare{max-width:clamp(195px,25vw,355px)}
+.d-photo{max-width:clamp(130px,16vw,225px)}
+.i-photo-a{max-width:clamp(240px,38vw,560px)}
+.ice-art{display:block;width:100%;height:auto;position:relative;z-index:1}
+.a-skates{max-width:clamp(220px,32vw,470px)}
+.i-photo-b{max-width:clamp(140px,19vw,265px)}
+.d-guide{max-width:20rem}
+
+/* The secondary copy on the cream sections was sitting at 4.4:1 against its
+   background on a phone and 4.6:1 on desktop — either side of the 4.5:1 that
+   body text needs, which is why "Some of the best of it is thirty seconds
+   from your door." read as faint. The background behind it is flat, not busy,
+   so this is contrast and nothing else. #3E5544 gives 5.4 to 6.6:1 across
+   every cream this class sits on, and stays well clear of the heading green
+   (#1F3327, 9:1) so the hierarchy still reads. Scoped to this page's light
+   sections: the dark wildlife panel keeps its own colour, and no other page
+   is touched. */
+.ttd:not(.on-dark) .sub{color:#3E5544}
+
+@media (min-width:900px){
+  /* THE FOREST SHEET IS CUT OFF, NOT FADED OUT — the same fault the snow
+     sheet had in 7.1. It carries its own fade over its bottom sixth, but the
+     glade section is pulled up 11vw by a negative margin and its background
+     paints over the rest while the sheet is still about half opaque. Both
+     sections meet on the same cream, so the step is purely the illustration
+     being sliced: 12 points of colour across the full width at 1920px.
+     This lays the section's own colour over the last stretch so the drawing
+     has gone before the join arrives. It ends at bottom:11vw, which is
+     exactly where the glade's background starts. Desktop only, as asked —
+     the same join measures under 4 points on a phone. */
+  .ttd-forested::after{content:"";position:absolute;left:0;right:0;
+    bottom:11vw;height:17vw;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(245,230,208,0) 0,
+      rgba(245,230,208,.5) 45%,
+      rgba(245,230,208,.88) 78%,
+      #F5E6D0 100%)}
+}
+
+@media (min-width:900px){
+  /* the column gap is published as a variable because the wildlife section's
+     closing row needs to measure against it — see .wild-spread .eye-out.
+     The value is unchanged. */
+  .spread{grid-template-columns:repeat(12,1fr);align-items:start;
+    --cgap:clamp(1rem,2vw,2rem);
+    column-gap:var(--cgap);row-gap:0}
+  
+  /* 2 — the falls descend: nothing shares a row with its own photograph */
+  /* The two copies were crossed: the Hotnarko text sat beside the Hunlen
+     print and vice versa. Each now sits with its own photograph — Hunlen
+     upper, Hotnarko lower. */
+  /* Each text sits immediately beside its own photograph and is centred
+     against it, so the two read as pairs rather than as a heading with
+     captions underneath. The pairs alternate to give the diagonal. Both
+     photographs keep their size, rotation and treatment; only their offsets
+     changed, and the negative margins pull the two groups together. */
+  .falls-spread .sp-head {grid-column:2/8;grid-row:1}
+  .falls-spread .fb-copy {grid-column:4/8;grid-row:2;align-self:center}
+  .falls-spread .fb-photo{grid-column:8/12;grid-row:2;margin-top:clamp(-2.5rem,-3vw,-1rem)}
+  .falls-spread .fa-photo{grid-column:2/6;grid-row:3;margin-top:clamp(-4rem,-5vw,-1.5rem);z-index:3}
+  .falls-spread .fa-copy {grid-column:6/10;grid-row:3;align-self:center;
+                          margin-top:clamp(1rem,2.5vw,2rem)}
+
+  /* 5 — a winter spread, matched to the reference: a narrower heading column
+     with the cabin photograph much larger beside it, the sled riding out
+     across the lower half, and the hosts note stepped in from the copy above
+     it. Several of these were capped by their column span rather than their
+     own max-width, so the spans were widened as well. */
+  .sled-spread .s-head  {grid-column:1/5;grid-row:1}
+  .sled-spread .s-photo {grid-column:5/10;grid-row:1;max-width:clamp(240px,32vw,470px);
+                         margin-top:clamp(.4rem,1.5vw,1.4rem)}
+  .sled-spread .say-season{grid-column:10/13;grid-row:1;align-self:center;
+                           margin-top:clamp(1rem,3vw,2.4rem)}
+  .sled-spread .s-copy  {grid-column:2/6;grid-row:2;margin-top:clamp(1rem,2.5vw,2.2rem)}
+  .sled-spread .sled-art{grid-column:6/13;grid-row:2;margin-top:clamp(1rem,2.5vw,2.2rem)}
+  .sled-spread .s-hosts {grid-column:5/9;grid-row:3;margin-top:clamp(1.4rem,3.5vw,3rem)}
+
+  /* 6 — the ice, laid out to the owner's reference: the winter print large on
+     the left, the ice-fishing copy beside it, the skating copy below, and the
+     skates standing off to the bottom right with the route running down to
+     them. COLUMNS 1-7 FOR THE PRINT — it is 75% larger than it was and a
+     four-column span would cap it well under its own max-width, which is the
+     cap that has caught nearly every graphic on this page. */
+  .ice-spread .i-head   {grid-column:4/10;grid-row:1;text-align:center}
+  .ice-spread .i-photo-a{grid-column:1/7;grid-row:2;margin-top:clamp(1rem,2vw,2rem)}
+  .ice-spread .i-fish   {grid-column:7/12;grid-row:2;margin-top:clamp(2rem,4.2vw,3.6rem)}
+  .ice-spread .i-skate  {grid-column:3/8;grid-row:3;margin-top:clamp(1rem,2.2vw,2.2rem)}
+  /* the skates rise out of their own row so they stand beside the print's
+     foot rather than below the skating copy, as in the reference */
+  .ice-spread .a-skates {grid-column:8/13;grid-row:3;
+                         margin-top:clamp(-6rem,-5vw,-2.4rem)}
+}
+
+/* mobile keeps each photo with its own copy and drops the routes */
+@media (max-width:899px){
+  .spread [class$="-photo"],.spread .sp-shot{max-width:min(64%,250px)}
+  .wild-spread .w-head{text-align:left}
+  .ice-spread .a-skates{max-width:min(78%,320px)}
+}
 
 /* --- editorial split: photograph one side, copy the other --- */
 .ttd-split{display:grid;gap:clamp(1.6rem,4vw,3.4rem);align-items:center;
@@ -1263,6 +2042,9 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-shot{margin:0}
 .ttd-shot img{width:100%;height:auto;display:block;border:2px solid var(--forest);
   filter:saturate(1.02) contrast(1.03)}
+/* The weathered prints carry their own paper edge and drop shadow, so they
+   want no frame drawn round them and no grade laid over them. */
+.ttd-shot img.print{border:0;filter:none}
 .ttd-shot .holder{aspect-ratio:4/3}
 .ttd-shot figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin-top:.7rem}
@@ -1326,6 +2108,9 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ttd-wide{margin:clamp(1.8rem,4vw,2.8rem) 0 0}
 .ttd-wide img{width:100%;height:auto;display:block;border:2px solid var(--forest);
   filter:saturate(1.02) contrast(1.03)}
+/* a full-width plate that is itself a print needs no frame and no grade */
+.ttd-wide img.print{border:0;filter:none}
+.ttd-wide:has(img.print){max-width:52rem}
 .ttd-wide figcaption{font-family:var(--label);font-size:.68rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin-top:.7rem}
 
@@ -1339,23 +2124,376 @@ body{overscroll-behavior-y:none;background:var(--paper);
 .ridge-fig svg{display:block;width:100%;height:auto}
 
 /* --- winter: the page cools down, it does not change sides --- */
-.ttd-winter{background:linear-gradient(180deg,var(--paper) 0%,var(--ice) 42%,var(--ice) 100%)}
+/* .ttd-winter's gradient is gone: the snow sheet supplies the cool ground now */
 .ttd-winter .ttd-copy p{color:#4A5A55}
-.ttd-snowline{display:block;width:100%;height:auto;margin-bottom:-1px}
 
-/* --- after dark --- */
-.ttd-night{background:var(--night);color:rgba(243,238,225,.74);position:relative;
-  overflow:hidden}
-.ttd-night h2{color:var(--paper)}
-.ttd-night .eyebrow{color:var(--gold-light)}
-.ttd-stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.5}
-.ttd-night .wrap{position:relative;z-index:2}
 
-/* tent and fire under the night sky — small, gold, well down the opacity */
-.ttd-camp{display:flex;justify-content:center;align-items:flex-end;gap:clamp(1.4rem,4vw,3rem);
-  margin-top:clamp(2.4rem,6vw,4rem);color:var(--gold-light);opacity:.5}
-.ttd-camp svg{width:clamp(44px,6vw,78px);height:auto;display:block}
 
 /* --- closing call --- */
 .ttd-close{text-align:center}
 .ttd-close .btn-row{justify-content:center;margin-top:2rem}
+
+/* ======================================================================
+   THINGS TO DO — MOBILE CAROUSELS
+
+   The markup is shared with the finished desktop layout, so the wrappers
+   have to be invisible to it. display:contents dissolves .mcar and .mslide
+   completely: the items inside become grid items of .spread exactly as they
+   were, every grid-column and grid-row rule still matches by descendant
+   selector, and source order — and so paint order — is unchanged. The nav is
+   simply not rendered. Desktop was diffed element by element afterwards.
+   ====================================================================== */
+.mcar,.mslide{display:contents}
+.mcar-nav{display:none}
+
+@media (max-width:899px){
+
+  /* the track. Native overflow scrolling does the swiping, so a drag works
+     with the platform's own physics and momentum rather than a JS
+     reimplementation of them; the script only drives the arrows and keeps
+     the counter honest. */
+  .mcar{display:flex;overflow-x:auto;overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;scroll-behavior:smooth;
+    scrollbar-width:none;-ms-overflow-style:none;
+    margin-inline:calc(-1 * var(--pad));padding-inline:var(--pad);
+    gap:var(--pad)}
+  .mcar::-webkit-scrollbar{display:none}
+  .mcar:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+
+  .mslide{flex:0 0 100%;min-width:0;display:flex;flex-direction:column;
+    gap:clamp(.6rem,2.6vw,.9rem);scroll-snap-align:center;scroll-snap-stop:always}
+
+  /* the picture leads and the words follow, whichever way round the source
+     has them — the Beef Trail, the fishing and the skating all carry their
+     copy first because that is what the desktop grid wanted. */
+  .mslide > .trail-copy,.mslide > .species{order:2}
+  .mslide > .ttd-shot,.mslide > .dock-art,.mslide > .ice-art{order:1}
+  .mslide > .a-card{order:3}
+
+  /* ONE FRAME, THE SAME FOR EVERY PICTURE. The prints run 0.67, 0.94 and 1.50
+     to one, so nothing but a fixed square treats them alike. object-fit is
+     CONTAIN, not cover: these are weathered prints with the torn paper edge
+     drawn into the file, and cover would crop 33% off every photograph and
+     take the edge with it. Contain keeps each print whole and gives them all
+     the same footprint and the same longest side — which also stops the copy
+     underneath jumping as you swipe. */
+  /* the frame, 20% up on 7.5. aspect-ratio rather than an explicit height, so
+     that when the frame is wider than the screen allows it stays square
+     instead of overflowing: the width caps at 100% and the height follows. */
+  /* the frame fills the column now: a landscape print runs edge to edge with
+     the paragraph under it, and a portrait one gains about 45% on 7.6.
+     .mcar in front of the selector below is not decoration — .spread .sp-shot
+     img sets a max-height of 29vh and, at equal specificity, was winning on
+     source order and holding every picture to 235px inside a 322px frame. */
+  .mslide{--frame:clamp(300px,46vh,420px)}
+  /* the picture is taken OUT OF FLOW inside the frame. In flow, its
+     height:100% is an indefinite percentage, so the browser falls back to the
+     intrinsic height — a portrait print then stretched the frame to 507px and
+     the square was lost. Absolutely positioned, it cannot size its parent. */
+  .mslide .sp-shot{position:relative;width:min(100%,var(--frame));max-width:none;
+    aspect-ratio:1;height:auto;margin-inline:auto}
+  .mcar .mslide .sp-shot img{position:absolute;inset:0;width:100%;height:100%;
+    object-fit:contain;max-height:none;margin:0}
+
+  /* THE SLIDES MUST ALL BE THE SAME HEIGHT OR THE COPY STEPS AS YOU SWIPE.
+     Two of these carousels lead a slide with a drawing rather than a
+     photograph — the trout and the skates — and those were sized by a
+     max-height while the prints had a square frame, so the ice section put
+     its skates and its ice-fishing copy at two different heights. The lead
+     drawing of a slide now takes the same frame as a print. */
+  .mslide .a-trout,.mslide .a-skates{width:min(100%,var(--frame));max-width:none;
+    aspect-ratio:1;height:auto;object-fit:contain;margin-inline:auto;display:block}
+  /* the fish card comes off the phone entirely. It stays in the markup and on
+     desktop; this only hides it below 900px. Moving it out of the carousel
+     slide in 7.7 is what levelled the two dock slides, and that still holds —
+     the card is simply no longer drawn here. */
+  .dock-spread .a-card{display:none}
+
+  /* EVERY PRINT SITS STRAIGHT. Only the CSS tilts are removed, and that is
+     all that is needed: the prints are drawn square in their files. An
+     earlier pass measured the artwork's own edges and counter-rotated each
+     one by up to 7.8deg — the estimator was reading the torn, curled corners
+     of the paper as the edge of the picture and reporting a slant that was
+     not there. Rotating them back visibly tipped photographs that had been
+     level. Do not counter-rotate these; look at one before believing a
+     number about it. */
+  .mslide .ttd-shot,.mslide .ttd-shot img,.mslide .a-card{transform:none}
+  /* the one print the owner wants on a tilt again. It turns inside its frame,
+     so the frame stays square and the slide heights stay level with the rest;
+     only the picture leans. */
+  /* scaled to .9 as well, because a 7deg turn grows this print's bounding box
+     by about 12% either way — at full size it touched the screen edges and
+     crossed into the copy below. The frame is unchanged, so the slide heights
+     stay level; the picture simply sits a little smaller within it. */
+  .mcar .mslide .rr-photo img{transform:rotate(-7deg) scale(.9)}
+
+  /* controls: a step either side and a plain 1 / 3 so it is obvious there is
+     more than one. Sized to the 44px touch target. */
+  .mcar-nav{display:flex;align-items:center;justify-content:center;
+    gap:.9rem;margin-top:clamp(.5rem,2.4vw,.8rem)}
+  .mcar-nav button{width:44px;height:44px;display:grid;place-items:center;
+    padding:0;cursor:pointer;border-radius:50%;
+    border:2px solid var(--forest);background:var(--paper-2);color:var(--forest);
+    -webkit-tap-highlight-color:transparent}
+  .mcar-nav button:disabled{opacity:.34;cursor:default}
+  .mcar-nav button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .mcount{margin:0;font-family:var(--display);letter-spacing:.06em;
+    font-size:.82rem;color:var(--forest-soft);min-width:3.4rem;text-align:center}
+  .ttd-glade .mcar-nav button{border-color:rgba(243,238,225,.66);
+    background:rgba(243,238,225,.10);color:var(--paper)}
+  .ttd-glade .mcount{color:rgba(243,238,225,.82)}
+
+  @media (prefers-reduced-motion:reduce){.mcar{scroll-behavior:auto}}
+}
+
+/* ======================================================================
+   THINGS TO DO — MOBILE TIGHTENING
+   Everything below is inside max-width:899px and touches nothing the
+   desktop layout uses. Desktop is finished and was diffed pixel-for-pixel
+   after this block was written.
+
+   Where the height was actually going, measured at 375px: the gaps between
+   items were already only 21px and the section top padding is NOT dead
+   space — every one of those bands is illustrated sheet artwork, and
+   sampling them shows real variation across the width, so pulling the copy
+   up into them puts text on a busy drawing. The height was in the pictures.
+   They were half the page: 4,041px of images inside 8,038px of content.
+   ====================================================================== */
+@media (max-width:899px){
+
+  /* the prints are capped by HEIGHT, not width. A single max-width cannot
+     serve both shapes here: at 64% the landscape prints come out 144px tall
+     and the portrait ones 342px, over half a phone screen. Capping the
+     height lets the portraits shrink to match while the landscape ones,
+     already well under the cap, do not move at all. width:auto with both
+     maxima keeps the aspect ratio — the browser fits the picture inside the
+     box rather than squashing it. */
+  .spread .sp-shot img,.spread [class$="-photo"] img{
+    width:auto;height:auto;max-width:100%;
+    max-height:clamp(186px,29vh,254px);margin-inline:auto}
+
+  /* the decorative pieces are the other half of the problem: they sit
+     between an activity's copy and the next activity's photograph, so every
+     pixel of them is a pixel pushing related things apart. */
+  /* the two handwritten notes the owner asked to drop on mobile */
+  .trailspread .t-worth,.sled-spread .say-season{display:none}
+
+  /* the signpost and the canoe move BELOW their carousel and come up in
+     size, centred; both are section pieces rather than part of any one
+     activity, so they read better as a full-width closing mark */
+  .trailspread .t-signpost{max-width:min(76%,290px);margin-inline:auto;order:3}
+  .trailspread .sp-head   {order:0}
+  .trailspread .mcar      {order:1}
+  .trailspread .mcar-nav  {order:2}
+  /* the canoe fills the column. A bleed past it was tried and abandoned:
+     margin-inline:auto cannot centre a box wider than its container — the
+     auto margins resolve to zero and the drawing ran to the right edge of
+     the screen. Wider than the column needs symmetric negative margins, and
+     it is not worth the asymmetry here. */
+  .dock-spread .a-canoe   {max-width:min(100%,460px);margin-inline:auto}
+
+  /* winter: the print up 20% and centred, the snowmobile much larger, and
+     the hosts line centred under it */
+  /* the winter print is a landscape shape, so its WIDTH is what limits it —
+     the earlier max-height never came into play. 64% -> 77% is the 20%. */
+  .sled-spread .s-photo   {max-width:min(77%,300px);margin-inline:auto}
+  .sled-spread .sled-art  {max-width:min(94%,350px);margin-inline:auto}
+  .sled-spread .s-hosts   {text-align:center}
+  .sled-spread .s-hosts > *{margin-inline:auto}
+
+  /* the closing panel reads better centred on a phone, and the owner asked
+     for the handwritten note to come off */
+  .ttd-cta .cta-left,.ttd-cta .cta-right{text-align:center}
+  .ttd-cta .cta-left > *,.ttd-cta .cta-right > *{margin-inline:auto}
+  .ttd-cta .btn-row{justify-content:center}
+  .ttd-cta .say-good,.ttd-cta .say-ask{display:none}
+
+  .spread .say            {max-width:min(40%,150px)}
+  .wild-spread .wild-note {max-width:100%}
+
+  /* the snowmobile note sat between its own photograph and its copy and
+     split them; on one column it belongs after the pair */
+  .sled-spread .s-photo{order:1}
+  .sled-spread .s-copy {order:2}
+  .sled-spread .say-season{order:3}
+  .sled-spread .sled-art{order:4}
+  .sled-spread .s-hosts{order:5}
+
+  /* 21px between every item on a 375px screen is more air than the column
+     needs; the pairs read as pairs at 13 */
+  .spread{gap:clamp(.8rem,3.4vw,1.1rem)}
+
+  /* The alternating left/right offset from 7.3 and the inset that kept the
+     Rainbow print's rotated corner on screen are both gone: with the prints
+     straight and in one uniform frame, everything is centred instead. */
+
+  /* THE CLOSING PANEL HAS TWO CLEAR BANDS, NOT ONE: a strip of pale sky
+     before the sheet's mountains come in, and open ground below them.
+     Together they cannot hold the whole block, so the heading takes the
+     upper band and the copy and buttons take the lower, with the ridge
+     between them.
+
+     Both bands were measured off the rendered background with the copy
+     hidden — the only way to see what is actually behind it — and they sit
+     at 13-53vw and from 79vw down, holding across the whole mobile range.
+
+     THE COPY IS ANCHORED TO A vw POSITION, NOT STACKED ON A MARGIN. The
+     heading's height is in px and does not scale, so a margin-based stack
+     drifted the copy back onto the ridge as the viewport widened: 60
+     variance behind it at 899px against 0.7 at 375. A vw min-height on the
+     heading fixes where the copy starts whatever the heading does. */
+  .ttd-cta{padding-top:15vw;padding-bottom:clamp(1.6rem,6vw,2.6rem)}
+  .ttd-cta .cta-left{min-height:51vw}
+  .ttd-cta .cta-right{margin-top:12vw}
+  .cta-spread{gap:clamp(.9rem,3.4vw,1.2rem)}
+}
+
+/* ======================================================================
+   HOMEPAGE GALLERY — "Have a look around."
+   Scoped to .gal-home so the lodge page's own gallery, which shares the
+   #gallery and #resort-gallery ids, is untouched: it keeps .gal-clip and
+   .masonry and this file never mentions them here.
+   ====================================================================== */
+.gal-home .gcar-nav{display:none}
+.gal-home .gal-note{display:flex;align-items:center;gap:.5rem;
+  margin:1.5rem 0 0;color:var(--forest-soft)}
+.gal-home .gal-note span{font-family:var(--body);font-style:italic;
+  font-size:1.02rem;letter-spacing:.01em;transform:rotate(-1.6deg)}
+.gal-home .gal-note svg{flex:none;color:var(--gold);opacity:.85;
+  width:clamp(64px,8vw,104px);height:auto}
+
+/* the featured set. Twelve cells on a four-column grid — one photograph two
+   wide and two tall, six single, one two wide — so the rows fill exactly and
+   there are no holes to pack around. Plain square corners and a hairline
+   rule: the weathered treatment belongs on Things To Do, not here. */
+.gal-home .pick,.gal-home .pick-rest{
+  --pg:clamp(.55rem,1.1vw,.9rem);
+  display:grid;grid-template-columns:repeat(2,1fr);gap:var(--pg);
+  grid-auto-rows:clamp(104px,13.5vw,190px)}
+.gal-home .pick{margin-top:1.5rem}
+.gal-home .pick-rest{margin-top:var(--pg)}
+.gal-home .pick-rest.collapsed{display:none}
+@media (min-width:700px){
+  .gal-home .pick,.gal-home .pick-rest{grid-template-columns:repeat(4,1fr)}
+}
+.gal-home .p-big {grid-column:span 2;grid-row:span 2}
+.gal-home .p-wide{grid-column:span 2}
+
+.gal-home .gitem{position:relative;display:block;margin:0;padding:0;
+  border:1px solid rgba(31,51,39,.16);background:var(--paper);
+  cursor:zoom-in;overflow:hidden;border-radius:0}
+.gal-home .gitem img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease}
+.gal-home .gitem:hover img,.gal-home .gitem:focus-visible img{transform:scale(1.04)}
+.gal-home .gitem:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.gal-home .gitem .cap{position:absolute;left:0;right:0;bottom:0;
+  font-family:var(--label);font-weight:500;font-size:.62rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--paper);text-align:left;
+  padding:1.6rem .7rem .55rem;
+  background:linear-gradient(180deg,rgba(20,32,24,0),rgba(20,32,24,.72))}
+@media (prefers-reduced-motion:reduce){.gal-home .gitem img{transition:none}
+  .gal-home .gitem:hover img{transform:none}}
+
+/* ON A PHONE THE PREVIEW GOES ONE PHOTOGRAPH TO A ROW, at its own shape.
+   Two columns put each picture at about 164px across, too small to read a
+   dock or a garden in. Desktop is untouched: this block only exists below
+   700px, which is where the grid drops to two columns anyway.
+
+   The span resets matter. .p-big carries grid-column:span 2 and .p-wide the
+   same; left in place on a single-column grid they would conjure an implicit
+   second column and undo the whole thing. And grid-auto-rows has to go to
+   auto, or the fixed row height crops the taller photographs — the point
+   here is that each one keeps its own proportions. */
+@media (max-width:699px){
+  /* OPENED, THE PHONE GALLERY IS THE LODGE PAGE'S GALLERY: a two-column
+     masonry of all thirty-four at their own heights, scrolled down the page.
+     Same construction as .masonry — columns plus break-inside:avoid — so the
+     two read alike. Both containers dissolve with display:contents, which is
+     what lets one column flow run through the eight and the twenty-six as a
+     single set; without it they would be two stacked blocks. */
+  .gal-home .pick-wrap{--mg:clamp(.32rem,1.6vw,.6rem);
+    display:block;columns:2;column-gap:var(--mg);margin-top:1.4rem}
+  .gal-home .pick,.gal-home .pick-rest{display:contents}
+  .gal-home .pick-wrap .gitem{display:block;break-inside:avoid;
+    margin:0 0 var(--mg);width:auto;max-width:none;aspect-ratio:auto;
+    grid-column:auto;grid-row:auto}
+  .gal-home .pick-wrap .gitem img{width:100%;height:auto;object-fit:fill}
+  .gal-home .pick-wrap .cap{font-size:.62rem;padding:1.6rem .6rem .5rem}
+
+  /* THE PHONE PREVIEW IS A CAROUSEL: one landscape photograph at a time.
+     Three of the six live in .pick-rest, which is display:none while
+     collapsed, so nothing can simply be shown. While the rest is collapsed
+     BOTH containers go display:contents and all thirty-four become children
+     of one flex track; every one is hidden, and the six are shown and
+     ordered. Open the gallery and the containers snap back, so the full set
+     is untouched and the viewer still counts 1 / 34.
+
+     :has() on the wrapper rather than a class on the containers, because the
+     collapsed state lives on .pick-rest, which comes AFTER .pick, and no
+     sibling combinator reaches backwards. If :has() is ever missing the page
+     falls back to the stacked preview rather than breaking. */
+  .gal-home .pick-wrap:has(.pick-rest.collapsed){display:flex;columns:auto;
+    margin-top:1.4rem;
+    overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;
+    gap:.45rem;margin-inline:calc(-1 * var(--pad));padding-inline:var(--pad)}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed)::-webkit-scrollbar{display:none}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick,
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .pick-rest.collapsed{display:contents}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .gitem{display:none}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick{display:block;
+    flex:0 0 100%;width:auto;max-width:100%;margin:0;grid-column:auto;grid-row:auto;
+    scroll-snap-align:center;scroll-snap-stop:always;aspect-ratio:3/2}
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick img{
+    width:100%;height:100%;object-fit:cover}
+
+  .gal-home .pick-wrap:has(.pick-rest.collapsed) .m-pick .cap{
+    font-size:.66rem;padding:2rem .85rem .7rem}
+  .gal-home .m-1{order:1}.gal-home .m-2{order:2}.gal-home .m-3{order:3}
+  .gal-home .m-4{order:4}.gal-home .m-5{order:5}.gal-home .m-6{order:6}
+
+  /* where each photograph sits inside the 3:2 window. Three of the six are
+     2:3 portraits losing 56% of their height, so the centre is the wrong
+     place for all of them — these were chosen by cropping each one at five
+     positions and looking. */
+  .gal-home .m-2 img{object-position:50% 65%}   /* the window wall, not the sky */
+  .gal-home .m-3 img{object-position:50% 75%}   /* the canoe on the dock */
+  .gal-home .m-5 img{object-position:50% 32%}   /* the cabin, above the woodpile */
+
+  /* The arrows and dots belong to the carousel, so they go when it does —
+     but this one is driven by a CLASS the script sets, not by :has(). The
+     layout rules above use :has() on .pick-wrap and restyle correctly, yet
+     the same construction with the subject a DESCENDANT of the anchor
+     (.gal-home:has(...) .gcar-nav) does not repaint when the class changes:
+     the selector stops matching, matches() agrees, and the computed display
+     stays flex. Verified against the browser's own matched-rule list, which
+     showed only the display:none rules applying while it rendered flex. */
+  .gal-home .gcar-nav{display:none;align-items:center;justify-content:center;
+    gap:.8rem;margin-top:.85rem}
+  .gal-home:not(.gal-open) .gcar-nav{display:flex}
+  .gal-home .gcar-arrow{width:38px;height:38px;flex:none;display:grid;
+    place-items:center;padding:0;cursor:pointer;border-radius:50%;
+    border:1px solid rgba(31,51,39,.3);background:transparent;color:var(--forest);
+    -webkit-tap-highlight-color:transparent}
+  .gal-home .gcar-arrow:disabled{opacity:.3;cursor:default}
+  .gal-home .gcar-arrow:focus-visible,.gal-home .gcar-dot:focus-visible{
+    outline:2px solid var(--gold);outline-offset:3px}
+  .gal-home .gcar-dots{display:flex;align-items:center;gap:.42rem}
+  .gal-home .gcar-dot{width:7px;height:7px;padding:0;border-radius:50%;
+    border:0;cursor:pointer;background:rgba(31,51,39,.26);
+    transition:background .25s ease,transform .25s ease;
+    -webkit-tap-highlight-color:transparent}
+  .gal-home .gcar-dot[aria-current="true"]{background:var(--gold);transform:scale(1.35)}
+  @media (prefers-reduced-motion:reduce){
+    .gal-home .pick-wrap:has(.pick-rest.collapsed){scroll-behavior:auto}
+    .gal-home .gcar-dot{transition:none}}
+}
+
+/* no fade over the foot of the preview, and the closing space trimmed so the
+   band runs on into the next section instead of leaving a hole */
+.gal-home .gal-toggle{margin-top:clamp(1.2rem,2.6vw,1.8rem);
+  display:flex;justify-content:center}
+/* this section and the one after it are both band-2, so their padding meets
+   with no colour change to break it up — 104px each read as one 227px hole
+   under the button. Trimming this side leaves a single normal gap. */
+.gal-home{padding-bottom:clamp(.8rem,1.4vw,1.3rem)}

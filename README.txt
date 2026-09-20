@@ -60,10 +60,6 @@ HOW IT BEHAVES
   of the property, the float plane at the dock, and the contact
   and arrival details.
 
-- GETTING HERE is temporarily a holding page: the URL resolves
-  and stays in the nav, but shows only a short note and the
-  contact buttons, with noindex set. Restore from v3.5.
-
 - THINGS TO DO is a holding page on live for now; the finished
   page is in the v3.6 package and the staging bundle. Once
   restored it is a full page: paddling and fishing from the

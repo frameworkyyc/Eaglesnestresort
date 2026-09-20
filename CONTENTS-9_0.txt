@@ -1,0 +1,123 @@
+EAGLE'S NEST RESORT — FULL SITE EXPORT — RELEASE 9.0
+===================================================================
+This is the COMPLETE site, not a delta. Every file needed to run
+eaglesnestresort.ca is here, at the state of release 8.9 plus this
+export's handover note.
+
+    225 files, 29 MB
+    18 pages, one stylesheet, one script, 202 images
+    stylesheet address ?v=9b0bdf51 on all 18 pages
+
+Upload the contents of eagles-nest-site/ preserving the directory
+structure. It replaces everything.
+
+
+WHAT IS IN IT
+-------------------------------------------------------------------
+  index.html            the landing page
+  lodge.html            rooms and rates, with the 34-photo gallery
+  things-to-do.html     the long illustrated page
+  getting-here.html     directions
+  hosts.html            Diane and Murray
+  booking.html          enquiry form
+  lodge/  (12 pages)    a page per suite, cabin and camping
+  css/site.css          the whole stylesheet
+  js/site.js            the whole script
+  images/               63 page images
+  images/gal/  (67)     gallery thumbnails
+  images/lg/   (72)     full-size versions for the photo viewer
+  _headers              Cloudflare Pages headers
+  README.txt            as it was
+  HANDOVER.txt          the running note, updated for this export
+
+
+HOW THIS EXPORT WAS PRODUCED — PLEASE READ
+-------------------------------------------------------------------
+The working copy was lost part-way through this request: the
+container running the build was reset and its filesystem wiped.
+
+Rather than reassemble the site by hand, it was rebuilt by replaying
+the original 6.5 full state through all twenty-four delta bundles in
+order. That is verifiable, and it verified: each release's ?v=
+address appeared in the expected sequence as its bundle was applied,
+6.5's e32c702b through to 9b0bdf51, and the stylesheet address
+stamped on all eighteen pages matches the hash computed from the
+final css and js. The reconstruction is exact.
+
+So what you are uploading is the same site you have been approving,
+not an approximation of it.
+
+
+ONE THING THAT DID NOT SURVIVE — AND IT MATTERS
+-------------------------------------------------------------------
+build_ttd.py, the generator for things-to-do.html, was lost with the
+container. The only copy that survives is the one from the original
+6.5 upload, and it predates every markup change made since: the
+hook, the ANAHIM LAKE block and "Explore a little further" removals,
+the skates graphic and its dotted route, the mobile carousels and
+the slide wrappers around them.
+
+RUNNING IT WOULD OVERWRITE things-to-do.html WITH THE 6.5 MARKUP and
+undo all of that. It is deliberately NOT included in this export.
+
+things-to-do.html is now the source of truth for that page. Next
+time it needs changing, either edit the HTML directly or rebuild the
+generator from the current page first. The page itself is complete
+and correct — this is a lost tool, not a broken site.
+
+
+CHECKED BEFORE EXPORT
+-------------------------------------------------------------------
+  tag-stack nesting, all 18 pages          clean
+  every src/href resolves                  0 unresolved
+  declared image w/h vs file on disk       0 mismatches
+  one ?v= pair per page                    18/18, all 9b0bdf51
+  address matches the css+js hash          yes
+  css comments and braces balanced         yes
+  js parses                                yes
+  Things To Do sheet order                 map, forest, glade, basin,
+                                           ridge, snow, closing
+  every page rendered at 375px and 1440px  no horizontal overflow,
+                                           no console errors, no
+                                           missing images
+
+  The pages with a gallery each report one "incomplete" image: that
+  is the photo viewer's empty placeholder, which fills when a
+  photograph is opened. It has been there since before this work
+  began and is not a fault.
+
+
+HOUSEKEEPING YOU MAY WANT TO DO
+-------------------------------------------------------------------
+Twelve image files in the repo are referenced by nothing and can be
+deleted whenever you like — roughly 1.5 MB:
+
+  images/note-bear.webp      images/note-bird.webp
+  images/note-canid.webp     images/note-hare.webp
+  images/note-moose.webp     images/og-lake.jpg
+  images/hook-note.webp
+  images/lg/beef-trail-approach.jpg   images/lg/hotnarko-falls.jpg
+  images/lg/pelican-lake.jpg          images/lg/rainbow-range.jpg
+  images/lg/winter-lodge.jpg
+
+They are included in this export because it is a complete copy.
+DO NOT delete images/lg/lakeshore.jpg — the gallery still uses it.
+
+
+STILL OPEN, IN ORDER OF HOW MUCH THEY MATTER
+-------------------------------------------------------------------
+1. info@eaglesnest-resort.com appears in 41 mailto links across the
+   site and has never been confirmed as a working address. If it is
+   wrong, every enquiry sent from the site goes nowhere. This is
+   worth five minutes before you tell anyone the site is live.
+
+2. Copy never signed off: the Hunlen Falls description, "Out on the
+   lake.", "The Beef Trail", the small pin labels, and the wildlife
+   opening line. All reads fine, none of it confirmed by you.
+
+3. "A few favourites." on the homepage is set in the site's italic,
+   not the hand used for the notes on Things To Do. Supply it in
+   that hand and it is a small swap.
+
+4. "Trails lead to new stories." was drawn but never placed on any
+   page.
