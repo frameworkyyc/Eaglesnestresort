@@ -470,17 +470,29 @@
   var btn = document.getElementById("gal-toggle");
   if (!gal || !btn) return;
 
+  /* The wording is read off the button so a page can name its own, which the
+     homepage does ("View all 34 photos"). Falling back to the originals keeps
+     the lodge page reading exactly as it did. */
+  var moreLabel = btn.getAttribute("data-label-more") || "View full gallery";
+  var lessLabel = btn.getAttribute("data-label-less") || "Show less";
+
   function expand() {
     if (!gal.classList.contains("collapsed")) return;
     gal.classList.remove("collapsed");
-    btn.textContent = "Show less";
+    btn.textContent = lessLabel;
     btn.setAttribute("aria-expanded", "true");
   }
   function collapse() {
     gal.classList.add("collapsed");
-    btn.textContent = "View full gallery";
+    btn.textContent = moreLabel;
     btn.setAttribute("aria-expanded", "false");
-    gal.scrollIntoView({ behavior: "smooth", block: "start" });
+    /* the homepage keeps its preview in view above the button, so only scroll
+       back when the whole gallery was the thing that opened */
+    if (!btn.hasAttribute("data-label-more")) {
+      gal.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      btn.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   }
   btn.addEventListener("click", function () {
     gal.classList.contains("collapsed") ? expand() : collapse();
@@ -496,4 +508,241 @@
       if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
+})();
+
+
+/* ---- Things To Do: one-at-a-time carousels, mobile only ----------------
+   The swiping itself is native overflow scrolling with scroll-snap, so a
+   drag gets the platform's own physics and a keyboard gets scrolling for
+   free. This only drives the arrows and keeps the counter honest.
+
+   It is gated to the mobile breakpoint and torn down above it, because
+   above 899px .mcar is display:contents — the track has no box, scrollLeft
+   is meaningless, and marking slides aria-hidden there would hide copy from
+   assistive tech that is plainly visible on screen. */
+(function () {
+  "use strict";
+  var mq = window.matchMedia("(max-width:899px)");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var wired = [];
+
+  function setup(root) {
+    var slides = Array.prototype.slice.call(root.querySelectorAll(".mslide"));
+    var nav = root.parentNode.querySelector(".mcar-nav");
+    if (slides.length < 2 || !nav) return null;
+
+    var prev = nav.querySelector(".mprev");
+    var next = nav.querySelector(".mnext");
+    var now = nav.querySelector(".mnow");
+    var index = 0;
+
+    function mark(i) {
+      index = i;
+      if (now) now.textContent = String(i + 1);
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+      slides.forEach(function (s, n) {
+        s.setAttribute("aria-hidden", n === i ? "false" : "true");
+      });
+    }
+    /* offsetLeft is measured from the nearest positioned ancestor, which here
+       is .spread, not the track — and the track carries a negative margin and
+       a matching padding so the slides can bleed to the screen edge. That put
+       the arrow target 18px out; only scroll-snap was hiding it. Live rects
+       plus the current scrollLeft are agnostic to all of that. */
+    function offsetOf(i) {
+      var pad = parseFloat(getComputedStyle(root).paddingLeft) || 0;
+      return root.scrollLeft + slides[i].getBoundingClientRect().left
+             - root.getBoundingClientRect().left - pad;
+    }
+    function go(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      root.scrollTo({ left: offsetOf(i), behavior: reduceMotion ? "auto" : "smooth" });
+      mark(i);
+    }
+
+    var onPrev = function () { go(index - 1); };
+    var onNext = function () { go(index + 1); };
+    var t;
+    var onScroll = function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        /* nearest slide by position, not scrollLeft / clientWidth: the track
+           is padded and gapped, so the slide pitch is not the track width and
+           dividing by it drifts as the slide count grows */
+        var i = 0, best = Infinity, rootLeft = root.getBoundingClientRect().left;
+        slides.forEach(function (s, n) {
+          var d = Math.abs(s.getBoundingClientRect().left - rootLeft);
+          if (d < best) { best = d; i = n; }
+        });
+        if (i !== index) mark(i);
+      }, 90);
+    };
+    var onKey = function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
+    };
+
+    prev.addEventListener("click", onPrev);
+    next.addEventListener("click", onNext);
+    root.addEventListener("scroll", onScroll, { passive: true });
+    root.addEventListener("keydown", onKey);
+    root.setAttribute("tabindex", "0");
+    root.setAttribute("role", "group");
+    root.setAttribute("aria-roledescription", "carousel");
+    mark(0);
+
+    return function teardown() {
+      prev.removeEventListener("click", onPrev);
+      next.removeEventListener("click", onNext);
+      root.removeEventListener("scroll", onScroll);
+      root.removeEventListener("keydown", onKey);
+      root.removeAttribute("tabindex");
+      root.removeAttribute("role");
+      root.removeAttribute("aria-roledescription");
+      root.scrollLeft = 0;
+      slides.forEach(function (s) { s.removeAttribute("aria-hidden"); });
+    };
+  }
+
+  function sync() {
+    if (mq.matches && !wired.length) {
+      document.querySelectorAll("[data-mcar]").forEach(function (root) {
+        var down = setup(root);
+        if (down) wired.push(down);
+      });
+    } else if (!mq.matches && wired.length) {
+      wired.forEach(function (down) { down(); });
+      wired = [];
+    }
+  }
+
+  sync();
+  if (mq.addEventListener) mq.addEventListener("change", sync);
+  else if (mq.addListener) mq.addListener(sync);
+})();
+
+
+/* ---- homepage gallery carousel, phones only -----------------------------
+   Native scroll-snap does the swiping, so the gesture keeps the platform's
+   own physics and a tap still reaches the photograph underneath and opens the
+   viewer. This only drives the arrows and the dots.
+
+   Gated at 699px, which is where the CSS hands the gallery back to the
+   desktop grid, and unbound above it: up there the track is a plain grid and
+   its scrollLeft means nothing. */
+(function () {
+  "use strict";
+  var wrap = document.querySelector(".gal-home .pick-wrap");
+  var nav = document.querySelector(".gal-home .gcar-nav");
+  if (!wrap || !nav) return;
+
+  var mq = window.matchMedia("(max-width:699px)");
+  var prev = nav.querySelector(".gcar-prev");
+  var next = nav.querySelector(".gcar-next");
+  var dots = [].slice.call(nav.querySelectorAll(".gcar-dot"));
+  var index = 0;
+  var bound = false;
+
+  function slides() {
+    return [].slice.call(wrap.querySelectorAll(".m-pick"))
+      .filter(function (s) { return s.offsetParent !== null; })
+      .sort(function (a, b) {
+        return a.getBoundingClientRect().left - b.getBoundingClientRect().left;
+      });
+  }
+  function mark(i) {
+    index = i;
+    dots.forEach(function (d, n) {
+      if (n === i) d.setAttribute("aria-current", "true");
+      else d.removeAttribute("aria-current");
+    });
+    prev.disabled = i === 0;
+    next.disabled = i === dots.length - 1;
+  }
+  function go(i) {
+    var s = slides();
+    i = Math.max(0, Math.min(s.length - 1, i));
+    if (!s[i]) return;
+    var pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
+    wrap.scrollTo({
+      left: wrap.scrollLeft + s[i].getBoundingClientRect().left
+            - wrap.getBoundingClientRect().left - pad,
+      behavior: "smooth"
+    });
+    mark(i);
+  }
+
+  var onPrev = function () { go(index - 1); };
+  var onNext = function () { go(index + 1); };
+  var dotHandlers = dots.map(function (d, n) {
+    return function () { go(n); };
+  });
+  var t;
+  var onScroll = function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      var s = slides(), left = wrap.getBoundingClientRect().left;
+      var best = Infinity, i = 0;
+      s.forEach(function (el, n) {
+        var d = Math.abs(el.getBoundingClientRect().left - left);
+        if (d < best) { best = d; i = n; }
+      });
+      if (i !== index) mark(i);
+    }, 90);
+  };
+  var onKey = function (e) {
+    if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
+  };
+
+  function bind() {
+    if (bound) return;
+    prev.addEventListener("click", onPrev);
+    next.addEventListener("click", onNext);
+    dots.forEach(function (d, n) { d.addEventListener("click", dotHandlers[n]); });
+    wrap.addEventListener("scroll", onScroll, { passive: true });
+    wrap.addEventListener("keydown", onKey);
+    wrap.setAttribute("tabindex", "0");
+    wrap.setAttribute("role", "group");
+    wrap.setAttribute("aria-roledescription", "carousel");
+    mark(0);
+    bound = true;
+  }
+  function unbind() {
+    if (!bound) return;
+    prev.removeEventListener("click", onPrev);
+    next.removeEventListener("click", onNext);
+    dots.forEach(function (d, n) { d.removeEventListener("click", dotHandlers[n]); });
+    wrap.removeEventListener("scroll", onScroll);
+    wrap.removeEventListener("keydown", onKey);
+    wrap.removeAttribute("tabindex");
+    wrap.removeAttribute("role");
+    wrap.removeAttribute("aria-roledescription");
+    dots.forEach(function (d) { d.removeAttribute("aria-current"); });
+    wrap.scrollLeft = 0;
+    bound = false;
+  }
+  function sync() { if (mq.matches) bind(); else unbind(); }
+
+  /* Opening the gallery swaps the track from a carousel to a masonry and
+     closing it swaps back. Reset to the first photograph on the way, or the
+     dots keep reporting wherever the carousel was left standing. */
+  var section = wrap.closest(".gal-home");
+  var toggle = document.getElementById("gal-toggle");
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      setTimeout(function () {
+        var open = !wrap.querySelector(".pick-rest").classList.contains("collapsed");
+        if (section) section.classList.toggle("gal-open", open);
+        if (!mq.matches || !bound) return;
+        wrap.scrollLeft = 0;
+        mark(0);
+      }, 0);
+    });
+  }
+
+  sync();
+  if (mq.addEventListener) mq.addEventListener("change", sync);
+  else if (mq.addListener) mq.addListener(sync);
 })();
