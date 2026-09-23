@@ -127,9 +127,23 @@
      off the bottom of the frame; the container crops it. Nothing re-lays out
      unless the width actually changes. */
   var baseH = 0;
+  /* the height actually visible on arrival: the composition is laid out
+     against this, while the canvas may run taller underneath it */
+  var VH = 0;
   function stageHeight(){
-    var screenH = (window.screen && window.screen.height) || 0;
-    return Math.max(window.innerHeight || 0, cv.clientHeight || 0, screenH);
+    var vh = Math.max(window.innerHeight || 0, cv.clientHeight || 0);
+    /* only touch devices retract their browser chrome, so only they need the
+       headroom; on a desktop the viewport is the frame */
+    var touch = window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
+    if(!touch) return vh;
+    /* screen.width/height do not swap on rotation, so the tall value is wrong
+       in landscape: take whichever edge matches the current orientation */
+    var sw = (window.screen && window.screen.width)  || 0;
+    var sh = (window.screen && window.screen.height) || 0;
+    var landscape = window.innerWidth > window.innerHeight;
+    var screenH = landscape ? Math.min(sw, sh) : Math.max(sw, sh);
+    /* and never more than the toolbar could plausibly account for */
+    return Math.max(vh, Math.min(screenH, Math.round(vh * 1.18)));
   }
 
   function resize(force){
@@ -140,6 +154,9 @@
     if(!force && wNow === W && hNow <= baseH * 1.02) return;
 
     dpr = Math.min(window.devicePixelRatio||1, 1.75);
+    /* the visible height is only re-read on a real change of shape, never
+       because a toolbar slid away mid-scroll */
+    if(force || wNow !== W || !VH) VH = window.innerHeight || cv.clientHeight;
     W = wNow;
     baseH = Math.max(baseH, hNow);
     H = baseH;
@@ -390,13 +407,13 @@
     if(plateOK){
       var ir = plate.width/plate.height;
       var dw = W, dh = W/ir;
-      if(dh < H*1.05){ dh = H*1.05; dw = dh*ir; }
+      if(dh < VH*1.05){ dh = VH*1.05; dw = dh*ir; }
       /* pushed down so the range sits below the lockup rather than behind it:
          the plate's own skyline lands around two thirds down the frame */
       var ox = (W - dw)/2 - pmx*10;
       /* seated so the photograph's skyline lands about two thirds down the
          frame, which puts the range under the wordmark rather than behind it */
-      var oy = H - dh*0.81 - pmy*5;
+      var oy = VH - dh*0.81 - pmy*5;
       ctx.drawImage(plate, ox, oy, dw, dh);
       horizon = oy + dh*0.40;   /* the skyline sits at the top of the range band */
     }
@@ -421,10 +438,13 @@
        breathes without the logo itself being redrawn. */
     if(mark.complete && mark.naturalWidth){
       var narrow = W < 700;
-      var mh = Math.min(H*(narrow?0.52:0.58), W*0.42);
+      var mh = Math.min(VH*(narrow?0.52:0.56), W*0.42);
       var mw = mh * mark.naturalWidth / mark.naturalHeight;
       var mx = (W-mw)/2 - pmx*7;
-      var my = H*(narrow?0.40:0.41) - mh/2;   /* held, with the wordmark near centre */
+      /* the blades fade out toward their tips, so the eye reads the mark by
+         its bright lower half and the wordmark; the box is set high enough
+         that that visible mass sits on the centre line */
+      var my = VH*0.415 - mh/2;
 
       ctx.save();
       ctx.shadowColor = 'rgba(4,14,22,.5)'; ctx.shadowBlur = 26;
@@ -513,7 +533,13 @@
     requestAnimationFrame(frame);
   }
 
-  if(cv && stage && cv.offsetWidth && cv.offsetHeight){
+  /* The hero only exists at desktop widths. A tablet opened in portrait gets
+     the phone layout, where this canvas has no size; if it is then turned to
+     landscape the hero must start at that point rather than wait for a reload. */
+  var heroStarted = false;
+  function startHero(){
+    if(heroStarted || !cv || !stage || !cv.offsetWidth || !cv.offsetHeight) return false;
+    heroStarted = true;
     window.addEventListener('resize', function(){ resize(false); p = progress(); draw(); });
     window.addEventListener('orientationchange', function(){
       baseH = 0; setTimeout(function(){ resize(true); p = progress(); draw(); }, 120);
@@ -530,6 +556,16 @@
         },{threshold:0}).observe(cv);
       }
     }
+    return true;
+  }
+  if(!startHero()){
+    var tryStart = function(){ if(startHero()){
+      window.removeEventListener('resize', tryStart);
+      window.removeEventListener('orientationchange', tryLater);
+    }};
+    var tryLater = function(){ setTimeout(tryStart, 160); };
+    window.addEventListener('resize', tryStart);
+    window.addEventListener('orientationchange', tryLater);
   }
 
   /* ---- gentle parallax on project photography ---- */
@@ -1016,7 +1052,7 @@ window.__rig2D = function(){
 
 /* ---- total station: WebGL build, with a fallback to the canvas renderer above ---- */
 (function(){
-  document.documentElement.setAttribute('data-build','20260824-0122');
+  document.documentElement.setAttribute('data-build','20260922-1527');
   var sec = document.getElementById('setup');
   var stage = sec && sec.querySelector('.setup-stage');
   var fallbackCanvas = document.getElementById('rig');
