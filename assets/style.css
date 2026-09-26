@@ -46,10 +46,16 @@ section{padding-block:clamp(4rem,9vw,7.5rem)}
 .section-head p{margin-top:1.1rem}
 
 /* ---------- header ---------- */
+/* Fixed rather than sticky. On iOS the sticky header drifts up under the
+   browser's own bar as its toolbar collapses during a scroll; a fixed bar is
+   pinned to the visual viewport and stays put. The flow space it no longer
+   occupies is given back as padding on main. */
 header{
-  position:sticky;top:0;z-index:60;background:rgba(7,26,36,.94);
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(7,26,36,.94);
   border-bottom:1px solid var(--rule-dark);
 }
+main{padding-top:74px}
 .bar{display:flex;align-items:center;gap:2rem;height:74px;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
 .brand{display:flex;align-items:center;text-decoration:none;margin-right:auto}
 .brand img{height:38px;width:auto;display:block}
@@ -185,17 +191,20 @@ nav a:hover::after{right:0}
 @media (max-width:860px){
   /* the instrument runs centred and pinned, with the notes passing either side */
   .setup-grid{display:block;position:relative}
+  /* the pinned stage runs the full height of the screen: a shorter box cut
+     the instrument off along its own bottom edge partway down the section,
+     which read as the model being clipped in mid-air */
   .setup-stage{
     grid-column:auto;grid-row:auto;
-    position:sticky;top:0;height:74svh;width:100%;
+    position:sticky;top:0;height:100svh;height:100dvh;width:100%;
     display:block;pointer-events:none;z-index:0;
   }
   .setup-copy{
     grid-column:auto;grid-row:auto;
     position:relative;z-index:1;
-    margin-top:-58svh;padding-block:0 clamp(3rem,9vw,5rem);
+    margin-top:-84svh;padding-block:0 clamp(3rem,9vw,5rem);
   }
-  .setup-head{margin-bottom:44svh}
+  .setup-head{margin-bottom:62svh}
   .beat{
     min-height:0;opacity:1;padding:0;border:0;
     width:47%;max-width:15rem;margin-block:16svh;

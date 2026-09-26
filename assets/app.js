@@ -570,11 +570,13 @@
 
   /* ---- gentle parallax on project photography ---- */
   if(!reduce){
-    var shots = [].slice.call(document.querySelectorAll('.proj-media img'));
+    /* named apart from the hero's shooting stars: both live in this scope and
+       a shared name left each clobbering the other */
+    var plates = [].slice.call(document.querySelectorAll('.proj-media img'));
     var ticking = false;
     var shift = function(){
       var vh = window.innerHeight;
-      shots.forEach(function(img){
+      plates.forEach(function(img){
         var r = img.getBoundingClientRect();
         if(r.bottom < -100 || r.top > vh+100) return;
         var c = (r.top + r.height/2 - vh/2) / vh;
@@ -1052,7 +1054,7 @@ window.__rig2D = function(){
 
 /* ---- total station: WebGL build, with a fallback to the canvas renderer above ---- */
 (function(){
-  document.documentElement.setAttribute('data-build','20260922-1527');
+  document.documentElement.setAttribute('data-build','20260923-2126');
   var sec = document.getElementById('setup');
   var stage = sec && sec.querySelector('.setup-stage');
   var fallbackCanvas = document.getElementById('rig');
