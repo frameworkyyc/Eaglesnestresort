@@ -194,9 +194,12 @@ nav a:hover::after{right:0}
   /* the pinned stage runs the full height of the screen: a shorter box cut
      the instrument off along its own bottom edge partway down the section,
      which read as the model being clipped in mid-air */
+  /* full-bleed: the stage lives inside the padded column, so it is pulled
+     back out to the edges of the screen or the render is inset on both sides */
   .setup-stage{
     grid-column:auto;grid-row:auto;
-    position:sticky;top:0;height:100svh;height:100dvh;width:100%;
+    position:sticky;top:0;height:100svh;height:100dvh;
+    width:100vw;margin-inline:calc(var(--pad) * -1);
     display:block;pointer-events:none;z-index:0;
   }
   .setup-copy{
@@ -209,7 +212,8 @@ nav a:hover::after{right:0}
     min-height:0;opacity:1;padding:0;border:0;
     width:47%;max-width:15rem;margin-block:16svh;
   }
-  .beat[data-beat="1"]{margin-left:auto;text-align:right}
+  /* every note on the left, rather than alternating sides */
+  .beat[data-beat="1"]{margin-left:0;text-align:left}
   .beat-no{margin-bottom:.4rem}
   .setup .beat h3{font-size:.98rem;line-height:1.3;margin-bottom:.45rem}
   .setup .beat p{
@@ -970,6 +974,7 @@ header.hero-page.brand-on::before{opacity:0}
   .intro{position:relative;z-index:2;margin-top:0}
   /* the section arrives with a ridge rather than a straight edge */
   .sect-ridge{
+    display:block;
     position:absolute;left:0;right:0;top:0;transform:translateY(-99%);
     height:clamp(96px,11vw,168px);pointer-events:none;
   }
@@ -981,6 +986,11 @@ header.hero-page.brand-on::before{opacity:0}
   .sect-ridge .sr-3{fill:#0A2231}
   .sect-ridge .sr-4{fill:var(--night)}
 }
+
+/* the transition ridge belongs to the pinned desktop hero; without its
+   positioning rules it falls into the flow as a dark block, so it is only
+   switched off below that width rather than globally */
+@media (max-width:860px){ .sect-ridge{display:none} }
 
 /* ---------- the pinned hero must stay behind everything after it ----------
    A fixed layer paints above ordinary, unpositioned block boxes however low

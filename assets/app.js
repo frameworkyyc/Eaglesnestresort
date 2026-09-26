@@ -1054,7 +1054,7 @@ window.__rig2D = function(){
 
 /* ---- total station: WebGL build, with a fallback to the canvas renderer above ---- */
 (function(){
-  document.documentElement.setAttribute('data-build','20260923-2126');
+  document.documentElement.setAttribute('data-build','20260926-1533');
   var sec = document.getElementById('setup');
   var stage = sec && sec.querySelector('.setup-stage');
   var fallbackCanvas = document.getElementById('rig');
