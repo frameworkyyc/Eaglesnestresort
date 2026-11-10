@@ -8,8 +8,10 @@ Checks
   1. TEXT   OCR (Tesseract) at several scales and page modes, on the whole image and on
             overlapping tiles. Tesseract also "reads" letters in foliage, ripples and window
             mullions, so results are graded:
-              FAIL    a token of 3+ characters read with confidence >= 60, or a 2-character
-                      token read with confidence >= 92 (real words read this way; texture doesn't)
+              FAIL    a token of 3+ characters read with confidence >= 85, or a 2-character
+                      token read with confidence >= 92. Real lettering reads at 90+ (the reference's
+                      own headline and intro read at 96-97); texture rarely does. Dense engraving
+                      can still trigger this, so every FAIL is also inspected by eye.
               REVIEW  any other token read with confidence >= 60. Each is boxed in IMAGE.qa.png
                       and must be inspected by eye before the image is accepted.
               ignored boxes under 5 px tall (smaller than any letter could be) and
@@ -24,6 +26,7 @@ import cv2, numpy as np
 
 CONF = 60          # OCR confidence that counts as a reading
 MIN_H = 5          # px; boxes shorter than this cannot hold a letter
+FAIL_CONF = 85     # confidence at which a 3+ character reading fails outright
 DETAIL_MAX = 9.0   # high-pass luminance std allowed in a text zone
 EDGE_MAX = 0.035   # fraction of Canny edge pixels allowed in a text zone
 
@@ -77,7 +80,7 @@ def main():
     ok = True
     hits = ocr_tokens(img)
     sized = [(t, c, b) for t, c, b in hits if b[3] >= MIN_H and c >= CONF]
-    fail = [(t, c, b) for t, c, b in sized if len(t) >= 3 or c >= 92]
+    fail = [(t, c, b) for t, c, b in sized if (len(t) >= 3 and c >= FAIL_CONF) or c >= 92]
     review = [(t, c, b) for t, c, b in sized if (t, c, b) not in fail]
     if sized:
         dbg = img.copy()
