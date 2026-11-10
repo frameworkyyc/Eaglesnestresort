@@ -18,6 +18,8 @@ const fonts = {
   "barlow-condensed-500.woff2": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-500-normal.woff2",
   "barlow-condensed-600.woff2": "node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff2",
   "caveat-700.woff2": "node_modules/@fontsource/caveat/files/caveat-latin-700-normal.woff2",
+  // Roboto Serif, instanced to wdth 50-72 / wght 500-800 and subset to Basic Latin (see README)
+  "roboto-serif-cond.woff2": "src/fonts/roboto-serif-cond.woff2",
 };
 for (const [name, src] of Object.entries(fonts)) {
   if (!existsSync(src)) throw new Error("missing font " + src);
@@ -44,5 +46,16 @@ const jsCode = js.outputFiles[0].contents;
 const jsName = `site.${hash(jsCode)}.js`;
 writeFileSync(`${out}/${jsName}`, jsCode);
 
-writeFileSync("src/_data/assets.json", JSON.stringify({ css: `/assets/${cssName}`, js: `/assets/${jsName}` }, null, 2));
-console.log(`assets: ${cssName} ${(css.length / 1024).toFixed(1)} KB, ${jsName} ${(jsCode.length / 1024).toFixed(1)} KB`);
+// ---- Things To Do page bundle (self-contained; sits on top of the existing site.css) ----
+const ttdCss = transform({ filename: "ttd.css", code: readFileSync("src/styles/ttd.css"), minify: true,
+  targets: { chrome: 111 << 16, safari: 16 << 16, firefox: 111 << 16 } }).code;
+const ttdCssName = `ttd.${hash(ttdCss)}.css`;
+writeFileSync(`${out}/${ttdCssName}`, ttdCss);
+const ttdJs = (await build({ entryPoints: ["src/scripts/ttd.js"], bundle: true, minify: true, format: "iife",
+  target: ["es2020"], write: false })).outputFiles[0].contents;
+const ttdJsName = `ttd.${hash(ttdJs)}.js`;
+writeFileSync(`${out}/${ttdJsName}`, ttdJs);
+
+writeFileSync("src/_data/assets.json", JSON.stringify({ css: `/assets/${cssName}`, js: `/assets/${jsName}`,
+  ttdCss: `/assets/${ttdCssName}`, ttdJs: `/assets/${ttdJsName}` }, null, 2));
+console.log(`assets: ${ttdCssName} ${(ttdCss.length / 1024).toFixed(1)} KB, ${cssName} ${(css.length / 1024).toFixed(1)} KB, ${jsName} ${(jsCode.length / 1024).toFixed(1)} KB`);

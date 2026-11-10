@@ -1,0 +1,245 @@
+/* ==========================================================================
+   THINGS TO DO: field guide page (Phase 1: structure + background composition)
+   Desktop (>=1100px) reproduces the approved reference on a grid of reference
+   pixels: the reference is 729 px wide, so 1 ref px = --rp. Every --x/--y/--w/--h
+   in the markup is read straight off the reference. Below 1100px the page is
+   recomposed for phones, not scaled.
+   Colours: brand palette for everything coded. Landscape massing uses tones
+   sampled from the reference and will be replaced by artwork in Phase 3.
+   Namespaced .fg-* so it cannot touch the existing site.css components.
+   ========================================================================== */
+@font-face{font-family:"Roboto Serif Cond";src:url(/assets/fonts/roboto-serif-cond.woff2) format("woff2");
+  font-weight:500 800;font-stretch:50% 72%;font-display:swap}
+
+.fg{
+  --rp:calc(min(100vw,1920px)/729);      /* 1 reference pixel */
+  --bp:var(--rp);                          /* scale for background bands */
+  --ink:#1F3327;--paper:#F3EEE1;--pine:#2F4A38;--gold:#C08E2E;--gold-l:#D9AC53;--deep:#16261C;--soft:#4A6350;
+  --serif:"Roboto Serif Cond","Roboto Serif",Georgia,serif;
+  --label:"Oswald","Arial Narrow",Arial,sans-serif;
+  --body:"Lora",Georgia,serif;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .16 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* stand-in for the G1 parchment texture: brand Parchment warmed toward the reference's paper */
+  --paper-tint:linear-gradient(rgba(176,136,78,.28),rgba(176,136,78,.28));
+  position:relative;display:block;overflow-x:clip;color:var(--ink);font-family:var(--body)}
+.fg *,.fg *::before,.fg *::after{box-sizing:border-box}
+.fg-sec{padding:0}     /* neutralise site.css `section{}` padding (mobile rules below override) */
+.fg h1,.fg h2,.fg h3,.fg h4{max-width:none;letter-spacing:normal}
+.fg a{color:inherit}
+.fg :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ---------- sections & positioning ---------- */
+.fg-sec{position:relative;height:calc(var(--h)*var(--rp))}
+.fg-a{position:absolute;z-index:3;left:calc(var(--x)*var(--rp));top:calc(var(--y)*var(--rp));width:calc(var(--w)*var(--rp))}
+.fg-a[style*="--hh"]{height:calc(var(--hh)*var(--rp))}
+.fg-bg{position:absolute;z-index:0;left:0;width:100%;max-width:none;top:calc(var(--t)*var(--bp));height:calc(var(--bh)*var(--bp));
+  object-fit:cover;object-position:50% 100%;pointer-events:none;user-select:none}
+.fg-trail{position:absolute;z-index:2;left:0;top:0;width:100%;height:calc(1474*var(--rp));pointer-events:none;
+  fill:none;stroke:var(--gold);stroke-width:1.5;stroke-dasharray:3.2 4.2;stroke-linecap:round;opacity:.95}
+
+/* grounds */
+.fg-paper{background-color:var(--paper);background-image:var(--paper-tint),var(--grain)}
+.fg-hero{background:
+  radial-gradient(48% 62% at 58% 42%,rgba(240,214,160,.95) 0%,rgba(240,214,160,0) 70%),
+  linear-gradient(180deg,#D9C6A2 0%,#E3D1AF 48%,#E0CBA5 100%)}
+.fg-haze{position:absolute;z-index:1;left:0;top:0;bottom:0;width:calc(360*var(--rp));pointer-events:none;
+  background:linear-gradient(90deg,rgba(229,214,186,.92) 0%,rgba(229,214,186,.78) 45%,rgba(229,214,186,0) 100%)}
+.fg-dark{background:#2F3E34;color:var(--paper)}
+.fg-trails{background:linear-gradient(180deg,#BDBBA3 0%,#AEAE94 100%)}
+.fg-winter{background:#8E9DA5}
+.fg-winter::before{content:"";position:absolute;z-index:1;left:0;top:0;width:calc(300*var(--rp));height:100%;pointer-events:none;
+  background:radial-gradient(70% 60% at 30% 45%,rgba(225,231,233,.85) 0%,rgba(225,231,233,0) 100%)}
+/* the night ground starts 10 ref px down: above that, the snowy treeline (T5) is the edge, not the section box */
+.fg-night{color:var(--paper);background:linear-gradient(180deg,transparent 0,transparent calc(10*var(--bp)),#22344A calc(10*var(--bp)),#15222E 100%)}
+
+/* ---------- type ---------- */
+.fg-h1{margin:0;color:var(--ink)}
+.fg-eyebrow{display:block;font:600 max(11px,calc(5.6*var(--rp)))/1 var(--label);letter-spacing:.05em;text-transform:uppercase;margin-bottom:calc(6*var(--rp))}
+.fg-h1-main{display:block;font-family:var(--serif);font-weight:700;font-stretch:50%;font-size:calc(42*var(--rp));
+  line-height:.9;letter-spacing:-.02em;text-transform:uppercase}
+.fg-lede{margin:0;font:400 max(14px,calc(7.6*var(--rp)))/1.78 var(--body);color:var(--ink)}
+.fg-lede span{display:block;white-space:nowrap}
+.fg-h2{margin:0;font-family:var(--serif);font-weight:700;font-stretch:50%;font-size:max(26px,calc(18.5*var(--rp)));
+  line-height:.98;letter-spacing:-.01em;text-transform:uppercase;color:inherit}
+.fg-h2-big{font-size:max(28px,calc(16.6*var(--rp)));white-space:nowrap}
+.fg-kicker{margin:0 0 calc(3*var(--rp));font:500 max(11px,calc(5.8*var(--rp)))/1 var(--label);letter-spacing:.04em;text-transform:uppercase}
+.fg-h3{margin:0 0 calc(5*var(--rp));font-family:var(--serif);font-weight:700;font-stretch:52%;
+  font-size:max(16px,calc(10.5*var(--rp)));line-height:1.02;text-transform:uppercase;color:inherit}
+.fg-p{margin:0;font:400 max(14px,calc(7.2*var(--rp)))/1.62 var(--body)}
+.fg-p-lg{font-size:max(15px,calc(8.6*var(--rp)));line-height:1.45}
+.fg-center{text-align:center}
+.fg-sub{margin:0;font:500 max(11px,calc(5.6*var(--rp)))/1 var(--label);letter-spacing:.04em;text-transform:uppercase}
+.fg-dark .fg-p,.fg-night .fg-p{color:rgba(243,238,225,.9)}
+
+/* ---------- chapter heads ---------- */
+.fg-head{display:flex;align-items:flex-start;gap:calc(11*var(--rp))}
+.fg-num{flex:none;display:grid;place-items:center;width:calc(28*var(--rp));height:calc(28*var(--rp));border-radius:50%;
+  margin-top:calc(1*var(--rp));background:var(--gold);color:var(--paper);
+  font:700 calc(15*var(--rp))/1 var(--serif);font-stretch:60%;
+  box-shadow:inset 0 0 0 calc(1.6*var(--rp)) var(--gold),inset 0 0 0 calc(2.4*var(--rp)) rgba(243,238,225,.92),0 1px 2px rgba(0,0,0,.25)}
+.fg-num-dark{background:var(--deep);box-shadow:inset 0 0 0 calc(1.6*var(--rp)) var(--deep),inset 0 0 0 calc(2.4*var(--rp)) rgba(243,238,225,.92),0 1px 2px rgba(0,0,0,.3)}
+
+/* ---------- chapter 1 items ---------- */
+.fg-item{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:calc(10*var(--rp));align-items:start}
+.fg-icon{width:calc(44*var(--rp));height:calc(24*var(--rp))}
+.fg-svgicon{display:block;color:var(--ink)}
+.fg-fishing .fg-svgicon{width:calc(14*var(--rp));height:calc(19*var(--rp))}
+.fg-binos{width:calc(28*var(--rp));height:calc(21*var(--rp))}
+.fg-fishbox{grid-column:1/-1;margin-top:calc(10*var(--rp));width:calc(95*var(--rp));
+  border:1px solid rgba(192,142,46,.95);padding:calc(7*var(--rp)) calc(8*var(--rp)) calc(6*var(--rp))}
+.fg-boxtitle{margin:0 0 calc(4*var(--rp));font:600 max(11px,calc(6*var(--rp)))/1.1 var(--label);letter-spacing:.06em;text-transform:uppercase}
+.fg-fishbox ul{margin:0;padding-left:calc(9*var(--rp));font:400 max(13px,calc(6.6*var(--rp)))/1.6 var(--body)}
+.fg-trout{height:calc(28*var(--rp));margin:calc(3*var(--rp)) 0}
+.fg-regs{margin:0;font:400 max(11px,calc(4.6*var(--rp)))/1.4 var(--body);color:var(--soft)}
+.fg-regs a{text-decoration-color:var(--gold)}
+.fg-around{display:grid;grid-template-columns:calc(62*var(--rp)) minmax(0,1fr);column-gap:calc(8*var(--rp));align-items:center}
+.fg-around-title{margin:0;font-size:max(17px,calc(11.5*var(--rp)))}
+.fg-species{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(8*var(--rp))}
+.fg-species li{display:grid;justify-items:center;gap:calc(4*var(--rp));text-align:center}
+.fg-species .fg-slot{width:calc(52*var(--rp));height:calc(50*var(--rp))}
+.fg-species h4{margin:0;font:600 max(10px,calc(5.2*var(--rp)))/1.15 var(--label);letter-spacing:.04em;text-transform:uppercase}
+
+/* ---------- photo prints ---------- */
+.fg-print{margin:0;padding:calc(4.5*var(--rp)) calc(4.5*var(--rp)) calc(14*var(--rp));background:#F2EADB;
+  box-shadow:0 calc(2*var(--rp)) calc(6*var(--rp)) rgba(22,30,24,.4),0 0 0 1px rgba(70,55,30,.14);
+  rotate:calc(var(--rot,0)*1deg)}
+.fg-print picture{display:block}
+.fg-print img,.fg-tocome{display:block;width:100%;height:calc(var(--ph)*var(--rp));object-fit:cover}
+.fg-print.fg-cap{padding-bottom:calc(7*var(--rp))}
+.fg-print figcaption{padding-top:calc(6*var(--rp));text-align:center;color:var(--ink)}
+.fg-caph{margin:0;font-family:var(--serif);font-weight:700;font-stretch:52%;font-size:max(13px,calc(8.8*var(--rp)));line-height:1.05;text-transform:uppercase}
+.fg-print figcaption p{margin:calc(2.5*var(--rp)) 0 0;font:400 max(12px,calc(6*var(--rp)))/1.4 var(--body)}
+.fg-tocome{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#DCD3C1 0 6px,#E6DECD 6px 12px);
+  font:500 max(10px,calc(5*var(--rp)))/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.fg-prints{display:contents}
+
+/* ---------- map ---------- */
+.fg-mapscroll{display:contents}
+.fg-map{margin:0;z-index:1}
+.fg-mapbase,.fg-mapdraw{position:absolute;inset:0;width:100%;height:100%;max-width:none}
+.fg-road{fill:none;stroke:#7E6036;stroke-width:2.4;stroke-linecap:round}
+.fg-lakename{position:absolute;left:48.7%;top:56%;translate:-50% -50%;white-space:nowrap;
+  font:italic 400 max(11px,calc(7.4*var(--rp)))/1 var(--body);letter-spacing:.32em;text-transform:uppercase;color:#203640}
+.fg-pins{list-style:none;margin:0;padding:0}
+.fg-pins li{position:absolute;z-index:3;left:calc(var(--px)/435*100%);top:calc(var(--py)/210*100%)}
+.fg-pins a{display:flex;align-items:center;gap:calc(3*var(--rp));text-decoration:none;
+  font:700 max(10.5px,calc(6.2*var(--rp)))/1.02 var(--serif);font-stretch:52%;text-transform:uppercase;color:var(--ink)}
+.fg-pins a:hover{color:var(--pine);text-decoration:underline;text-decoration-color:var(--gold)}
+.fg-pin{flex:none;width:calc(5.5*var(--rp));height:calc(5.5*var(--rp));min-width:8px;min-height:8px;background:var(--gold);
+  border:1px solid #6E4E14;border-radius:50% 50% 50% 0;rotate:-45deg}
+.fg-pin-up a{flex-direction:column-reverse;align-items:center;text-align:center}
+.fg-pin-home a{flex-direction:column;align-items:center;text-align:center;gap:calc(2*var(--rp))}
+.fg-lodgevig{width:calc(52*var(--rp));height:calc(38*var(--rp))}
+.fg-mapcap{position:absolute;left:50%;bottom:4%;translate:-50% 0;white-space:nowrap;
+  font:italic 400 max(10px,calc(4.4*var(--rp)))/1 var(--body);color:#5A4A2E}
+.fg-compass{height:auto;overflow:visible}
+.fg-note{margin:0;background:#EADFC6;background-image:var(--grain);text-align:center;rotate:calc(var(--rot,0)*1deg);
+  padding:calc(17*var(--rp)) calc(10*var(--rp)) calc(8*var(--rp));box-shadow:0 calc(3*var(--rp)) calc(8*var(--rp)) rgba(22,30,24,.38)}
+.fg-notepin{position:absolute;left:50%;top:calc(-3*var(--rp));translate:-50% 0;width:calc(13*var(--rp));height:calc(13*var(--rp));border-radius:50%;
+  background:radial-gradient(circle at 35% 32%,#6B6B66 0%,#25251f 70%);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.fg-notetitle{margin:0 0 calc(6*var(--rp));font-family:var(--serif);font-weight:700;font-stretch:52%;font-size:max(13px,calc(7.6*var(--rp)));line-height:1;text-transform:uppercase}
+.fg-note p{margin:0;font:400 max(12px,calc(6.2*var(--rp)))/1.5 var(--body)}
+.fg-notepines{height:calc(34*var(--rp));margin-top:calc(6*var(--rp))}
+
+/* ---------- close ---------- */
+/* the existing footer ridge rises into whatever sits above it (site.css .ridge), so the
+   last section carries that much extra paper below the reference's frame */
+.fg-close{height:calc(104*var(--rp) + clamp(58px,9vw,132px))}
+.fg-call,.fg-book{display:flex;flex-direction:column;justify-content:center;text-decoration:none;transition:background .2s}
+.fg-call{align-items:center;gap:calc(4*var(--rp));border:1.5px solid var(--ink);color:var(--ink)}
+.fg-call:hover{background:rgba(31,51,39,.06)}
+.fg-call-top{display:flex;align-items:center;gap:calc(4*var(--rp));font:700 max(14px,calc(9.4*var(--rp)))/1 var(--serif);font-stretch:52%;text-transform:uppercase}
+.fg-call-top svg{width:calc(9*var(--rp));height:calc(9*var(--rp));min-width:13px;min-height:13px}
+.fg-call-num{font:500 max(13px,calc(8*var(--rp)))/1 var(--body)}
+.fg-book{background:var(--ink);color:var(--paper)!important;padding-left:calc(14*var(--rp));gap:calc(4*var(--rp))}
+.fg-book:hover{background:var(--pine)}
+.fg-book-top{font:700 max(15px,calc(10*var(--rp)))/1 var(--serif);font-stretch:52%;text-transform:uppercase}
+.fg-book-sub{font:400 max(12px,calc(6.4*var(--rp)))/1 var(--body)}
+
+/* ---------- artwork slots (empty until Phase 3/4; ?slots shows them) ---------- */
+.fg-slot{display:block}
+.fg-showslots .fg-slot{outline:1px dashed rgba(31,51,39,.7);background:rgba(192,142,46,.14);position:relative}
+.fg-showslots .fg-slot::after{content:attr(data-art);position:absolute;left:3px;top:3px;font:600 9px/1 var(--label);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:rgba(243,238,225,.85);padding:2px 3px}
+.fg-showslots .fg-dark .fg-slot,.fg-showslots .fg-night .fg-slot{outline-color:rgba(243,238,225,.8)}
+.fg-refslider{position:fixed;z-index:10000;right:14px;bottom:14px;width:180px}
+
+/* ==========================================================================
+   PHONE & TABLET: recomposed, not scaled
+   ========================================================================== */
+@media (max-width:1099px){
+  .fg{--bp:max(calc(100vw/729),1.3px)}
+  .fg-trail,.fg-margin,.fg-hero .fg-slot,.fg-compass,.fg-close .fg-slot,.fg-falls>.fg-slot,.fg-night .fg-slot,.fg-winter>.fg-slot,.fg-trails>.fg-slot{display:none}
+  .fg-br{display:none}
+  .fg-sec{height:auto;display:grid;gap:26px;padding:64px max(22px,env(safe-area-inset-left,0px)) 72px}
+  .fg-a{position:relative;left:auto;top:auto;width:auto;z-index:3}
+  .fg-a[style*="--hh"]{height:auto}
+  .fg-h1-main{font-size:clamp(46px,13vw,72px)}
+  .fg-num{width:42px;height:42px;font-size:22px;margin-top:0;box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 3.5px rgba(243,238,225,.92)}
+  .fg-num-dark{box-shadow:inset 0 0 0 2px var(--deep),inset 0 0 0 3.5px rgba(243,238,225,.92)}
+  .fg-head{gap:14px;align-items:center}
+  .fg-head-tall{align-items:flex-start}
+  .fg-p{max-width:38ch}
+
+  /* hero: words on the hazy sky, the lake scene below */
+  .fg-hero{padding:30px 22px calc(238*var(--bp) - 60px)}
+  .fg-hero-scene{top:auto;bottom:0;object-position:68% 100%}
+  .fg-haze{width:100%;height:auto;bottom:auto;top:0;height:62%;background:linear-gradient(180deg,rgba(229,214,186,.95) 0%,rgba(229,214,186,.85) 55%,rgba(229,214,186,0) 100%)}
+  .fg-lede span{display:inline;white-space:normal}
+  .fg-lede{max-width:34ch}
+
+  /* chapter 1 */
+  .fg-dock{padding-top:70px;padding-bottom:calc(110*var(--bp))}
+  .fg-icon{width:58px;height:34px}
+  .fg-fishing .fg-svgicon{width:18px;height:24px}
+  .fg-binos{width:34px;height:26px}
+  .fg-item{column-gap:14px}
+  .fg-fishbox{width:min(100%,300px);padding:14px 16px}
+  .fg-trout{height:56px}
+  .fg-print{width:min(78%,320px);justify-self:center;rotate:calc(var(--rot,0)*.7deg);padding:9px 9px 26px}
+  .fg-print.fg-cap{padding-bottom:14px}
+  .fg-print img,.fg-tocome{height:auto;aspect-ratio:4/3}
+  .fg-print figcaption{padding-top:10px}
+  .fg-around{grid-template-columns:1fr;row-gap:16px}
+  .fg-around-title br{display:none}
+  .fg-species{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+  .fg-species .fg-slot{width:64px;height:60px}
+
+  /* map: a pannable sheet */
+  .fg-mapsec{padding-top:calc(48px + 35*var(--bp));padding-bottom:calc(100*var(--bp))}
+  .fg-mapscroll{display:block;overflow-x:auto;margin:0 -22px;padding:6px 22px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .fg-mapscroll::-webkit-scrollbar{display:none}
+  .fg-map.fg-a{width:640px;height:309px}
+  .fg-pins a{font-size:12px;gap:4px}
+  .fg-pin{width:9px;height:9px}
+  .fg-lodgevig{width:64px;height:46px}
+  .fg-lakename{font-size:13px}
+  .fg-note{width:min(100%,300px);justify-self:center;padding:26px 18px 14px}
+  .fg-notepin{top:-6px;width:18px;height:18px}
+  .fg-notepines{height:50px}
+
+  /* swipeable print rows */
+  .fg-prints{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -22px;padding:14px 22px 26px;scrollbar-width:none}
+  .fg-prints::-webkit-scrollbar{display:none}
+  .fg-prints .fg-print{flex:0 0 min(70%,300px);width:auto;scroll-snap-align:center}
+  .fg-falls{padding-top:calc(40px + 20*var(--bp))}
+  .fg-trails{padding-top:calc(48px + 30*var(--bp));padding-bottom:calc(60px + 25*var(--bp))}
+  .fg-winter{padding-top:calc(48px + 35*var(--bp));padding-bottom:calc(60px + 35*var(--bp))}
+  .fg-winter::before{width:100%;height:60%;background:linear-gradient(180deg,rgba(225,231,233,.8),rgba(225,231,233,0))}
+  .fg-center{text-align:left}
+  .fg-night{padding-top:calc(52px + 35*var(--bp));padding-bottom:calc(132*var(--bp))}
+  .fg-night .fg-bg:first-of-type{top:auto;bottom:0}
+  .fg-close{height:auto;padding-top:calc(44px + 13*var(--bp));padding-bottom:calc(72px + clamp(58px,9vw,132px))}
+  .fg-h2-big{white-space:normal}
+  .fg-call,.fg-book{min-height:66px;width:100%;max-width:420px}
+  .fg-book{padding:14px 20px}
+}
+@media (min-width:700px) and (max-width:1099px){
+  .fg-sec{padding-left:6vw;padding-right:6vw}
+  .fg-dock{grid-template-columns:1fr 1fr;align-items:start}
+  .fg-dock>.fg-head,.fg-dock>.fg-around{grid-column:1/-1}
+  .fg-species{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .fg-prints .fg-print{flex-basis:min(42%,300px)}
+  .fg-close{grid-template-columns:1fr 1fr}
+  .fg-close>.fg-head,.fg-close>.fg-p{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.fg *{transition:none!important}}

@@ -9,8 +9,9 @@ export default function (eleventyConfig) {
     "legacy/css": "css", "legacy/js": "js", "legacy/images": "images", "legacy/lodge": "lodge",
     "legacy/booking.html": "booking.html", "legacy/getting-here.html": "getting-here.html",
     "legacy/hosts.html": "hosts.html", "legacy/lodge.html": "lodge.html",
-    "legacy/things-to-do.html": "things-to-do.html",
   });
+  // Things To Do is rebuilt from src/things-to-do.njk; its placeholder massing and review overlay:
+  eleventyConfig.addPassthroughCopy({ "src/ttd": "assets/ttd" });
   eleventyConfig.addPassthroughCopy({ "src/_generated": "assets", "src/art": "assets/art" });
 
   // ---- real photographs: responsive AVIF / WebP / JPEG ----
