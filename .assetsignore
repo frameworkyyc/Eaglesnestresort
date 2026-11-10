@@ -1,0 +1,7 @@
+wrangler.jsonc
+.assetsignore
+README.txt
+HANDOVER.txt
+CONTENTS-9_0.txt
+node_modules
+.git

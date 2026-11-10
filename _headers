@@ -6,6 +6,7 @@
 # like your changes never deployed.
 /*
   Cache-Control: public, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate

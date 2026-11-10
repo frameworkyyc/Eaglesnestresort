@@ -1,0 +1,10 @@
+{
+  // PREVIEW ONLY - lives on feature/wilderness-redesign.
+  // Serves this branch as static assets on the Framework account's
+  // "eaglesnestresort" Worker (eaglesnest.frameworktools.ca).
+  // Not used by the client's production site.
+  "name": "eaglesnestresort",
+  "compatibility_date": "2026-11-10",
+  "assets": { "directory": "./" },
+  "observability": { "enabled": true }
+}
