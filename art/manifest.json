@@ -1,0 +1,104 @@
+{
+ "fox-idle": {
+  "width": 640,
+  "height": 819,
+  "avif_kb": 43,
+  "webp_kb": 71
+ },
+ "fox-peek": {
+  "width": 720,
+  "height": 416,
+  "avif_kb": 22,
+  "webp_kb": 37
+ },
+ "fox-wave": {
+  "width": 560,
+  "height": 692,
+  "avif_kb": 30,
+  "webp_kb": 48
+ },
+ "fox-surprised": {
+  "width": 560,
+  "height": 645,
+  "avif_kb": 31,
+  "webp_kb": 49
+ },
+ "fox-sleep": {
+  "width": 640,
+  "height": 542,
+  "avif_kb": 31,
+  "webp_kb": 52
+ },
+ "eagle-glide": {
+  "width": 800,
+  "height": 554,
+  "avif_kb": 34,
+  "webp_kb": 54
+ },
+ "eagle-up": {
+  "width": 800,
+  "height": 693,
+  "avif_kb": 36,
+  "webp_kb": 56
+ },
+ "eagle-down": {
+  "width": 800,
+  "height": 465,
+  "avif_kb": 30,
+  "webp_kb": 49
+ },
+ "eagle-perch": {
+  "width": 560,
+  "height": 631,
+  "avif_kb": 25,
+  "webp_kb": 41
+ },
+ "far-mountains": {
+  "width": 1800,
+  "height": 475,
+  "avif_kb": 67,
+  "webp_kb": 111
+ },
+ "mid-hills": {
+  "width": 1800,
+  "height": 715,
+  "avif_kb": 96,
+  "webp_kb": 148
+ },
+ "lake-strip": {
+  "width": 1600,
+  "height": 498,
+  "avif_kb": 61,
+  "webp_kb": 89
+ },
+ "shore-fg": {
+  "width": 1800,
+  "height": 487,
+  "avif_kb": 103,
+  "webp_kb": 176
+ },
+ "clouds": {
+  "width": 1400,
+  "height": 356,
+  "avif_kb": 34,
+  "webp_kb": 53
+ },
+ "trees-summer": {
+  "width": 600,
+  "height": 844,
+  "avif_kb": 67,
+  "webp_kb": 94
+ },
+ "trees-winter": {
+  "width": 600,
+  "height": 807,
+  "avif_kb": 56,
+  "webp_kb": 81
+ },
+ "canoe": {
+  "width": 900,
+  "height": 368,
+  "avif_kb": 16,
+  "webp_kb": 30
+ }
+}
