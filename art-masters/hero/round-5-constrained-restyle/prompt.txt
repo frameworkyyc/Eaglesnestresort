@@ -1,0 +1,16 @@
+Image 1 is the approved layout of a wide illustration: a lakeside lodge at sunrise. Edit only the white area of the mask (image 4); the pale, empty haze at the top left stays exactly as it is.
+
+Redraw the whole white area as one finished vintage engraved wilderness illustration, as if by a single artist in one sitting. Take the drawing technique from image 2, a sheet of style samples: its confident ink outlines, fine parallel hatching for shading, engraved texture on trees, rocks, timber and water. Use that same technique for every element, including all the trees, so nothing looks copied from a different picture. Pay particular attention to the trees around the lodge, the shoreline, the rocks and the building's timber, roofs and glass: they must look drawn together, with the same line weight, hatching and texture.
+
+Image 1 fixes everything else. Keep exactly:
+- the position, size and outline of every element; trace image 1's shapes, do not re-compose;
+- the lodge: its size, position and distance back from the shore; the central steep gable with dark vertical timber boards, two diamond windows and the tall faceted glass curtain wall beneath it; the lower wing to its left; the long right wing that continues in the same plane as the glass wall, facing the lake, with balconies along that side, running behind the trees and out of the picture;
+- the mature spruce, aspen and birch around the lodge, partly hiding both wings; the grassy bank and the rocky shore;
+- the low, hazy distant mountains, the rolling forested hills and the far-shore treeline;
+- the sun in the same place and size, its glow and its reflection on the water;
+- the dock, the person fishing in the small boat, and both flying geese;
+- image 1's colours and warm, low sunrise light: golden sky, warm light on the trees and timber, light glowing through the glass wall, blue-grey water. Do not turn the picture sepia or brown.
+
+Image 3 is an illustration of the same lodge: use it only to clarify architectural details, never for its colours or its layout. Do not take any layout, position or size from images 2 or 3.
+
+Absolutely no text of any kind: no letters, words, numbers, chapter numbers, labels, captions, sign lettering, map labels, logos, monograms, signatures, watermarks or decorative pseudo-writing, not even tiny or illegible marks that resemble writing. Any sign, note or label stays blank.
