@@ -1,0 +1,22 @@
+Edit only the white area of the mask in image 1. Everything outside it must stay exactly as it is.
+
+Image 1 already shows the corrected composition. Keep its layout exactly: the position, size and outline of every hill, mountain, tree and building. Your job is to redraw the masked area so it belongs to the rest of image 1.
+
+The landscape behind the lake:
+- low, rolling hills covered in dense conifer forest rise gently behind the far shore, in overlapping bands, each farther band paler and hazier;
+- draw the forest as natural, individually varied trees of different heights and shapes, with no repeating or mirrored patterns and no visible seams;
+- beyond the hills, a low, broad range of distant mountains with a little snow, small on the horizon and softened by warm atmospheric haze;
+- no tall, steep or dramatic alpine peaks anywhere;
+- the open sunrise sky above the hills continues the existing clouds; the sun stays exactly where it is, low above the distant range, with soft rays;
+- on the left, the hills fade gently into the pale morning haze, so that area stays calm and empty.
+
+The lodge on the right, exactly as placed in image 1:
+- the central steep gable with dark vertical timber boards, two diamond windows and the tall faceted glass curtain wall beneath it;
+- the lower wing to the left of the gable, partly behind trees;
+- the long wing to the right of the gable, which continues in the same plane as the glass wall, facing the lake, with its balconies running along that lake-facing side, and carries on behind the trees and out of the picture on the right; it does not turn away at an angle;
+- every tree in front of the building, so both wings stay partly hidden and most of the right-hand wing is behind spruce;
+- the grassy bank between the building and the water, and the end of the dock where it meets the bank.
+
+Style: the same fine, bold engraved ink outlines, delicate hatching and flat colour fills as the rest of image 1, the same warm sunrise palette, and the same low sunrise light, with warm golden light glowing through the glass curtain wall and windows. Dark stained timber walls, brown shingle roofs. Image 2 is an illustration of the same lodge: use it only to clarify architectural details, never for its colours or its layout. Blend smoothly into the sky, treeline, water and trees at the edge of the mask.
+
+Absolutely no text of any kind: no letters, words, numbers, chapter numbers, labels, captions, sign lettering, map labels, logos, monograms, signatures, watermarks or decorative pseudo-writing, not even tiny or illegible marks that resemble writing. Any sign, note or label stays blank.
