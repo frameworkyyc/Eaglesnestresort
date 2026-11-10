@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ title }}</title>
+<meta name="description" content="{{ description }}">
+<meta name="robots" content="{% if site.production %}index, follow, max-image-preview:large{% else %}noindex, nofollow{% endif %}">
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+<meta name="theme-color" content="#F5EEDC">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_CA">
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:image" content="{{ site.url }}/images/eagles-nest-social-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/fraunces-soft.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ assets.css }}">
+<script type="application/ld+json">{{ jsonld | dump | safe }}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+{% include "partials/sprite.njk" %}
+{% include "partials/header.njk" %}
+<main id="main">
+{{ content | safe }}
+</main>
+{% include "partials/footer.njk" %}
+<nav class="tabbar" aria-label="Quick navigation">
+  {% for n in site.nav %}<a href="{{ n.href }}"{% if page.url == n.href %} aria-current="page"{% endif %}><svg class="i" aria-hidden="true"><use href="#i-{{ n.icon }}"/></svg>{{ n.label | replace("Things To Do", "Do") | replace("Getting Here", "Getting here") }}</a>{% endfor %}
+  <a class="is-book" href="{{ site.book.href }}"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>{{ site.book.label }}</a>
+</nav>
+<script src="{{ assets.js }}" defer></script>
+</body>
+</html>

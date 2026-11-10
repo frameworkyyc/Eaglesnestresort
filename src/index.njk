@@ -1,0 +1,284 @@
+---
+---
+
+{# ================= HERO ================= #}
+<section class="hero is-live" aria-labelledby="hero-title" data-live>
+  <div class="hero__scene" aria-hidden="true">
+    <div class="hero__sun"></div>
+    {% art "clouds", {class:"layer l-clouds", loading:"eager"} %}
+    {% art "far-mountains", {class:"layer l-far", loading:"eager"} %}
+    {% art "mid-hills", {class:"layer l-mid", loading:"eager"} %}
+    {% art "lake-strip", {class:"layer l-lake", loading:"eager"} %}
+    <div class="hero__canoe">{% art "canoe" %}</div>
+    <div class="hero__fox" data-tilt>{% art "fox-peek", {loading:"eager"} %}</div>
+    {% art "shore-fg", {class:"layer l-shore", loading:"eager"} %}
+    <div class="hero__eagle">
+      {% art "eagle-up" %}{% art "eagle-glide" %}{% art "eagle-down" %}
+    </div>
+  </div>
+  <div class="hero__ui">
+    <div class="container">
+      <div class="cartouche">
+        <p class="eyebrow">{{ site.name }} · West Chilcotin, BC</p>
+        <h1 id="hero-title">Lakeside cabins and suites on <em>Anahim Lake</em>, BC</h1>
+        <p class="lede">Ten acres on Anahim Lake, one kilometre off Highway 20. Suites, rooms and log cabins with water on three sides and the Coast Mountains behind them. Come for a night on the way to Bella Coola. Most people stay longer.</p>
+        <div class="btn-row">
+          <a class="btn" href="{{ site.book.href }}"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Check availability</a>
+          <a class="btn btn--paper" href="tel:{{ site.tel }}"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>Call {{ site.phone }}</a>
+        </div>
+        <ul class="facts"><li class="chip">Suites, cabins &amp; camping</li><li class="chip">Lakeside dining room</li><li class="chip">Canoes &amp; pedal boats</li></ul>
+      </div>
+      <figure class="snapshot">
+        <span class="tape" aria-hidden="true"></span>
+        {% photo "aerial.jpg", "The point and the dock at Eagle's Nest Resort, Anahim Lake, seen from the air, with a floatplane at the dock.", {sizes:"(min-width:900px) 23vw, 80vw", widths:[480,800], loading:"eager", priority:true} %}
+        <figcaption>The point and the dock, from above</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+{# ================= WHERE THIS IS (map) ================= #}
+<section class="section where" id="where" aria-labelledby="where-title" data-live>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Where this is</p>
+      <h2 id="where-title">On Highway 20, between Williams Lake and Bella Coola</h2>
+      <p>Highway 20 runs from the Cariboo across the Chilcotin plateau and drops to the sea at Bella Coola. Anahim Lake sits roughly two-thirds of the way along, the natural place to break the drive before The Hill.</p>
+    </div>
+    <div class="map" data-map>
+      <div class="map__inner">
+        {% art "far-mountains", {class:"art map__peaks"} %}
+        {% art "trees-summer", {class:"art map__trees map__trees--l"} %}
+        {% art "trees-summer", {class:"art map__trees map__trees--r"} %}
+        <svg class="route" viewBox="0 0 1000 430" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path class="gravel" d="M40 270 C150 150 250 320 400 215 C550 110 640 95 760 175 C870 235 900 290 960 170"/>
+          <path class="dots" id="route-path" d="M40 270 C150 150 250 320 400 215 C550 110 640 95 760 175 C870 235 900 290 960 170"/>
+        </svg>
+        <p class="map__dir">West ← Highway 20 → East</p>
+        <button class="pin pin--l" type="button" data-stop="bella" style="left:4%;top:62.8%" aria-pressed="false"><span class="pin__flag">Bella Coola</span><span class="pin__dot"></span></button>
+        <button class="pin pin--home" type="button" data-stop="home" style="left:33.2%;top:57.4%" aria-pressed="true"><span class="pin__flag">Eagle's Nest</span><span class="pin__dot"></span></button>
+        <button class="pin pin--r" type="button" data-stop="williams" style="left:96%;top:39.5%" aria-pressed="false"><span class="pin__flag">Williams Lake</span><span class="pin__dot"></span></button>
+        <div class="map__eagle" data-map-eagle style="left:30%;top:40%">{% art "eagle-glide" %}</div>
+      </div>
+    </div>
+    <ol class="stops">
+      <li class="stop" data-stop-card="williams"><b>Williams Lake</b><span>Km 0 · Hwy 97</span></li>
+      <li class="stop stop--home is-active" data-stop-card="home"><b>Eagle's Nest</b><span>Km ~320 · Anahim Lake</span></li>
+      <li class="stop" data-stop-card="bella"><b>Bella Coola</b><span>Km ~456 · Pacific</span></li>
+    </ol>
+    <p class="drive">About 3½ hours from Williams Lake. About 2 hours down to Bella Coola, including the switchbacks of The Hill. <a href="/getting-here.html">Four ways to get here</a>.</p>
+  </div>
+</section>
+
+{# ================= STAY ================= #}
+<section class="section stay" id="stay" aria-labelledby="stay-title" data-live>
+  {% art "trees-summer", {class:"art tree tree--l"} %}{% art "trees-summer", {class:"art tree tree--r"} %}
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">The lodge</p>
+      <h2 id="stay-title">Suites, cabins and a table by the water</h2>
+      <p>Eleven places to sleep, from lakeside suites to hand-built log cabins with a wood stove and firewood on the porch. Camp down by the water if you would rather bring your own bed.</p>
+    </div>
+    <div class="stay-grid">
+      <article class="stay-card">
+        {% photo "den-suite.jpg", "The Den Suite: a queen bed in a black four-poster frame with a gold cover, lamps either side and a cream sofa alongside.", {sizes:"(min-width:900px) 30vw, 92vw", widths:[480,800]} %}
+        <div class="stay-card__body">
+          <h3>Seven lodge suites</h3>
+          <p>Comfortable suites and rooms inside the main lodge, some with a deck of their own and a view of the water.</p>
+          <a class="more" href="/lodge.html">See the suites</a>
+        </div>
+      </article>
+      <article class="stay-card">
+        {% photo "eagle-cabin.jpg", "Eagle Cabin at Eagle's Nest Resort, a log cabin raised among the spruce with a deck and split wood stacked beneath.", {sizes:"(min-width:900px) 30vw, 92vw", widths:[480,800]} %}
+        <div class="stay-card__body">
+          <h3>Four cabins</h3>
+          <p>From the wonderfully crooked Cottage to Eagle Cabin, a roomy cabin for six with a deck made for slow mornings.</p>
+          <a class="more" href="/lodge.html">See the cabins</a>
+        </div>
+      </article>
+      <article class="stay-card">
+        {% photo "campsite.jpg", "The campsite at Eagle's Nest Resort: a picnic table and fire ring beside the lake under the spruce.", {sizes:"(min-width:900px) 30vw, 92vw", widths:[480,800]} %}
+        <div class="stay-card__body">
+          <h3>Camping by the lake</h3>
+          <p>Bring your own little piece of home and camp down by the water.</p>
+          <a class="more" href="/lodge.html">See camping</a>
+        </div>
+      </article>
+    </div>
+    <div class="dining">
+      {% photo "dining-room.jpg", "The dining room at Eagle's Nest Resort, timber trusses overhead and tall windows onto the lake.", {sizes:"(min-width:860px) 45vw, 92vw", widths:[480,800,1200]} %}
+      <div class="dining__copy">
+        <p class="eyebrow">Eat</p>
+        <h3>Meals cooked here, served with a view</h3>
+        <p>Meals are cooked here and served under the timber trusses, with the lake filling the windows.</p>
+        <a class="btn btn--sm" href="/lodge.html">See rooms &amp; more</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ================= THINGS TO DO ================= #}
+<section class="section do" id="do" aria-labelledby="do-title" data-season="summer" data-live data-season-root>
+  {% art "mid-hills", {class:"art do__hills"} %}
+  <div class="snow" aria-hidden="true" data-snow></div>
+  <div class="art do__tree do__tree--l" aria-hidden="true">{% art "trees-summer", {class:"s"} %}{% art "trees-winter", {class:"w"} %}</div>
+  <div class="art do__tree do__tree--r" aria-hidden="true">{% art "trees-summer", {class:"s"} %}{% art "trees-winter", {class:"w"} %}</div>
+  <div class="container">
+    <div class="do-layout">
+      <div class="do-intro">
+        <p class="eyebrow">Out the door</p>
+        <h2 id="do-title">Things to do around Anahim Lake</h2>
+        <p>Paddling, fishing, hiking and birding through the summer. Sled, ski and snowshoe once the snow settles.</p>
+        <div class="seasons" role="group" aria-label="Show activities for a season">
+          <button type="button" data-season-btn="summer" aria-pressed="true">Summer</button>
+          <button type="button" data-season-btn="winter" aria-pressed="false">Winter</button>
+        </div>
+        <div class="do-fox" aria-hidden="true">{% art "fox-idle" %}{% art "fox-surprised" %}<span class="bubble">Brr!</span></div>
+      </div>
+      <div class="groups">
+        <section class="group group--summer" aria-labelledby="g-summer">
+          <h3 id="g-summer">Summer <span class="stamp">Paddle · fish · hike</span></h3>
+          <ul class="acts">
+            <li class="act act--art"><span class="stick" aria-hidden="true">{% art "canoe" %}</span><p class="tag">At the water's edge</p><h4>Canoes &amp; pedal boats</h4><p>Grab a paddle and head out from the dock. Canoes and pedal boats are available for guests to explore Anahim Lake at their own pace.</p><a class="go" href="/things-to-do.html#dock">More on paddling</a></li>
+            <li class="act"><p class="tag">Off the dock</p><h4>Fishing</h4><p>The fishing starts where the dock ends. Bring your own gear, take a boat out, or cast from the shore and see what happens.</p><a class="go" href="/things-to-do.html#dock">More on fishing</a></li>
+            <li class="act"><p class="tag">Tweedsmuir Park</p><h4>The Rainbow Range</h4><p>West along Highway 20, inside Tweedsmuir Park, the Rainbow Range is the big one: old volcanic rock streaked red, orange and yellow, with the alpine arriving sooner than you expect.</p><a class="go" href="/things-to-do.html#trails">More on hiking</a></li>
+            <li class="act"><p class="tag">Follow the water</p><h4>Hunlen &amp; Hotnarko Falls</h4><p>Hunlen Falls is farther into Tweedsmuir Park and a longer day. The Hotnarko River drops off the edge of the Precipice, a canyon walled in basalt. Ask Diane and Murray about the way in.</p><a class="go" href="/things-to-do.html#falls">More on the falls</a></li>
+            <li class="act"><p class="tag">Keep your eyes open</p><h4>Birds &amp; wildlife</h4><p>Deer along the treeline, bears working the berry patches, and birds on the water all summer. Most of it turns up without being looked for.</p><a class="go" href="#wild">Who's around</a></li>
+          </ul>
+        </section>
+        <section class="group group--winter" aria-labelledby="g-winter">
+          <h3 id="g-winter">Winter <span class="stamp">Sled · skate · fish</span></h3>
+          <ul class="acts">
+            <li class="act"><p class="tag">Miles of it</p><h4>Snowmobiling</h4><p>The West Chilcotin is sledding country, and there is a great deal of it: miles of backcountry once the snow is down. Come with your own machines and talk to Diane and Murray about where people have been going.</p><a class="go" href="/things-to-do.html#winter">More on winter</a></li>
+            <li class="act"><p class="tag">Through the ice</p><h4>Ice fishing</h4><p>The same lake, a good deal harder. Drill a hole, set up and wait it out. Check the regulations before you go, and check the ice before you walk on it.</p><a class="go" href="/things-to-do.html#ice">More on the ice</a></li>
+            <li class="act"><p class="tag">When it takes</p><h4>Skate the lake</h4><p>When conditions permit, there is nothing quite like skating out on a frozen lake. Conditions decide, not the calendar. Ask before you go out.</p><a class="go" href="/things-to-do.html#ice">More on the ice</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ================= WILDLIFE ================= #}
+<section class="section wild" id="wild" aria-labelledby="wild-title" data-live>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Keep your eyes open</p>
+      <h2 id="wild-title">Who's around?</h2>
+      <p>Deer along the treeline, bears working the berry patches, and birds on the water all summer. Most of it turns up without being looked for.</p>
+    </div>
+    <div class="wild-grid">
+      <article class="critter">
+        <figure class="tall">
+          <span class="art perch" aria-hidden="true">{% art "eagle-perch" %}</span>
+          {% photo "white-pelican.jpg", "An American white pelican lifting off the water at Anahim Lake, wings spread, with its reflection below.", {sizes:"(min-width:900px) 28vw, 92vw", widths:[480,600]} %}
+          <figcaption>A pelican getting airborne</figcaption>
+        </figure>
+        <h3>American white pelican</h3><p class="habitat">Lake &amp; wetlands</p>
+        <p>Common on Anahim Lake in the warmer months, these impressive birds are often seen gliding, fishing and gathering in groups.</p>
+      </article>
+      <article class="critter">
+        <figure>
+          {% photo "red-fox.jpg", "A red fox standing on a gravel road in the evening light, silver and rust along its back.", {sizes:"(min-width:900px) 28vw, 92vw", widths:[480,550]} %}
+          <figcaption>Out on the gravel at dusk</figcaption>
+        </figure>
+        <h3>Red fox</h3><p class="habitat">Forest edges &amp; open country</p>
+        <p>Often seen around forest edges and open country, foxes are most active around dawn and dusk.</p>
+      </article>
+      <article class="critter">
+        <figure>
+          {% photo "snowshoe-hare.jpg", "A snowshoe hare in its pale winter coat sitting on frosted leaves beside a bank of snow.", {sizes:"(min-width:900px) 28vw, 92vw", widths:[480,680]} %}
+          <figcaption>A coat halfway to white</figcaption>
+        </figure>
+        <h3>Snowshoe hare</h3><p class="habitat">Forest &amp; brush</p>
+        <p>Look for them in the forest and along the trails. Their coats change with the seasons, helping them blend from brown to white.</p>
+      </article>
+    </div>
+    <div class="eyeout">
+      <div>
+        <h3>Also keep an eye out for</h3>
+        <ul>
+          <li class="chip">Black bear <small>forests &amp; berry patches</small></li>
+          <li class="chip">Mule deer <small>meadows &amp; valleys</small></li>
+          <li class="chip">Moose <small>wetlands &amp; lakeshores</small></li>
+          <li class="chip">Bald eagle <small>along the lake &amp; rivers</small></li>
+          <li class="chip">Osprey <small>lakes &amp; wetlands</small></li>
+          <li class="chip">Great grey owl <small>forest edges &amp; clearings</small></li>
+        </ul>
+      </div>
+      <aside class="plate wildnote"><h3>Wild country</h3><p>Wildlife here is just that: wild. Give animals plenty of space, never feed them, and ask your hosts about recent sightings before heading out.</p></aside>
+    </div>
+  </div>
+</section>
+
+{# ================= HOSTS ================= #}
+<section class="section hosts" id="hosts" aria-labelledby="hosts-title" data-live>
+  <div class="container">
+    <div class="hosts-grid">
+      <div class="hosts__photo">
+        <figure>
+          <span class="tape" aria-hidden="true"></span>
+          {% photo "hosts-sign.jpg", "Diane and Murray with Oliver, their Westie, in front of the hand-lettered log Welcome to Eagle's Nest Resort sign.", {sizes:"(min-width:900px) 26rem, 80vw", widths:[480,800]} %}
+          <figcaption>Diane, Murray &amp; Oliver</figcaption>
+        </figure>
+        <span class="art wave" aria-hidden="true">{% art "fox-wave" %}</span>
+      </div>
+      <div>
+        <p class="eyebrow">Your hosts</p>
+        <h2 id="hosts-title">A small place, run by the people who own it</h2>
+        <p class="lede" style="font-size:var(--t-md);font-weight:400">Call ahead with a question about the drive, the weather or where the pelicans are this week, and you'll get a straight answer. Diane and Murray are the new owners of Eagle's Nest, and Oliver, their Westie, has appointed himself unofficial host.</p>
+        <div class="quotes">
+          <blockquote class="quote plate plate--flat"><p>We stayed two nights on our way through. Rooms were clean, the food was delicious, and they were very nice. Was able to use their canoe to fish Anahim as well. We really enjoyed our time here.</p><footer>Jin Du, guest review</footer></blockquote>
+          <blockquote class="quote plate plate--flat"><p>Wonderful place. We visited while the ownership was transitioning and both were outstandingly hospitable. Rooms were good and food was better.</p><footer>Cyril Lopez, guest review</footer></blockquote>
+        </div>
+        <a class="btn btn--sm" href="/hosts.html">Meet Diane &amp; Murray</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ================= GETTING HERE ================= #}
+<section class="section ways" id="getting-here" aria-labelledby="ways-title" data-live>
+  {% art "clouds", {class:"art cloud", loading:"lazy"} %}
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">The journey</p>
+      <h2 id="ways-title">Four ways to reach Anahim Lake</h2>
+      <p>Anahim Lake is remote, but it is not hard to get to. Tell us which way you are coming so we know when to expect you.</p>
+    </div>
+    <div class="ways-grid">
+      <ul class="ways-list">
+        <li class="way"><svg class="i" aria-hidden="true"><use href="#i-car"/></svg><h3>By car</h3><p>West from Williams Lake on Highway 20, about 3½ hours across the Chilcotin plateau. We're one kilometre off the highway at Anahim Lake. Coming the other way, it's roughly 2 hours up from Bella Coola, including The Hill.</p></li>
+        <li class="way"><svg class="i" aria-hidden="true"><use href="#i-plane"/></svg><h3>By plane</h3><p>Anahim Lake Airport is a twelve-minute drive from our gate. Fly in, and we'll take it from there. Ask about a pickup when you book. Schedules change seasonally, so check current service before you commit to dates.</p></li>
+        <li class="way"><svg class="i" aria-hidden="true"><use href="#i-float"/></svg><h3>By floatplane</h3><p>Float-equipped aircraft can land directly on Anahim Lake and come ashore at the property, with no shuttle and no rental car. Murray flies, so you'll be talking to someone who understands the question. Call ahead and we'll meet you at the water.</p></li>
+        <li class="way"><svg class="i" aria-hidden="true"><use href="#i-ferry"/></svg><h3>By ferry, via Bella Coola</h3><p>Sail the Central Coast with BC Ferries to Bella Coola, then drive east on Highway 20 through the valley and up The Hill. The long way round, and the beautiful one, about 2 hours from the terminal.</p></li>
+      </ul>
+      <div class="ways__photo">
+        <figure>
+          {% photo "floatplane-dock.jpg", "A floatplane moored at the dock at Eagle's Nest Resort with the sun low over Anahim Lake.", {sizes:"(min-width:980px) 30vw, 80vw", widths:[480,800]} %}
+          <figcaption>Straight onto the lake</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ================= DUSK CTA ================= #}
+<section class="section cta" id="book" aria-labelledby="cta-title" data-live>
+  <div class="stars" aria-hidden="true"></div>
+  {% art "trees-summer", {class:"art tree tree--l"} %}{% art "trees-summer", {class:"art tree tree--r"} %}
+  <div class="container">
+    <div class="cta-plate plate">
+      <span class="sleepy art" aria-hidden="true">{% art "fox-sleep" %}</span>
+      <span class="zzz" aria-hidden="true">z z z</span>
+      <p class="eyebrow">One more thing</p>
+      <h2 id="cta-title">Not sure where to start?</h2>
+      <p>You don't have to figure it all out before you arrive. Ask Diane and Murray. They live here. Rooms go quickly in summer, so call, email or book online, whichever suits you.</p>
+      <div class="btn-row">
+        <a class="btn" href="tel:{{ site.tel }}"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>Call {{ site.phone }}</a>
+        <a class="btn btn--paper" href="{{ site.book.href }}">Book your stay</a>
+      </div>
+      <p class="quick">Or write to <a href="mailto:{{ site.email }}">{{ site.email }}</a>. Check in from {{ site.checkIn }}, check out by {{ site.checkOut }}.</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+---
+permalink: /robots.txt
+eleventyExcludeFromCollections: true
+---
+{% if site.production %}User-agent: *
+Allow: /
+
+Sitemap: {{ site.url }}/sitemap.xml
+{% else %}# PREVIEW SITE (feature/wilderness-redesign). Not for search engines.
+User-agent: *
+Disallow: /
+{% endif %}

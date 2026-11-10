@@ -1,0 +1,14 @@
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/" aria-label="{{ site.name }}, home">
+      {% art "eagle-glide", {class:"brand__mark", loading:"eager"} %}
+      <span><b>Eagle's Nest</b><small>Anahim Lake · BC</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      {% for n in site.nav %}<a href="{{ n.href }}"{% if page.url == n.href %} aria-current="page"{% endif %}>{{ n.label }}</a>{% endfor %}
+      <a class="header-call" href="tel:{{ site.tel }}"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>{{ site.phone }}</a>
+      <a class="btn btn--sm" href="{{ site.book.href }}">{{ site.book.label }} a stay</a>
+    </nav>
+    <a class="btn btn--sm header-mobile" href="tel:{{ site.tel }}"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
+  </div>
+</header>

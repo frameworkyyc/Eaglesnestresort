@@ -1,0 +1,24 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <b>Eagle's Nest Resort</b>
+        <p>Ten acres on Anahim Lake, one kilometre off Highway 20 in the West Chilcotin, British Columbia.</p>
+        <p class="hand" style="font-size:1.5rem;color:#F6D9A2;margin:0">See you at the lake.</p>
+      </div>
+      <nav aria-labelledby="f-explore"><h2 id="f-explore">Explore</h2>
+        <ul>{% for n in site.nav %}<li><a href="{{ n.href }}">{{ n.label }}</a></li>{% endfor %}<li><a href="{{ site.book.href }}">Booking</a></li></ul></nav>
+      <div><h2>Find us</h2>
+        <address>{{ site.address.street }}<br>{{ site.address.locality }}, {{ site.address.region }} {{ site.address.postal }}</address>
+        <p style="margin:.75rem 0 0">Check in from {{ site.checkIn }}.<br>Check out by {{ site.checkOut }}.</p></div>
+      <div><h2>Talk to Diane and Murray</h2>
+        <ul><li><a href="tel:{{ site.tel }}">{{ site.phone }}</a></li><li>Toll free <a href="tel:{{ site.tollFreeTel }}">{{ site.tollFree }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li><a href="{{ site.social.facebook }}" rel="noopener">Facebook</a> · <a href="{{ site.social.instagram }}" rel="noopener">Instagram</a></li></ul></div>
+    </div>
+    <div class="footer-base">
+      <span>© {{ "" | year }} {{ site.name }}. Website by <a href="https://www.frameworkco.ca" rel="noopener">Framework</a>.</span>
+      <button class="quiet" type="button" data-quiet-toggle aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-compass"/></svg>Quiet mode: pause animations</button>
+    </div>
+  </div>
+</footer>

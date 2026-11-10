@@ -1,10 +1,10 @@
 {
   // PREVIEW ONLY - lives on feature/wilderness-redesign.
-  // Serves this branch as static assets on the Framework account's
-  // "eaglesnestresort" Worker (eaglesnest.frameworktools.ca).
-  // Not used by the client's production site.
+  // Serves the built site (Eleventy output, committed in /public) as static assets on the
+  // Framework account's "eaglesnestresort" Worker (eaglesnest.frameworktools.ca).
+  // Rebuild with `npm run build`. Not used by the client's production site.
   "name": "eaglesnestresort",
   "compatibility_date": "2026-11-10",
-  "assets": { "directory": "./" },
+  "assets": { "directory": "./public", "not_found_handling": "404-page" },
   "observability": { "enabled": true }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "eagles-nest-resort",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Eagle's Nest Resort, Anahim Lake BC. Static site built with Eleventy.",
+  "scripts": {
+    "assets": "node scripts/build-assets.mjs",
+    "build": "node scripts/build-assets.mjs && eleventy",
+    "start": "node scripts/build-assets.mjs && eleventy --serve"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8",
+    "@11ty/eleventy-img": "^6.0.4",
+    "@fontsource-variable/figtree": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/caveat": "^5.3.0",
+    "esbuild": "^0.28.2",
+    "lightningcss": "^1.33.0"
+  }
+}

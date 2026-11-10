@@ -1,0 +1,4 @@
+node_modules
+.cache
+src/_generated
+src/_data/assets.json
