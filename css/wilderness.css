@@ -1,0 +1,321 @@
+/* ============================================================
+   WILDERNESS FIELD GUIDE — Things To Do prototype layer
+   Branch: feature/wilderness-redesign
+
+   Loaded ONLY by things-to-do.html, after site.css. It adds a
+   motion + character layer on top of the existing engraved
+   artwork; it does not move any existing element. Everything is
+   namespaced (.hero-stage, .crit, .journey, .fx-*, .hand, .wr-*).
+
+   Motion rules
+   - Nothing animates unless <html> has .wr-motion, which the
+     script only sets when prefers-reduced-motion is NOT reduce.
+   - Infinite animations only run inside .is-live (in viewport).
+   - Only transform / opacity / mask-position are animated, and
+     all layers are absolutely positioned: no layout shift.
+   ============================================================ */
+
+:root{
+  --hand:"Caveat","Segoe Script","Bradley Hand","Comic Sans MS",cursive;
+  --ink:#1E1A14;
+  --fox:#C46E2F;
+  --cream:#F3EEE1;
+}
+
+/* ---------- chapter numbering on the existing eyebrows ---------- */
+body{counter-reset:chap}
+section.ttd{counter-increment:chap}
+.spread .sp-head .eyebrow::before,
+.spread .w-head .eyebrow::before{
+  content:"Ch. " counter(chap,upper-roman) "\00a0\00b7\00a0";
+  opacity:.72}
+.ttd-cta .eyebrow::before{content:"Epilogue\00a0\00b7\00a0";opacity:.72}
+
+/* ---------- handwriting ---------- */
+.hand{font-family:var(--hand);font-weight:700;line-height:1.05;letter-spacing:.01em}
+
+/* =========================================================
+   HERO — a stage that sits exactly on the engraving
+   ========================================================= */
+.hero-art{position:relative;width:100%;flex:none;transform-origin:50% 100%}
+.hero-stage{position:absolute;left:0;top:0;width:100%;height:100%;
+  pointer-events:none;overflow:hidden;z-index:1}
+/* until the script measures the image, stay out of the way */
+.hero-stage:not(.is-fit){visibility:hidden}
+
+.hs-sun{position:absolute;left:11.6%;top:56.9%;width:16%;aspect-ratio:1;
+  translate:-50% -50%;border-radius:50%;mix-blend-mode:soft-light;
+  background:radial-gradient(closest-side,rgba(255,214,120,.5),rgba(255,200,90,.12) 42%,transparent 66%);
+  opacity:.5}
+.hs-rays{position:absolute;left:11.6%;top:56.9%;width:30%;aspect-ratio:1;
+  translate:-50% -50%;border-radius:50%;mix-blend-mode:soft-light;opacity:.5;
+  background:repeating-conic-gradient(from 0deg,rgba(255,226,150,.9) 0 2deg,transparent 2deg 11deg);
+  -webkit-mask-image:radial-gradient(closest-side,#000 8%,transparent 70%);
+          mask-image:radial-gradient(closest-side,#000 8%,transparent 70%)}
+.hs-glints i{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:.28%;
+  translate:-50% 0;border-radius:50%;opacity:.0;
+  background:linear-gradient(90deg,transparent,rgba(255,240,190,.95),transparent)}
+.hs-window{position:absolute;left:77.4%;top:50.6%;width:5.4%;height:6.8%;
+  mix-blend-mode:screen;opacity:.0;border-radius:30%;
+  background:radial-gradient(closest-side,rgba(255,196,84,.9),rgba(255,160,40,.35) 60%,transparent)}
+/* the canoe: a feathered copy of the engraving itself, rocking on its own keel */
+.hs-canoe{position:absolute;inset:0;background-size:100% 100%;background-repeat:no-repeat;
+  transform-origin:70% 91.3%;
+  -webkit-mask-image:radial-gradient(ellipse 11.5% 7.6% at 70% 91.3%,#000 52%,transparent 100%);
+          mask-image:radial-gradient(ellipse 11.5% 7.6% at 70% 91.3%,#000 52%,transparent 100%)}
+.hs-ring,.fx-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(255,248,225,.75);
+  width:3%;aspect-ratio:3.4/1;translate:-50% -50%;opacity:0}
+.hs-trout{position:absolute;left:0;top:0;width:3.4%;opacity:0;will-change:transform}
+.hs-trout svg{display:block;width:100%;height:auto}
+.hs-eagle{position:absolute;left:0;top:13%;width:min(11vw,150px);min-width:78px;opacity:0}
+.hs-cap{position:absolute;left:61%;top:19.5%;margin:0;color:#3B2A1A;
+  font-size:clamp(.95rem,1.9vw,1.55rem);transform:rotate(-4deg);white-space:nowrap;
+  text-shadow:0 0 6px rgba(243,238,225,.9),0 0 2px rgba(243,238,225,.9)}
+.hs-cap svg{display:block;margin:.1em 0 0 1.8em;width:2.1em;height:auto;color:#3B2A1A}
+
+.trail-cue{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.1rem;
+  font-family:var(--hand);font-weight:700;font-size:clamp(1.25rem,2.2vw,1.7rem);
+  color:#F4DEAC;text-decoration:none;text-shadow:0 1px 8px rgba(18,32,24,.85),0 0 3px rgba(18,32,24,.8)}
+.trail-cue svg{width:1.1em;height:1.5em;flex:none}
+.trail-cue:hover,.trail-cue:focus-visible{color:#fff}
+
+/* =========================================================
+   CHARACTERS — the field-guide companions
+   ========================================================= */
+.crit{display:block;width:100%;height:auto;overflow:visible}
+.crit-slot{position:absolute;display:block;pointer-events:none;z-index:-1}
+.crit-slot .crit{pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.crit *{transform-box:fill-box}
+
+/* fox peeks over the top edge of its photograph */
+.w-fox,.i-photo-a,.d-photo{isolation:auto}
+.crit-fox-slot{left:8%;top:0;width:min(46%,150px);translate:0 -78%}
+.crit-hare-slot{left:5%;top:0;width:min(26%,100px);translate:0 -76%}
+.fox-note,.hare-note{position:absolute;margin:0;z-index:2;color:var(--cream);
+  font-size:clamp(1.05rem,1.8vw,1.4rem);transform:rotate(-6deg);white-space:nowrap;
+  text-shadow:0 1px 6px rgba(14,23,18,.9)}
+.fox-note{left:58%;top:-1.6em}
+.hare-note{left:34%;top:-1.7em;color:#2F4A38;text-shadow:0 0 6px rgba(246,252,255,.95)}
+
+.cta-eagle{position:absolute;right:3%;top:-10vw;width:clamp(96px,13vw,190px);z-index:2;
+  pointer-events:none}
+.cta-eagle .crit{pointer-events:auto;cursor:pointer}
+.crit-say{position:absolute;margin:0;font-size:1.35rem;color:#2F4A38;pointer-events:none;
+  opacity:0;white-space:nowrap;text-shadow:0 0 6px rgba(246,240,229,.95)}
+.cta-spread{position:relative}
+
+/* =========================================================
+   FX LAYERS — sit on the illustrated sheets
+   ========================================================= */
+.fx-layer{position:absolute;left:0;right:0;width:100%;pointer-events:none;z-index:0}
+.ttd-forested .fx-layer{top:calc(-1 * (17.2vw + var(--map-peaks)));aspect-ratio:1200/1492}
+.ttd-glade .fx-layer{top:calc(-1 * (18.9vw + var(--map-peaks)));aspect-ratio:1200/1491}
+.ttd-basin .fx-layer{top:calc(-1 * (27vw + var(--map-peaks)));aspect-ratio:1200/1491}
+.fx-ring{border-color:rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(78,107,117,.25)}
+.fx-mist{position:absolute;width:14%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,255,255,.75),rgba(255,255,255,0) 72%);opacity:0}
+.fx-mote{position:absolute;width:6px;height:6px;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,#FFE9A8,rgba(255,214,110,.0));
+  box-shadow:0 0 10px 3px rgba(255,214,110,.55)}
+.fx-snow{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.fx-snow i{position:absolute;top:0;left:var(--x);width:0;height:100%;opacity:0}
+.fx-snow i::before{content:"";position:absolute;left:0;top:-14px;width:var(--s);height:var(--s);
+  border-radius:50%;background:#fff;box-shadow:0 0 3px rgba(94,120,132,.55)}
+
+/* =========================================================
+   CHAPTER RAIL — progress through the field guide
+   ========================================================= */
+.journey{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .4s ease}
+.journey.is-on{opacity:1}
+.journey a,.journey button{pointer-events:auto}
+.j-now{display:flex;align-items:center;gap:.55rem;margin:0;position:fixed;left:50%;top:64px;
+  translate:-50% 0;padding:.42rem .95rem .5rem;border-radius:999px;
+  background:rgba(243,238,225,.95);border:1.5px solid var(--forest);color:var(--forest);
+  font-family:var(--label);font-weight:600;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  box-shadow:0 4px 14px rgba(14,23,18,.22);white-space:nowrap;pointer-events:none;overflow:hidden}
+.j-now::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);
+  background:repeating-linear-gradient(90deg,var(--gold) 0 5px,transparent 5px 9px)}
+.j-list{display:none;list-style:none;margin:0;padding:0}
+@media (min-width:1320px){
+  .j-now{display:none}
+  .j-list{display:block;position:fixed;right:clamp(12px,1.6vw,28px);top:50%;translate:0 -50%;
+    padding:.9rem .55rem;border-radius:999px;background:rgba(243,238,225,.93);
+    border:1.5px solid var(--forest);box-shadow:0 6px 22px rgba(14,23,18,.2)}
+  .j-list::before{content:"";position:absolute;left:50%;top:1.5rem;bottom:1.5rem;width:0;translate:-50% 0;
+    border-left:2px dotted rgba(31,51,39,.35)}
+  .j-list::after{content:"";position:absolute;left:50%;top:1.5rem;width:0;translate:-50% 0;
+    height:calc((100% - 3rem) * var(--pf,0));border-left:3px dotted var(--forest)}
+  .j-list li{position:relative;z-index:1;margin:.1rem 0}
+  .j-list a{position:relative;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;
+    color:var(--forest);text-decoration:none}
+  .j-dot{width:11px;height:11px;border-radius:50%;background:var(--cream);border:2px solid var(--forest);
+    transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .3s}
+  .j-list a[aria-current="true"] .j-dot{background:var(--gold);transform:scale(1.55)}
+  .j-list a.done .j-dot{background:var(--forest)}
+  .j-label{position:absolute;right:calc(100% + 10px);top:50%;translate:6px -50%;opacity:0;
+    padding:.25rem .6rem;border-radius:3px;background:var(--forest);color:var(--cream);
+    font-family:var(--label);font-weight:500;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+    white-space:nowrap;transition:opacity .2s,translate .2s}
+  .j-list a:hover .j-label,.j-list a:focus-visible .j-label{opacity:1;translate:0 -50%}
+  .j-list a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+}
+
+/* =========================================================
+   MOTION — only when the visitor has not asked for less
+   ========================================================= */
+@media (prefers-reduced-motion:no-preference){
+
+  /* ---- handwriting: the pen writes it left to right ---- */
+  .wr-motion .say,
+  .wr-motion .t-worth,
+  .wr-motion .hand-reveal{
+    -webkit-mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+            mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+    -webkit-mask-size:270% 100%;mask-size:270% 100%;
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    -webkit-mask-position:100% 0;mask-position:100% 0}
+  .wr-motion .say.wr-in,.wr-motion .hand-reveal.wr-in{
+    animation:wr-pen 1.9s cubic-bezier(.45,.1,.3,1) .15s forwards}
+  .wr-motion .t-worth.wr-in{animation:wr-pen 1.6s cubic-bezier(.45,.1,.3,1) .2s forwards}
+  @keyframes wr-pen{to{-webkit-mask-position:0 0;mask-position:0 0}}
+
+  /* the little notes with writing in them write themselves, too */
+  .wr-motion .a-canoe,.wr-motion .a-trout,.wr-motion .a-skates,.wr-motion .sled-art,.wr-motion .t-signpost{
+    -webkit-mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+            mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+    -webkit-mask-size:270% 100%;mask-size:270% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    -webkit-mask-position:100% 0;mask-position:100% 0}
+  .wr-motion .a-canoe.wr-in,.wr-motion .a-trout.wr-in,.wr-motion .a-skates.wr-in,
+  .wr-motion .sled-art.wr-in,.wr-motion .t-signpost.wr-in{animation:wr-pen 2.2s cubic-bezier(.4,.1,.3,1) forwards}
+
+  /* ---- trails draw themselves ---- */
+  .wr-motion .shot-route{clip-path:inset(0 100% 0 0)}
+  .wr-motion .shot-route[data-from="r"]{clip-path:inset(0 0 0 100%)}
+  .wr-motion .shot-route.wr-in{clip-path:inset(0 0 0 0);
+    transition:clip-path 2.2s cubic-bezier(.5,.1,.35,1) .35s}
+
+  /* ---- photographs are pinned onto the page ---- */
+  .wr-motion .ttd-shot{opacity:0;scale:1.07;
+    transition:opacity .6s ease,scale .8s cubic-bezier(.2,1.5,.4,1)}
+  .wr-motion .ttd-shot.wr-in{opacity:1;scale:1}
+  .wr-motion .ttd-shot.wr-in:hover{scale:1.025}
+  [data-par]{translate:0 var(--py,0)}
+
+  /* ---- critters: pop up from behind, then idle ---- */
+  .wr-motion .crit-slot .crit{transform:translateY(46%);
+    transition:transform .85s cubic-bezier(.25,1.7,.45,1) .25s}
+  .wr-motion .crit-slot.wr-in .crit{transform:none}
+  .wr-motion .fox-note,.wr-motion .hare-note{
+    -webkit-mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+            mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+    -webkit-mask-size:270% 100%;mask-size:270% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    -webkit-mask-position:100% 0;mask-position:100% 0}
+  .wr-motion .crit-slot.wr-in ~ .fox-note,.wr-motion .crit-slot.wr-in ~ .hare-note{
+    animation:wr-pen 1.2s ease 1.1s forwards}
+
+  .is-live .crit-fox .fox-head{animation:wr-tilt 7s ease-in-out infinite;transform-origin:50% 92%}
+  .is-live .crit-fox .ear-l{animation:wr-ear 5.5s ease-in-out infinite;transform-origin:70% 90%}
+  .is-live .crit-fox .eyes{animation:wr-blink 5.2s infinite;transform-origin:50% 50%}
+  .is-live .crit-hare .hare-head{animation:wr-tilt 6s ease-in-out 1s infinite;transform-origin:50% 92%}
+  .is-live .crit-hare .h-ear-r{animation:wr-ear 4.2s ease-in-out infinite;transform-origin:50% 95%}
+  .is-live .crit-hare .h-nose{animation:wr-twitch 2.6s ease-in-out infinite;transform-origin:50% 50%}
+  .is-live .crit-hare .h-eyes{animation:wr-blink 6.4s 1s infinite;transform-origin:50% 50%}
+  @keyframes wr-tilt{0%,100%{rotate:-2.5deg}45%{rotate:3.5deg}70%{rotate:3.5deg}}
+  @keyframes wr-ear{0%,86%,100%{rotate:0deg}90%{rotate:-9deg}94%{rotate:4deg}}
+  @keyframes wr-blink{0%,93%,100%{scale:1 1}96%{scale:1 .08}}
+  @keyframes wr-twitch{0%,60%,100%{scale:1}66%{scale:1.18 .9}72%{scale:.94}78%{scale:1.14 .92}}
+  .crit .pupil{translate:var(--px,0px) var(--py,0px);transition:translate .18s ease-out}
+
+  .crit.is-poked{animation:wr-hop .6s cubic-bezier(.3,1.6,.5,1)}
+  @keyframes wr-hop{30%{translate:0 -14px;rotate:-5deg}65%{translate:0 2px;rotate:3deg}}
+  .crit-say.is-on{animation:wr-say 1.7s ease forwards}
+  @keyframes wr-say{0%{opacity:0;translate:0 6px}12%,70%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -8px}}
+
+  /* ---- eagle: wingbeats + crossing the sky ---- */
+  .is-live .crit-eagle .wing-l{animation:wr-flap-l 1.9s ease-in-out infinite;transform-origin:96% 70%}
+  .is-live .crit-eagle .wing-r{animation:wr-flap-r 1.9s ease-in-out infinite;transform-origin:4% 70%}
+  .is-live .crit-eagle .eagle-body{animation:wr-bank 3.8s ease-in-out infinite}
+  @keyframes wr-flap-l{0%,100%{rotate:7deg}50%{rotate:-15deg}}
+  @keyframes wr-flap-r{0%,100%{rotate:-7deg}50%{rotate:15deg}}
+  @keyframes wr-bank{0%,100%{rotate:-3deg;translate:0 -1px}50%{rotate:3deg;translate:0 3px}}
+  .is-live .hs-eagle{animation:wr-cross 38s linear 2s infinite}
+  @keyframes wr-cross{0%{opacity:0;transform:translate(-14vw,24px)}
+    4%{opacity:1}50%{transform:translate(52vw,-22px)}
+    96%{opacity:1}100%{opacity:0;transform:translate(118vw,12px)}}
+  .is-live .cta-eagle .crit{animation:wr-soar 9s ease-in-out infinite}
+  @keyframes wr-soar{0%,100%{translate:0 0;rotate:-3deg}50%{translate:-26px 12px;rotate:4deg}}
+  .is-live .cta-eagle .wing-l{animation-duration:3.6s}
+  .is-live .cta-eagle .wing-r{animation-duration:3.6s}
+
+  /* ---- hero ambience ---- */
+  .is-live .hs-sun{animation:wr-sun 6s ease-in-out infinite}
+  .is-live .hs-rays{animation:wr-rays 90s linear infinite}
+  @keyframes wr-sun{0%,100%{scale:1;opacity:.4}50%{scale:1.12;opacity:.7}}
+  @keyframes wr-rays{to{rotate:360deg}}
+  .is-live .hs-glints i{animation:wr-glint 4.2s ease-in-out var(--d) infinite}
+  @keyframes wr-glint{0%,100%{opacity:0;scale:.5 1}45%{opacity:.9;scale:1 1}}
+  .is-live .hs-window{animation:wr-lamp 5.5s ease-in-out infinite}
+  @keyframes wr-lamp{0%,100%{opacity:.28}40%{opacity:.55}55%{opacity:.4}70%{opacity:.6}}
+  .is-live .hs-canoe{animation:wr-rock 5.4s ease-in-out infinite}
+  @keyframes wr-rock{0%,100%{transform:rotate(-.9deg) translateY(.5px)}50%{transform:rotate(.9deg) translateY(-1.5px)}}
+  .is-live .hs-ring{animation:wr-ring 5.4s ease-out var(--d,0s) infinite}
+  @keyframes wr-ring{0%{opacity:.0;scale:.3}15%{opacity:.8}100%{opacity:0;scale:1.8}}
+  .hs-ring.splash,.fx-ring.splash{animation:wr-ring 1.6s ease-out forwards}
+  .is-live .fx-ring.loop{animation:wr-ring 7s ease-out var(--d,0s) infinite}
+
+  /* ---- signpost sways, canoe rocks, trout leaps ---- */
+  .is-live .t-signpost{transform-origin:30% 100%;animation:wr-sway 6s ease-in-out infinite}
+  @keyframes wr-sway{0%,100%{rotate:-.5deg}50%{rotate:.6deg}}
+  .is-live .a-canoe.wr-in{animation:wr-pen 2.2s cubic-bezier(.4,.1,.3,1) forwards,wr-bob 6s ease-in-out 2.2s infinite}
+  @keyframes wr-bob{0%,100%{rotate:-.7deg;translate:0 0}50%{rotate:.8deg;translate:0 3px}}
+  .wr-motion .a-trout.leap{animation:wr-pen 2.2s cubic-bezier(.4,.1,.3,1) forwards,wr-leap 1.4s cubic-bezier(.3,1.4,.5,1) .1s}
+  @keyframes wr-leap{0%{translate:0 38px;rotate:-6deg}40%{translate:0 -26px;rotate:3deg}70%{translate:0 4px;rotate:-1deg}100%{translate:0 0;rotate:0}}
+  .is-live .a-skates.wr-in{animation:wr-pen 2.2s cubic-bezier(.4,.1,.3,1) forwards,wr-glide 7s ease-in-out 2.2s infinite}
+  @keyframes wr-glide{0%,100%{translate:0 0}50%{translate:8px 0;rotate:.6deg}}
+  .wr-motion .sled-art{translate:60px 0}
+  .wr-motion .sled-art.wr-in{translate:0 0;transition:translate 1.6s cubic-bezier(.15,.8,.25,1)}
+
+  /* ---- weather & water on the sheets ---- */
+  .is-live .fx-mist{animation:wr-mist 6s ease-out var(--d,0s) infinite}
+  @keyframes wr-mist{0%{opacity:0;scale:.5;translate:-50% -35%}25%{opacity:.7}100%{opacity:0;scale:1.7;translate:-50% -120%}}
+  .is-live .fx-mote{animation:wr-mote 9s ease-in-out var(--d,0s) infinite}
+  @keyframes wr-mote{0%{opacity:0;translate:0 0}20%,70%{opacity:.95}100%{opacity:0;translate:var(--dx,20px) -50px}}
+  .is-live .fx-snow i{animation:wr-snow var(--t,14s) linear var(--d,0s) infinite}
+  .is-live .fx-snow i::before{animation:wr-drift 5s ease-in-out var(--d,0s) infinite alternate}
+  @keyframes wr-snow{0%{opacity:0;transform:translateY(-4%)}6%{opacity:1}94%{opacity:1}100%{opacity:0;transform:translateY(100%)}}
+  @keyframes wr-drift{from{translate:-14px 0}to{translate:18px 0}}
+
+  /* ---- the hero text settles in ---- */
+  .wr-motion .stay-hero.ttd .stay-hero-in .eyebrow,
+  .wr-motion .stay-hero.ttd .stay-hero-in h1,
+  .wr-motion .stay-hero.ttd .stay-hero-in .lede,
+  .wr-motion .stay-hero.ttd .stay-hero-in .trail-cue{animation:wr-rise .9s cubic-bezier(.2,.8,.2,1) both}
+  .wr-motion .stay-hero.ttd .stay-hero-in h1{animation-delay:.12s}
+  .wr-motion .stay-hero.ttd .stay-hero-in .lede{animation-delay:.28s}
+  .wr-motion .stay-hero.ttd .stay-hero-in .trail-cue{animation-delay:.5s}
+  @keyframes wr-rise{from{opacity:0;translate:0 18px}}
+  .is-live .trail-cue svg{animation:wr-nudge 1.8s ease-in-out infinite}
+  @keyframes wr-nudge{0%,100%{translate:0 0}50%{translate:0 5px}}
+  .wr-motion .hs-cap{-webkit-mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+    mask-image:linear-gradient(90deg,#000 0 46%,transparent 60%);
+    -webkit-mask-size:270% 100%;mask-size:270% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    -webkit-mask-position:100% 0;mask-position:100% 0;animation:wr-pen 2s ease 1.6s forwards}
+}
+
+/* reduced motion: show the finished picture, still */
+@media (prefers-reduced-motion:reduce){
+  .hs-sun,.hs-rays,.hs-glints,.hs-window,.hs-canoe,.hs-ring,.hs-trout,.fx-mist,.fx-mote,.fx-snow{display:none}
+  .hs-eagle{opacity:1;left:63%;top:9%}
+  .j-now::after{transition:none}
+}
+
+/* ---------- phones & small tablets ---------- */
+@media (max-width:899px){
+  .crit-fox-slot{width:min(40%,120px)}
+  .hs-cap{display:none}
+  .hs-eagle{min-width:64px}
+  .fox-note{left:56%}
+  .cta-eagle{right:8%;top:-3.4rem;width:clamp(84px,24vw,130px)}
+  [data-par]{translate:none}
+}
+@media print{.journey,.hero-stage,.fx-layer,.fx-snow,.cta-eagle{display:none!important}}
