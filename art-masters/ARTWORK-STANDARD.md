@@ -59,3 +59,5 @@ used with the text covered up by HTML.
 | Image | TEXT | SPACE | Visual | Notes |
 |---|---|---|---|---|
 | `inputs/hero-reference-clean.png` | pass (0 words; 4 REVIEW items checked: snow streaks, dock reflections, window bars) | pass (detail 3.9, edges 0.006) | pass | Original crop fails: 46 words, detail 37.2 |
+| `hero/round-1/A-nano-banana-2-1.png` | auto-flag 4, all texture on inspection: no text | pass (3.3 / 0.008) | pass, corners clean | candidate, not approved |
+| `hero/round-1/B-gpt-image-2-6.png` | auto-flag 1, texture on inspection: no text | fail on edges (7.5 / 0.060), sky hatching | pass, corners clean | candidate, not approved |
