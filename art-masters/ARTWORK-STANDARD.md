@@ -62,4 +62,5 @@ used with the text covered up by HTML.
 | `hero/round-1/A-nano-banana-2-1.png` | auto-flag 4, all texture on inspection: no text | pass (3.3 / 0.008) | pass, corners clean | candidate, not approved |
 | `hero/round-1/B-gpt-image-2-6.png` | auto-flag 1, texture on inspection: no text | fail on edges (7.5 / 0.060), sky hatching | pass, corners clean | candidate, not approved |
 | `hero/round-2-lodge/hero-A-lodge-1.png` | auto-flag 1 (6 x 9 px curtain fold), not text | pass (unchanged from A: 0 px changed in the text-safe zone) | pass, corners clean | lodge correction on A, attempt 1; superseded by round 3 |
-| `hero/round-3-composition/hero-final.png` | OCR readings in texture only; high-confidence ones inspected: no text | pass (2.37 / 0.0024, calmer than A) | pass, corners clean | combined landscape + lodge edit; awaiting review |
+| `hero/round-3-composition/hero-final.png` | OCR readings in texture only; high-confidence ones inspected: no text | pass (2.37 / 0.0024, calmer than A) | pass, corners clean | combined landscape + lodge edit; client found it composited-looking |
+| `hero/round-4-full-redraw/redraw-raw-nano-banana-2-1.png` | 12 OCR flags, all hatching: no text | fail (11.0 / 0.044): hatched sky and far-shore slope in the headline zone | pass | full redraw, raw; cohesive but re-composed; awaiting client's assessment |
