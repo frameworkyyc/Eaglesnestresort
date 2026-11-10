@@ -1,5 +1,6 @@
 {#
-  THINGS TO DO: Phase 1 (structure + background composition)
+  THINGS TO DO: engraved hero (approved Round 5 artwork) + parchment chapters.
+  The chapters are plain parchment joined by torn-paper edges until their engraved illustrations exist.
   Every --x / --y / --w value is in reference pixels: the approved reference image is 729 px
   wide, and on desktop one reference pixel = var(--rp). Section heights (--h) come from the
   reference's band boundaries. Elements marked .fg-slot are empty placeholders for the
@@ -21,9 +22,19 @@
 </svg>
 
 {# ================================================================= HERO #}
-<header class="fg-sec fg-hero" id="top" style="--h:238">
-  <img class="fg-bg fg-hero-scene" src="/assets/ttd/bg/hero-scene.svg" alt="" aria-hidden="true" style="--t:0;--bh:238">
-  <div class="fg-haze" aria-hidden="true"></div>
+<header class="fg-sec fg-hero" id="top" style="--h:309">
+  <picture class="fg-hero-art">
+    <source media="(max-width:699px)" type="image/avif" width="3045" height="2688" sizes="100vw"
+      srcset="/assets/ttd/hero/phone-480.avif 480w, /assets/ttd/hero/phone-780.avif 780w, /assets/ttd/hero/phone-1170.avif 1170w">
+    <source media="(max-width:699px)" type="image/webp" width="3045" height="2688" sizes="100vw"
+      srcset="/assets/ttd/hero/phone-480.webp 480w, /assets/ttd/hero/phone-780.webp 780w, /assets/ttd/hero/phone-1170.webp 1170w">
+    <source type="image/avif" sizes="100vw"
+      srcset="/assets/ttd/hero/scene-960.avif 960w, /assets/ttd/hero/scene-1440.avif 1440w, /assets/ttd/hero/scene-1920.avif 1920w, /assets/ttd/hero/scene-2560.avif 2560w, /assets/ttd/hero/scene-3200.avif 3200w">
+    <source type="image/webp" sizes="100vw"
+      srcset="/assets/ttd/hero/scene-960.webp 960w, /assets/ttd/hero/scene-1440.webp 1440w, /assets/ttd/hero/scene-1920.webp 1920w, /assets/ttd/hero/scene-2560.webp 2560w, /assets/ttd/hero/scene-3200.webp 3200w">
+    <img src="/assets/ttd/hero/scene-1920.jpg" width="6344" height="2688" fetchpriority="high" decoding="async"
+      alt="Engraved illustration of Eagle&rsquo;s Nest Resort at sunrise: the lodge&rsquo;s glass gable among spruce and aspen above a rocky shore, a wooden dock with a person fishing from a small boat, and geese flying over Anahim Lake.">
+  </picture>
   <h1 class="fg-a fg-h1" style="--x:47;--y:26;--w:320">
     <span class="fg-eyebrow">Anahim Lake <span aria-hidden="true">•</span> West Chilcotin</span>
     <span class="fg-h1-main">There&rsquo;s a<br> lot out here.</span>
@@ -33,16 +44,11 @@
     <span>Cast a line, find a trail or head farther into the Chilcotin.</span>
     <span>And when the lake freezes, come back and do it all differently.</span>
   </p>
-  <div class="fg-a fg-slot" data-art="H6 goose" style="--x:478;--y:40;--w:42;--hh:28"></div>
-  <div class="fg-a fg-slot" data-art="H6 goose" style="--x:546;--y:16;--w:46;--hh:32"></div>
-  <div class="fg-a fg-slot" data-art="H4 lodge" style="--x:545;--y:105;--w:170;--hh:80"></div>
-  <div class="fg-a fg-slot" data-art="H5 dock + boat" style="--x:236;--y:180;--w:145;--hh:42"></div>
 </header>
 
 {# ================================================================= 1 · DOCK #}
-<section class="fg-sec fg-paper fg-dock" id="dock" style="--h:275" aria-labelledby="h-dock">
-  <img class="fg-bg" src="/assets/ttd/bg/t1-snow.svg" alt="" aria-hidden="true" style="--t:-45;--bh:70">
-  <div class="fg-head fg-a" style="--x:37;--y:-10;--w:200">
+<section class="fg-sec fg-paper fg-dock" id="dock" style="--h:289" aria-labelledby="h-dock">
+    <div class="fg-head fg-a" style="--x:37;--y:-10;--w:200">
     <span class="fg-num" aria-hidden="true">1</span>
     <h2 class="fg-h2" id="h-dock">Start at<br class="fg-br"> the dock</h2>
   </div>
@@ -99,7 +105,6 @@
 
 {# ================================================================= 2 · MAP #}
 <section class="fg-sec fg-paper fg-mapsec" id="farther" style="--h:225" aria-labelledby="h-farther">
-  <img class="fg-bg" src="/assets/ttd/bg/t2-sage.svg" alt="" aria-hidden="true" style="--t:-75;--bh:110">
   <div class="fg-head fg-a" style="--x:37;--y:70;--w:175">
     <span class="fg-num" aria-hidden="true">2</span>
     <h2 class="fg-h2" id="h-farther">Go a little<br class="fg-br"> farther</h2>
@@ -141,8 +146,7 @@
 </section>
 
 {# ================================================================= 3 · WATERFALLS #}
-<section class="fg-sec fg-dark fg-falls" id="waterfall" style="--h:190" aria-labelledby="h-falls">
-  <img class="fg-bg" src="/assets/ttd/bg/falls-forest.svg" alt="" aria-hidden="true" style="--t:-100;--bh:300">
+<section class="fg-sec fg-paper fg-falls" id="waterfall" style="--h:190" aria-labelledby="h-falls">
   <div class="fg-head fg-a" style="--x:37;--y:62;--w:150">
     <span class="fg-num" aria-hidden="true">3</span>
     <h2 class="fg-h2" id="h-falls">Chase a<br class="fg-br"> waterfall</h2>
@@ -162,9 +166,7 @@
 </section>
 
 {# ================================================================= 4 · TRAILS #}
-<section class="fg-sec fg-trails" id="trail" style="--h:150" aria-labelledby="h-trail">
-  <img class="fg-bg" src="/assets/ttd/bg/trails-bg.svg" alt="" aria-hidden="true" style="--t:0;--bh:150">
-  <img class="fg-bg" src="/assets/ttd/bg/t3-pale.svg" alt="" aria-hidden="true" style="--t:-30;--bh:60">
+<section class="fg-sec fg-paper fg-trails" id="trail" style="--h:150" aria-labelledby="h-trail">
   <div class="fg-head fg-a" style="--x:35;--y:20;--w:160">
     <span class="fg-num" aria-hidden="true">4</span>
     <h2 class="fg-h2" id="h-trail">Find a trail</h2>
@@ -188,9 +190,7 @@
 </section>
 
 {# ================================================================= 5 · WINTER #}
-<section class="fg-sec fg-winter" id="winter" style="--h:160" aria-labelledby="h-winter">
-  <img class="fg-bg" src="/assets/ttd/bg/winter-bg.svg" alt="" aria-hidden="true" style="--t:-20;--bh:194">
-  <img class="fg-bg" src="/assets/ttd/bg/t4-ice.svg" alt="" aria-hidden="true" style="--t:-35;--bh:60">
+<section class="fg-sec fg-paper fg-winter" id="winter" style="--h:160" aria-labelledby="h-winter">
   <div class="fg-head fg-head-tall fg-a" style="--x:36;--y:24;--w:240">
     <span class="fg-num fg-num-dark" aria-hidden="true">5</span>
     <div>
@@ -217,9 +217,7 @@
 </section>
 
 {# ================================================================= 6 · NIGHT #}
-<section class="fg-sec fg-night" id="after-dark" style="--h:132" aria-labelledby="h-night">
-  <img class="fg-bg" src="/assets/ttd/bg/night-bg.svg" alt="" aria-hidden="true" style="--t:0;--bh:132">
-  <img class="fg-bg" src="/assets/ttd/bg/t5-night.svg" alt="" aria-hidden="true" style="--t:-58;--bh:70">
+<section class="fg-sec fg-paper fg-night" id="after-dark" style="--h:132" aria-labelledby="h-night">
   <div class="fg-head fg-head-tall fg-a" style="--x:37;--y:40;--w:150">
     <span class="fg-num fg-num-dark" aria-hidden="true">6</span>
     <div>
@@ -234,7 +232,6 @@
 
 {# ================================================================= 7 · CLOSE #}
 <section class="fg-sec fg-paper fg-close" id="ask" style="--h:104" aria-labelledby="h-ask">
-  <img class="fg-bg" src="/assets/ttd/bg/t6-ragged.svg" alt="" aria-hidden="true" style="--t:-13;--bh:30">
   <div class="fg-head fg-a" style="--x:37;--y:18;--w:190">
     <span class="fg-num" aria-hidden="true">7</span>
     <h2 class="fg-h2" id="h-ask">Not sure where<br class="fg-br"> to start?</h2>

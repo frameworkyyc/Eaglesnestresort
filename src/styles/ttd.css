@@ -1,11 +1,11 @@
 /* ==========================================================================
-   THINGS TO DO: field guide page (Phase 1: structure + background composition)
+   THINGS TO DO: field guide page (engraved hero + parchment chapters)
    Desktop (>=1100px) reproduces the approved reference on a grid of reference
    pixels: the reference is 729 px wide, so 1 ref px = --rp. Every --x/--y/--w/--h
    in the markup is read straight off the reference. Below 1100px the page is
    recomposed for phones, not scaled.
-   Colours: brand palette for everything coded. Landscape massing uses tones
-   sampled from the reference and will be replaced by artwork in Phase 3.
+   Colours: brand palette for everything coded. Until each chapter's engraved
+   illustration exists, chapters are plain parchment joined by torn-paper edges.
    Namespaced .fg-* so it cannot touch the existing site.css components.
    ========================================================================== */
 @font-face{font-family:"Roboto Serif Cond";src:url(/assets/fonts/roboto-serif-cond.woff2) format("woff2");
@@ -13,7 +13,6 @@
 
 .fg{
   --rp:calc(min(100vw,1920px)/729);      /* 1 reference pixel */
-  --bp:var(--rp);                          /* scale for background bands */
   --ink:#1F3327;--paper:#F3EEE1;--pine:#2F4A38;--gold:#C08E2E;--gold-l:#D9AC53;--deep:#16261C;--soft:#4A6350;
   --serif:"Roboto Serif Cond","Roboto Serif",Georgia,serif;
   --label:"Oswald","Arial Narrow",Arial,sans-serif;
@@ -32,25 +31,25 @@
 .fg-sec{position:relative;height:calc(var(--h)*var(--rp))}
 .fg-a{position:absolute;z-index:3;left:calc(var(--x)*var(--rp));top:calc(var(--y)*var(--rp));width:calc(var(--w)*var(--rp))}
 .fg-a[style*="--hh"]{height:calc(var(--hh)*var(--rp))}
-.fg-bg{position:absolute;z-index:0;left:0;width:100%;max-width:none;top:calc(var(--t)*var(--bp));height:calc(var(--bh)*var(--bp));
-  object-fit:cover;object-position:50% 100%;pointer-events:none;user-select:none}
 .fg-trail{position:absolute;z-index:2;left:0;top:0;width:100%;height:calc(1474*var(--rp));pointer-events:none;
   fill:none;stroke:var(--gold);stroke-width:1.5;stroke-dasharray:3.2 4.2;stroke-linecap:round;opacity:.95}
 
-/* grounds */
-.fg-paper{background-color:var(--paper);background-image:var(--paper-tint),var(--grain)}
-.fg-hero{background:
-  radial-gradient(48% 62% at 58% 42%,rgba(240,214,160,.95) 0%,rgba(240,214,160,0) 70%),
-  linear-gradient(180deg,#D9C6A2 0%,#E3D1AF 48%,#E0CBA5 100%)}
-.fg-haze{position:absolute;z-index:1;left:0;top:0;bottom:0;width:calc(360*var(--rp));pointer-events:none;
-  background:linear-gradient(90deg,rgba(229,214,186,.92) 0%,rgba(229,214,186,.78) 45%,rgba(229,214,186,0) 100%)}
-.fg-dark{background:#2F3E34;color:var(--paper)}
-.fg-trails{background:linear-gradient(180deg,#BDBBA3 0%,#AEAE94 100%)}
-.fg-winter{background:#8E9DA5}
-.fg-winter::before{content:"";position:absolute;z-index:1;left:0;top:0;width:calc(300*var(--rp));height:100%;pointer-events:none;
-  background:radial-gradient(70% 60% at 30% 45%,rgba(225,231,233,.85) 0%,rgba(225,231,233,0) 100%)}
-/* the night ground starts 10 ref px down: above that, the snowy treeline (T5) is the edge, not the section box */
-.fg-night{color:var(--paper);background:linear-gradient(180deg,transparent 0,transparent calc(10*var(--bp)),#22344A calc(10*var(--bp)),#15222E 100%)}
+/* grounds: one continuous field guide. Every chapter is parchment; the tones differ just enough
+   for the torn edge between two chapters to read, never enough to look like separate boxes. */
+.fg-paper{--tint:rgba(176,136,78,.28);--deckle:url(/assets/ttd/deckle-b.svg);
+  background-color:var(--paper);background-image:linear-gradient(var(--tint),var(--tint)),var(--grain)}
+.fg-mapsec{--tint:rgba(176,136,78,.22);--deckle:url(/assets/ttd/deckle-c.svg)}
+.fg-falls{--tint:rgba(162,140,88,.30);--deckle:url(/assets/ttd/deckle.svg)}
+.fg-trails{--tint:rgba(176,136,78,.25);--deckle:url(/assets/ttd/deckle-b.svg)}
+.fg-winter{--tint:rgba(160,150,134,.28);--deckle:url(/assets/ttd/deckle-c.svg)}
+.fg-night{--tint:rgba(150,120,82,.36);--deckle:url(/assets/ttd/deckle.svg)}
+.fg-close{--tint:rgba(176,136,78,.28);--deckle:url(/assets/ttd/deckle-b.svg)}
+/* the torn edge: each chapter's own paper tears up over the one above, with a faint shadow line */
+.fg-paper::before,.fg-paper::after{content:"";position:absolute;left:0;right:0;pointer-events:none;
+  height:var(--tear);-webkit-mask:var(--deckle) 0 0/100% 100% no-repeat;mask:var(--deckle) 0 0/100% 100% no-repeat}
+.fg-paper::before{z-index:1;top:calc(-1*var(--tear));background:inherit}
+.fg-paper::after{z-index:0;top:calc(-1*var(--tear) - 1.5px);background:rgba(84,64,34,.30)}
+.fg{--tear:calc(10*var(--rp))}
 
 /* ---------- type ---------- */
 .fg-h1{margin:0;color:var(--ink)}
@@ -69,7 +68,6 @@
 .fg-p-lg{font-size:max(15px,calc(8.6*var(--rp)));line-height:1.45}
 .fg-center{text-align:center}
 .fg-sub{margin:0;font:500 max(11px,calc(5.6*var(--rp)))/1 var(--label);letter-spacing:.04em;text-transform:uppercase}
-.fg-dark .fg-p,.fg-night .fg-p{color:rgba(243,238,225,.9)}
 
 /* ---------- chapter heads ---------- */
 .fg-head{display:flex;align-items:flex-start;gap:calc(11*var(--rp))}
@@ -160,17 +158,16 @@
 .fg-slot{display:block}
 .fg-showslots .fg-slot{outline:1px dashed rgba(31,51,39,.7);background:rgba(192,142,46,.14);position:relative}
 .fg-showslots .fg-slot::after{content:attr(data-art);position:absolute;left:3px;top:3px;font:600 9px/1 var(--label);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:rgba(243,238,225,.85);padding:2px 3px}
-.fg-showslots .fg-dark .fg-slot,.fg-showslots .fg-night .fg-slot{outline-color:rgba(243,238,225,.8)}
 .fg-refslider{position:fixed;z-index:10000;right:14px;bottom:14px;width:180px}
 
 /* ==========================================================================
    PHONE & TABLET: recomposed, not scaled
    ========================================================================== */
 @media (max-width:1099px){
-  .fg{--bp:max(calc(100vw/729),1.3px)}
-  .fg-trail,.fg-margin,.fg-hero .fg-slot,.fg-compass,.fg-close .fg-slot,.fg-falls>.fg-slot,.fg-night .fg-slot,.fg-winter>.fg-slot,.fg-trails>.fg-slot{display:none}
+  .fg-trail,.fg-margin,.fg-compass,.fg-close .fg-slot,.fg-falls>.fg-slot,.fg-night .fg-slot,.fg-winter>.fg-slot,.fg-trails>.fg-slot{display:none}
   .fg-br{display:none}
-  .fg-sec{height:auto;display:grid;gap:26px;padding:64px max(22px,env(safe-area-inset-left,0px)) 72px}
+  .fg{--tear:13px}
+  .fg-sec{height:auto;display:grid;gap:26px;padding:60px max(22px,env(safe-area-inset-left,0px)) 68px}
   .fg-a{position:relative;left:auto;top:auto;width:auto;z-index:3}
   .fg-a[style*="--hh"]{height:auto}
   .fg-h1-main{font-size:clamp(46px,13vw,72px)}
@@ -180,15 +177,11 @@
   .fg-head-tall{align-items:flex-start}
   .fg-p{max-width:38ch}
 
-  /* hero: words on the hazy sky, the lake scene below */
-  .fg-hero{padding:30px 22px calc(238*var(--bp) - 60px)}
-  .fg-hero-scene{top:auto;bottom:0;object-position:68% 100%}
-  .fg-haze{width:100%;height:auto;bottom:auto;top:0;height:62%;background:linear-gradient(180deg,rgba(229,214,186,.95) 0%,rgba(229,214,186,.85) 55%,rgba(229,214,186,0) 100%)}
   .fg-lede span{display:inline;white-space:normal}
   .fg-lede{max-width:34ch}
 
   /* chapter 1 */
-  .fg-dock{padding-top:70px;padding-bottom:calc(110*var(--bp))}
+  .fg-dock{padding-top:52px}
   .fg-icon{width:58px;height:34px}
   .fg-fishing .fg-svgicon{width:18px;height:24px}
   .fg-binos{width:34px;height:26px}
@@ -205,7 +198,6 @@
   .fg-species .fg-slot{width:64px;height:60px}
 
   /* map: a pannable sheet */
-  .fg-mapsec{padding-top:calc(48px + 35*var(--bp));padding-bottom:calc(100*var(--bp))}
   .fg-mapscroll{display:block;overflow-x:auto;margin:0 -22px;padding:6px 22px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .fg-mapscroll::-webkit-scrollbar{display:none}
   .fg-map.fg-a{width:640px;height:309px}
@@ -221,14 +213,8 @@
   .fg-prints{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -22px;padding:14px 22px 26px;scrollbar-width:none}
   .fg-prints::-webkit-scrollbar{display:none}
   .fg-prints .fg-print{flex:0 0 min(70%,300px);width:auto;scroll-snap-align:center}
-  .fg-falls{padding-top:calc(40px + 20*var(--bp))}
-  .fg-trails{padding-top:calc(48px + 30*var(--bp));padding-bottom:calc(60px + 25*var(--bp))}
-  .fg-winter{padding-top:calc(48px + 35*var(--bp));padding-bottom:calc(60px + 35*var(--bp))}
-  .fg-winter::before{width:100%;height:60%;background:linear-gradient(180deg,rgba(225,231,233,.8),rgba(225,231,233,0))}
   .fg-center{text-align:left}
-  .fg-night{padding-top:calc(52px + 35*var(--bp));padding-bottom:calc(132*var(--bp))}
-  .fg-night .fg-bg:first-of-type{top:auto;bottom:0}
-  .fg-close{height:auto;padding-top:calc(44px + 13*var(--bp));padding-bottom:calc(72px + clamp(58px,9vw,132px))}
+  .fg-close{height:auto;padding-bottom:calc(72px + clamp(58px,9vw,132px))}
   .fg-h2-big{white-space:normal}
   .fg-call,.fg-book{min-height:66px;width:100%;max-width:420px}
   .fg-book{padding:14px 20px}
@@ -243,3 +229,48 @@
   .fg-close>.fg-head,.fg-close>.fg-p{grid-column:1/-1}
 }
 @media (prefers-reduced-motion:reduce){.fg *{transition:none!important}}
+
+/* ==========================================================================
+   HERO: the approved engraved illustration (colour-corrected Round 5)
+   Desktop: the whole 21:9 plate edge to edge, words on its calm sky.
+   Tablet and phone: words on the plate's own paper, then the plate, framed on the lodge.
+   ========================================================================== */
+.fg-hero{background:#F0DECE;isolation:isolate}
+.fg-hero-art{position:absolute;inset:0;z-index:0;display:block}
+.fg-hero-art img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;object-position:62% 50%}
+@media (prefers-reduced-motion:no-preference){
+  .fg-hero .fg-h1,.fg-hero .fg-lede{animation:fg-rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .fg-hero .fg-lede{animation-delay:.12s}
+}
+@keyframes fg-rise{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+
+@media (min-width:1100px){
+  /* the hero grew from Phase 1's 238 to 309 reference px and chapter 1 moved 14 px clear of the torn edge */
+  .fg-trail{top:calc(85*var(--rp))}
+  .fg-dock>.fg-a{translate:0 calc(14*var(--rp))}
+}
+@media (min-width:1100px) and (max-width:1279px){
+  /* small laptops: the intro wraps in a narrower column so it stays on the sky, clear of the far shore and the boat */
+  .fg-hero .fg-lede{width:calc(190*var(--rp))}
+  .fg-hero .fg-lede span{display:inline;white-space:normal}
+}
+@media (min-width:1921px){
+  /* very wide screens: the guide stops growing at 1920 px and sits centred, like a sheet on the table */
+  .fg{max-width:1920px;margin-inline:auto;box-shadow:0 0 48px rgba(70,52,26,.14)}
+}
+@media (max-width:1099px){
+  .fg-hero{display:flex;flex-direction:column;gap:0;padding:30px 22px 0;background:#F0DECE}
+  .fg-hero .fg-eyebrow{margin-bottom:8px}
+  .fg-hero .fg-lede{margin-top:16px}
+  .fg-hero-art{order:2;position:relative;inset:auto;margin:28px -22px 0}
+  /* tablets: 16:9, trimming the empty haze and keeping the person fishing, the dock and the lodge */
+  .fg-hero-art img{height:auto;aspect-ratio:16/9;object-position:92% 60%}
+  /* the plate's top edge tears into the paper the words sit on */
+  .fg-hero-art::before{content:"";position:absolute;z-index:1;left:0;right:0;top:-1px;height:var(--tear);pointer-events:none;
+    background:#F0DECE;rotate:180deg;-webkit-mask:url(/assets/ttd/deckle-c.svg) 0 0/100% 100% no-repeat;mask:url(/assets/ttd/deckle-c.svg) 0 0/100% 100% no-repeat}
+}
+@media (max-width:699px){
+  /* phones: the lodge crop (separate image, see the <picture> sources) */
+  .fg-hero-art{margin-top:24px}
+  .fg-hero-art img{aspect-ratio:3045/2688;object-position:50% 50%}
+}
