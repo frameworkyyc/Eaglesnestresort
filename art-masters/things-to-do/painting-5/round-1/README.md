@@ -1,4 +1,4 @@
-# Things To Do, painting 5 (chapter 5, "When the lake freezes"), round 1 (2026-11-11): raw output (awaiting the client's assessment)
+# Things To Do, painting 5 (chapter 5, "When the lake freezes"), round 1 (2026-11-11): approved, with three local touch-ups
 
 Chapter 5's own painting: a quiet winter valley in late-afternoon light, scenery only. The snowmobile and rider become a
 separate animated asset later; the painting keeps open snow and a pair of tracks for it.
@@ -31,3 +31,27 @@ with nothing composited or corrected.
   on the tip of the lake's point at about (365, 183): a stump or rock at full size, invisible at page scale.
 - TEXT: 9 OCR FAIL words in 19 boxes (AN, SS, SSS, WH, WS, fff, the, ty, ve). All 19 inspected by eye: slope hatching,
   a distant row of small spruce and spruce branches. No text.
+
+## Approved, with three local touch-ups (2026-11-11)
+The client approved painting 5 and asked for three local corrections, made without any new generation or credits.
+The raw output above stays byte-identical; the corrected painting is a separate file.
+
+| File | What it is |
+|---|---|
+| `corrected/painting-5-final.png` | The painting to use: 6280 x 2688, RGB. |
+| `corrected/correct.py` | The script that makes it from the raw file. It checks the raw checksum before and after. |
+
+1. **Top edge.** The flat dark band (rows 0-67) is refilled with the painting's own sky from just below, mirrored, so the
+   paper grain carries on; a colour-only LAB offset then makes the top edge exactly H45 `#E4E3DC` (measured `#E4E3DC`,
+   dE 0.0), eased out by row 258 (30 reference px). Nothing painted is replaced.
+2. **The tiny upright mark** on the tip of the lake's point (about x 3140-3152, y 1562-1587) is removed. That short
+   stretch of shoreline is rebuilt from the clean columns on either side, following the line's own slope, so the shore
+   runs on unbroken.
+3. **Bottom edge.** A colour-only LAB offset makes the bottom edge exactly H56 `#3A4763` (measured `#3A4763`, dE 0.4;
+   the raw ended at `#333B56`): full strength from row 2610 down, eased in from row 2240.
+
+Checks: no pixel changed outside rows 0-257, the mark's box (x 3136-3156, y 1554-1595) and rows 2240 onwards; the raw
+checksum is unchanged; paper grain is unchanged (high-pass 1.003 raw, 1.015 final in the sky). In the page preview at
+1458 px, chapter 4's cloud now flows into chapter 5's sky with no line, and with a 290 minimum height the snowfield
+darkens into chapter 6's dusk blue with no band. TEXT: 20 OCR FAIL boxes, every one on pixels identical to the raw, all
+inspected by eye: hatching, distant spruce, branches and track lines. No text.
