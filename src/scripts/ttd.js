@@ -1,6 +1,7 @@
-/* Things To Do: review tools for Phase 1, plus small layout helpers.
+/* Things To Do: review tools, plus small layout helpers.
    ?slots  outlines every empty artwork slot with its code.
-   ?ref    lays the approved reference image over the page (?ref=0.4 sets opacity; a slider adjusts it). */
+   ?ref    lays the approved reference image over the page (?ref=0.4 sets opacity; a slider adjusts it).
+           It lines up with the hero; the chapters below now size to their content, so they drift from it. */
 (() => {
   const main = document.querySelector(".fg");
   if (!main) return;

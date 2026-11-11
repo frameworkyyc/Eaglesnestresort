@@ -1,12 +1,16 @@
 /* ==========================================================================
-   THINGS TO DO: field guide page (engraved hero + parchment chapters)
-   Desktop (>=1100px) reproduces the approved reference on a grid of reference
-   pixels: the reference is 729 px wide, so 1 ref px = --rp. Every --x/--y/--w/--h
-   in the markup is read straight off the reference. Below 1100px the page is
-   recomposed for phones, not scaled.
-   Colours: brand palette for everything coded. Chapters 1-3 sit on Painting A
-   (one engraved illustration, used exactly as generated); chapters 4-7 are plain
-   parchment joined by torn-paper edges until their illustrations exist.
+   THINGS TO DO: field guide page (engraved hero + seven layered chapters)
+   Desktop (>=1100px) keeps the approved reference's scale: the reference is 729 px wide,
+   so 1 ref px = --rp, and every size in rp scales with the page. Below 1100px the page is
+   recomposed for tablets and phones, not scaled.
+
+   The chapters (see the template's header comment):
+   - each is a section whose height comes from its content (no fixed heights)
+   - .fg-ground is its illustrated layer: a crop of Painting A (1-3) or parchment (4-7)
+   - each starts --in above the end of the previous one, sits on top of it and fades its ground in
+     over that overlap; its own content ends --out before its bottom, which is the next chapter's --in
+   - desktop motion: the grounds of chapters 2 and 3 (and the map pins on them) drift together about
+     4% slower than the page, photo prints lift about 1% faster. Scroll-driven CSS only.
    Namespaced .fg-* so it cannot touch the existing site.css components.
    ========================================================================== */
 @font-face{font-family:"Roboto Serif Cond";src:url(/assets/fonts/roboto-serif-cond.woff2) format("woff2");
@@ -19,58 +23,50 @@
   --label:"Oswald","Arial Narrow",Arial,sans-serif;
   --body:"Lora",Georgia,serif;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .16 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  /* stand-in for the G1 parchment texture: brand Parchment warmed toward the reference's paper */
-  --paper-tint:linear-gradient(rgba(176,136,78,.28),rgba(176,136,78,.28));
-  position:relative;display:block;overflow-x:clip;color:var(--ink);font-family:var(--body)}
+  --paperA:#F5E5D5;--mist:#E3D4C0;      /* Painting A's own paper and the mist at its foot, sampled from the art */
+  --tear:13px;                          /* the hero plate's torn top edge on tablets and phones */
+  /* isolation keeps the chapters' stacking inside the guide, so the footer ridge still rises over the last one */
+  position:relative;display:block;overflow-x:clip;isolation:isolate;color:var(--ink);font-family:var(--body)}
 .fg *,.fg *::before,.fg *::after{box-sizing:border-box}
-.fg-sec{padding:0}     /* neutralise site.css `section{}` padding (mobile rules below override) */
 .fg h1,.fg h2,.fg h3,.fg h4{max-width:none;letter-spacing:normal}
 .fg a{color:inherit}
 .fg :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
-/* ---------- sections & positioning ---------- */
-.fg-sec{position:relative;height:calc(var(--h)*var(--rp))}
+/* the hero keeps its own fixed proportion: it is the approved plate */
+.fg-sec{padding:0;position:relative;height:calc(var(--h)*var(--rp))}
 .fg-a{position:absolute;z-index:3;left:calc(var(--x)*var(--rp));top:calc(var(--y)*var(--rp));width:calc(var(--w)*var(--rp))}
-.fg-a[style*="--hh"]{height:calc(var(--hh)*var(--rp))}
-.fg-trail{position:absolute;z-index:2;left:0;top:0;width:100%;height:calc(1474*var(--rp));pointer-events:none;
-  fill:none;stroke:var(--gold);stroke-width:1.5;stroke-dasharray:3.2 4.2;stroke-linecap:round;opacity:.95}
+.fg-hero{z-index:1}
 
-/* grounds: one continuous field guide. Every chapter is parchment; the tones differ just enough
-   for the torn edge between two chapters to read, never enough to look like separate boxes. */
-.fg-paper{--tint:rgba(176,136,78,.28);--deckle:url(/assets/ttd/deckle-b.svg);
-  background-color:var(--paper);background-image:linear-gradient(var(--tint),var(--tint)),var(--grain)}
-.fg-mapsec{--tint:rgba(176,136,78,.22);--deckle:url(/assets/ttd/deckle-c.svg)}
-.fg-falls{--tint:rgba(162,140,88,.30);--deckle:url(/assets/ttd/deckle.svg)}
-.fg-trails{--tint:rgba(176,136,78,.25);--deckle:url(/assets/ttd/deckle-b.svg)}
-.fg-winter{--tint:rgba(160,150,134,.28);--deckle:url(/assets/ttd/deckle-c.svg)}
-.fg-night{--tint:rgba(150,120,82,.36);--deckle:url(/assets/ttd/deckle.svg)}
-.fg-close{--tint:rgba(176,136,78,.28);--deckle:url(/assets/ttd/deckle-b.svg)}
-/* the torn edge: each chapter's own paper tears up over the one above, with a faint shadow line */
-.fg-paper::before,.fg-paper::after{content:"";position:absolute;left:0;right:0;pointer-events:none;
-  height:var(--tear);-webkit-mask:var(--deckle) 0 0/100% 100% no-repeat;mask:var(--deckle) 0 0/100% 100% no-repeat}
-.fg-paper::before{z-index:1;top:calc(-1*var(--tear));background:inherit}
-.fg-paper::after{z-index:0;top:calc(-1*var(--tear) - 1.5px);background:rgba(84,64,34,.30)}
-.fg{--tear:calc(10*var(--rp))}
-
-/* ---------- Painting A: chapters 1-3 ---------- */
-/* desktop: one painting behind the three chapters, page y -25..704. Its top 25 reference px repeat the
-   hero's lake and fade into it, so the lake runs straight on. Sections carry no ground of their own. */
-.fg-painted{background:#F6E8D8}          /* the painting's own paper, for tablets and phones */
-.fg-art-a{position:absolute;z-index:0;left:0;top:calc((309 - 25)*var(--rp));width:calc(729*var(--rp));aspect-ratio:1;pointer-events:none;
-  -webkit-mask:linear-gradient(transparent,#000 calc(25*var(--rp)));mask:linear-gradient(transparent,#000 calc(25*var(--rp)))}
-.fg-art-a picture,.fg-art-a img{display:block;width:100%;height:100%;max-width:none}
-.fg-band,.fg-road{display:none}
-.fg-mapbase img{display:block;width:100%;height:100%;max-width:none}
-/* text over the painting: a soft paper halo where the ground is hatched, a dark one over the forest */
+/* ---------- the chapter ---------- */
+.fg-ch{position:relative;z-index:var(--z);background:none;color:inherit;
+  margin-top:calc(-1*var(--in,0px));padding:calc(var(--in,0px) + var(--pt,0px)) 0 calc(var(--out,0px) + var(--pb,0px))}
+/* its illustrated layer: ground colour plus crop, reaching --t past both edges where it drifts, and fading in
+   over the overlap with the chapter above */
+.fg-ground{--t:0px;position:absolute;inset:calc(-1*var(--t)) 0;z-index:0;pointer-events:none;background:var(--ground,var(--paperA));
+  -webkit-mask:linear-gradient(transparent var(--t),#000 calc(var(--t) + var(--in,0px)));mask:linear-gradient(transparent var(--t),#000 calc(var(--t) + var(--in,0px)))}
+.fg-ground picture{display:contents}
+.fg-ground img{position:absolute;left:0;top:var(--t);width:100%;height:auto;max-width:none}
+.fg-parch{--tint:rgba(176,136,78,.25)}
+.fg-parch .fg-ground{background-color:var(--paper);background-image:linear-gradient(var(--tint),var(--tint)),var(--grain)}
+.fg-ch5{--tint:rgba(160,150,134,.28)}       /* winter: a cooler paper */
+.fg-ch6{--tint:rgba(150,120,82,.36)}        /* after dark: a deeper one */
+.fg-ch7{--tint:rgba(176,136,78,.28)}
+.fg-c{position:relative;z-index:2}
+.fg-grp{position:relative;z-index:3}
+.fg-ch1{--z:2;--ground:var(--paperA)}
+.fg-ch2{--z:1;--ground:var(--paperA)}
+.fg-ch3{--z:2;--ground:var(--mist)}
+.fg-ch4{--z:4}.fg-ch5{--z:5}.fg-ch6{--z:6}.fg-ch7{--z:7}
+/* the trail: one segment per chapter down the margin, from this chapter's top to the top of the next one's overlap */
+.fg-trailseg{position:absolute;z-index:1;left:calc(31*var(--rp));width:calc(40*var(--rp));top:var(--trail-top,0px);
+  height:calc(100% - var(--trail-top,0px) - var(--out,0px));overflow:visible;pointer-events:none}
+.fg-trailseg path{fill:none;stroke:var(--gold);stroke-width:max(1.4px,calc(1.5*var(--rp)));stroke-dasharray:calc(3.2*var(--rp)) calc(4.2*var(--rp));stroke-linecap:round;opacity:.95}
+/* text over painted ground: a soft paper halo where the ground is hatched */
 .fg-halo,.fg-pins a,.fg-lakename,.fg-mapcap{text-shadow:0 0 calc(1.2*var(--rp)) rgba(246,232,216,.95),0 0 calc(3.5*var(--rp)) rgba(246,232,216,.9),0 0 calc(7*var(--rp)) rgba(246,232,216,.7)}
-.fg .fg-num{text-shadow:none}
 .fg-pins a,.fg-mapcap{text-shadow:0 0 1px rgba(246,232,216,1),0 0 calc(1.2*var(--rp)) rgba(246,232,216,.95),0 0 calc(3.5*var(--rp)) rgba(246,232,216,.9),0 0 calc(7*var(--rp)) rgba(246,232,216,.7)}
-@media (min-width:1100px){
-  .fg-painted{background:none}
-  .fg-mapbase{display:none}
-  .fg .fg-mapcap{color:var(--ink)}
-  .fg-falls>.fg-head,.fg-falls>.fg-p{color:var(--paper);text-shadow:0 0 calc(2*var(--rp)) rgba(14,26,18,.55),0 0 calc(6*var(--rp)) rgba(14,26,18,.45)}
-}
+.fg .fg-num{text-shadow:none}
+.fg-canoes{display:block}
+.fg-canoes .fg-icon{display:none}           /* empty until the canoe illustration (C1) exists */
 
 /* ---------- type ---------- */
 .fg-h1{margin:0;color:var(--ink)}
@@ -130,13 +126,11 @@
 .fg-print figcaption p{margin:calc(2.5*var(--rp)) 0 0;font:400 max(12px,calc(6*var(--rp)))/1.4 var(--body)}
 .fg-tocome{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#DCD3C1 0 6px,#E6DECD 6px 12px);
   font:500 max(10px,calc(5*var(--rp)))/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
-.fg-prints{display:contents}
+
 
 /* ---------- map ---------- */
-.fg-mapscroll{display:contents}
-.fg-map{margin:0;z-index:1}
+.fg-map{margin:0}
 .fg-mapbase,.fg-mapdraw{position:absolute;inset:0;width:100%;height:100%;max-width:none}
-.fg-road{fill:none;stroke:#7E6036;stroke-width:2.4;stroke-linecap:round}
 .fg-lakename{position:absolute;left:48.7%;top:56%;translate:-50% -50%;white-space:nowrap;
   font:italic 400 max(11px,calc(7.4*var(--rp)))/1 var(--body);letter-spacing:.32em;text-transform:uppercase;color:#203640}
 .fg-pins{list-style:none;margin:0;padding:0}
@@ -151,8 +145,8 @@
 .fg-lodgevig{width:calc(52*var(--rp));height:calc(38*var(--rp))}
 .fg-mapcap{position:absolute;left:50%;bottom:4%;translate:-50% 0;white-space:nowrap;
   font:italic 400 max(10px,calc(4.4*var(--rp)))/1 var(--body);color:#5A4A2E}
-.fg-compass{height:auto;overflow:visible}
-.fg-note{margin:0;background:#EADFC6;background-image:var(--grain);text-align:center;rotate:calc(var(--rot,0)*1deg);
+.fg-compass{position:absolute;left:calc(337/435*100%);top:calc(40/205*100%);width:calc(54*var(--rp));height:auto;overflow:visible}
+.fg-note{position:relative;margin:0;background:#EADFC6;background-image:var(--grain);text-align:center;rotate:calc(var(--rot,0)*1deg);
   padding:calc(17*var(--rp)) calc(10*var(--rp)) calc(8*var(--rp));box-shadow:0 calc(3*var(--rp)) calc(8*var(--rp)) rgba(22,30,24,.38)}
 .fg-notepin{position:absolute;left:50%;top:calc(-3*var(--rp));translate:-50% 0;width:calc(13*var(--rp));height:calc(13*var(--rp));border-radius:50%;
   background:radial-gradient(circle at 35% 32%,#6B6B66 0%,#25251f 70%);box-shadow:0 2px 3px rgba(0,0,0,.4)}
@@ -161,9 +155,6 @@
 .fg-notepines{height:calc(34*var(--rp));margin-top:calc(6*var(--rp))}
 
 /* ---------- close ---------- */
-/* the existing footer ridge rises into whatever sits above it (site.css .ridge), so the
-   last section carries that much extra paper below the reference's frame */
-.fg-close{height:calc(104*var(--rp) + clamp(58px,9vw,132px))}
 .fg-call,.fg-book{display:flex;flex-direction:column;justify-content:center;text-decoration:none;transition:background .2s}
 .fg-call{align-items:center;gap:calc(4*var(--rp));border:1.5px solid var(--ink);color:var(--ink)}
 .fg-call:hover{background:rgba(31,51,39,.06)}
@@ -181,38 +172,126 @@
 .fg-showslots .fg-slot::after{content:attr(data-art);position:absolute;left:3px;top:3px;font:600 9px/1 var(--label);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:rgba(243,238,225,.85);padding:2px 3px}
 .fg-refslider{position:fixed;z-index:10000;right:14px;bottom:14px;width:180px}
 
+
 /* ==========================================================================
-   PHONE & TABLET: recomposed, not scaled
+   DESKTOP (1100px and up): each chapter is a grid on the reference scale
+   ========================================================================== */
+@media (min-width:1100px){
+  .fg-mapbase{display:none}
+  .fg .fg-mapcap{color:var(--ink)}
+  .fg-c{display:grid;column-gap:calc(12*var(--rp));padding-right:calc(19*var(--rp))}
+  .fg-c>.fg-head{grid-area:head;justify-self:start;padding-left:calc(37*var(--rp))}
+  .fg-c>.fg-para{grid-area:para}
+
+  /* 1 · the dock: the crop starts on the hero's lake and does not move, so the lake runs straight on */
+  .fg-ch1{--in:calc(25*var(--rp));--pt:calc(76*var(--rp));--out:calc(30*var(--rp));--pb:calc(16*var(--rp));--trail-top:calc(115*var(--rp))}
+  .fg-ch1 .fg-ground img{-webkit-mask:linear-gradient(#000 calc(100% - 34*var(--rp)),transparent);mask:linear-gradient(#000 calc(100% - 34*var(--rp)),transparent)}
+  .fg-ch1 .fg-c{row-gap:calc(10*var(--rp));
+    grid-template-columns:calc(66*var(--rp)) calc(120*var(--rp)) calc(112*var(--rp)) calc(100*var(--rp)) calc(112*var(--rp)) calc(140*var(--rp));
+    grid-template-rows:auto 1fr auto;
+    grid-template-areas:"head head p1 fish p2 ." ". canoes p1 fish p2 birds" ". around around around around birds"}
+  .fg-canoes{grid-area:canoes}
+  .fg-p1{grid-area:p1;align-self:start;margin-top:calc(-22*var(--rp))}
+  .fg-fishing{grid-area:fish;align-self:start;margin-top:calc(-4*var(--rp))}
+  .fg-fishbox{width:auto}
+  .fg-p2{grid-area:p2;align-self:start;margin-top:calc(-22*var(--rp))}
+  .fg-birds{grid-area:birds;align-self:start;margin-top:calc(30*var(--rp))}    /* under the painted bird */
+  .fg-around{grid-area:around;margin-top:calc(8*var(--rp))}
+
+  /* 2 · the map: at least as tall as its crop, so the map ends before chapter 3 begins; the map sits over the
+     painted lake (page 175, 311; this crop starts at page 228) and moves with it */
+  .fg-ch2{--in:calc(30*var(--rp));--pt:calc(97*var(--rp));--out:calc(40*var(--rp));--pb:0px;min-height:calc(328*var(--rp))}
+  .fg-ch2 .fg-c{padding-right:calc(24*var(--rp));grid-template-columns:calc(66*var(--rp)) calc(96*var(--rp)) 1fr calc(120*var(--rp));
+    grid-template-rows:auto auto 1fr;grid-template-areas:"head head head note" ". para . note" ". . . note"}
+  .fg-ch2 .fg-para{margin-top:calc(8*var(--rp))}
+  .fg-note{grid-area:note;align-self:start;margin-top:calc(12*var(--rp))}
+  .fg-mapscroll{position:absolute;inset:0;pointer-events:none}
+  .fg-map{position:absolute;pointer-events:auto;left:calc(175*var(--rp));top:calc(83*var(--rp) - var(--in) - var(--pt));
+    width:calc(435*var(--rp));height:calc(205*var(--rp))}
+
+  /* 3 · waterfalls: light type over the forest */
+  .fg-ch3{--in:calc(40*var(--rp));--pt:calc(28*var(--rp));--out:calc(30*var(--rp));--pb:calc(12*var(--rp))}
+  .fg-ch3 .fg-ground img{-webkit-mask:linear-gradient(#000 calc(100% - 46*var(--rp)),transparent);mask:linear-gradient(#000 calc(100% - 46*var(--rp)),transparent)}
+  .fg-ch3 .fg-c{row-gap:calc(6*var(--rp));grid-template-columns:calc(66*var(--rp)) calc(120*var(--rp)) calc(125*var(--rp)) calc(135*var(--rp)) 1fr;
+    grid-template-rows:auto auto 1fr;grid-template-areas:"head head pa pb ." ". para pa pb ." ". . pa pb ."}
+  .fg-ch3 .fg-head,.fg-ch3 .fg-para{color:var(--paper);text-shadow:0 0 calc(2*var(--rp)) rgba(14,26,18,.55),0 0 calc(6*var(--rp)) rgba(14,26,18,.45)}
+  .fg-ch3 .fg-pa{margin-top:calc(-14*var(--rp))}
+  .fg-ch3 .fg-pb{margin-top:calc(-8*var(--rp));margin-left:calc(51*var(--rp))}
+
+  /* 4-7 · parchment chapters, each fading into the next */
+  .fg-ch4,.fg-ch5,.fg-ch6,.fg-ch7{--in:calc(30*var(--rp));--out:calc(30*var(--rp));--pt:calc(16*var(--rp));--pb:calc(22*var(--rp))}
+  .fg-prints{display:contents}
+  .fg-pa{grid-area:pa;align-self:start}.fg-pb{grid-area:pb;align-self:start}.fg-pc{grid-area:pc;align-self:start}
+  .fg-ch4 .fg-c{column-gap:calc(18*var(--rp));row-gap:calc(6*var(--rp));
+    grid-template-columns:calc(66*var(--rp)) calc(120*var(--rp)) calc(122*var(--rp)) calc(150*var(--rp)) calc(125*var(--rp)) 1fr;
+    grid-template-rows:auto auto 1fr;grid-template-areas:"head head pa pb pc ." ". para pa pb pc ." ". . pa pb pc ."}
+  .fg-ch4 .fg-pa{margin-top:calc(10*var(--rp))}.fg-ch4 .fg-pb{margin-top:calc(8*var(--rp))}.fg-ch4 .fg-pc{margin-top:calc(13*var(--rp))}
+  .fg-ch5 .fg-c{column-gap:calc(18*var(--rp));row-gap:calc(10*var(--rp));
+    grid-template-columns:calc(66*var(--rp)) calc(180*var(--rp)) calc(122*var(--rp)) calc(122*var(--rp)) calc(132*var(--rp)) 1fr;
+    grid-template-rows:auto auto 1fr;grid-template-areas:"head head pa pb pc ." ". para pa pb pc ." ". . pa pb pc ."}
+  .fg-ch5 .fg-pb{margin-top:calc(2*var(--rp))}
+  .fg-ch6 .fg-c{row-gap:calc(10*var(--rp));grid-template-columns:calc(66*var(--rp)) calc(110*var(--rp)) 1fr;grid-template-areas:"head head ." ". para ."}
+  .fg-ch6{--pb:calc(40*var(--rp))}
+  /* the footer ridge rises over the last chapter, so it carries that much extra ground */
+  .fg-ch7{--out:0px;--pb:calc(30*var(--rp) + clamp(58px,9vw,132px))}
+  .fg-ch7 .fg-trailseg{height:calc(var(--in) + var(--pt) + 14*var(--rp))}
+  .fg-ch7 .fg-c{column-gap:calc(18*var(--rp));row-gap:calc(8*var(--rp));
+    grid-template-columns:calc(66*var(--rp)) calc(245*var(--rp)) calc(93*var(--rp)) calc(144*var(--rp)) 1fr;
+    grid-template-areas:"head head call book ." ". para call book ."}
+  .fg-call{grid-area:call;align-self:center;height:calc(55*var(--rp))}
+  .fg-book{grid-area:book;align-self:center;height:calc(55*var(--rp))}
+
+  /* ---------- motion: scroll-driven, translate only, no script ---------- */
+  .fg-grp .fg-ground,.fg-map{--t:calc(18*var(--rp))}
+  .fg-print{--lift:calc(5*var(--rp))}
+}
+@media (min-width:1100px) and (max-width:1279px){
+  /* body text stops shrinking at 14px here: chapter 2's words move up and widen, clear of the waterfall */
+  .fg-ch2{--pt:calc(85*var(--rp))}
+  .fg-ch2 .fg-c{grid-template-columns:calc(66*var(--rp)) calc(120*var(--rp)) 1fr calc(120*var(--rp))}
+}
+@media (min-width:1100px) and (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:view()){
+    /* chapters 2 and 3 share one timeline, so the scenery they share stays registered across their overlap */
+    .fg-grp{view-timeline:--fg-grp block}
+    .fg-grp .fg-ground,.fg-map{animation:fg-drift linear both;animation-timeline:--fg-grp;animation-range:cover}
+    .fg-print{animation:fg-lift linear both;animation-timeline:view();animation-range:cover}
+  }
+}
+@keyframes fg-drift{from{translate:0 calc(var(--t)*-1)}to{translate:0 var(--t)}}
+@keyframes fg-lift{from{translate:0 var(--lift)}to{translate:0 calc(var(--lift)*-1)}}
+
+/* ==========================================================================
+   TABLET AND PHONE (below 1100px): recomposed. A band of the painting opens chapters 1-3;
+   the chapters overlap the same way; no motion.
    ========================================================================== */
 @media (max-width:1099px){
-  .fg-trail,.fg-margin,.fg-compass,.fg-close .fg-slot,.fg-falls>.fg-slot,.fg-night .fg-slot,.fg-winter>.fg-slot,.fg-trails>.fg-slot{display:none}
+  .fg-trailseg,.fg-compass{display:none}
   .fg-br{display:none}
-  .fg{--tear:13px}
-  .fg-sec{--pad:max(22px,env(safe-area-inset-left,0px));height:auto;display:grid;gap:26px;padding:60px var(--pad) 68px}
+  .fg-sec{height:auto}
   .fg-a{position:relative;left:auto;top:auto;width:auto;z-index:3}
-  .fg-a[style*="--hh"]{height:auto}
   .fg-h1-main{font-size:clamp(46px,13vw,72px)}
+  .fg-lede span{display:inline;white-space:normal}
+  .fg-lede{max-width:34ch}
+  .fg-ch{--pad:max(22px,env(safe-area-inset-left,0px));--in:28px;--out:28px;
+    padding:calc(var(--in) + var(--band,0px) + 30px) 0 calc(var(--out) + 56px)}
+  .fg-ground img{top:0}
+  .fg-c{display:grid;gap:26px;padding-inline:var(--pad)}
   .fg-num{width:42px;height:42px;font-size:22px;margin-top:0;box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 3.5px rgba(243,238,225,.92)}
   .fg-num-dark{box-shadow:inset 0 0 0 2px var(--deep),inset 0 0 0 3.5px rgba(243,238,225,.92)}
   .fg-head{gap:14px;align-items:center}
   .fg-head-tall{align-items:flex-start}
   .fg-p{max-width:38ch}
 
-  .fg-lede span{display:inline;white-space:normal}
-  .fg-lede{max-width:34ch}
-
-  /* Painting A on tablets and phones: a band of it opens each chapter, edge to edge.
-     The shore band continues the hero plate's own crop, so the lake runs on from the hero. */
-  .fg-art-a{display:none}
-  .fg-band{display:block;grid-column:1/-1;margin:-60px calc(-1*var(--pad)) 0}
-  .fg-band img{display:block;width:100%;height:auto}
-  .fg-band-shore{margin-top:-52px}
-  .fg-band-peaks{-webkit-mask:linear-gradient(#000 62%,transparent);mask:linear-gradient(#000 62%,transparent)}
-  .fg-band-moose{-webkit-mask:linear-gradient(transparent,#000 30%);mask:linear-gradient(transparent,#000 30%)}
+  /* the shore band continues the hero plate's own crop, so the lake runs on from the hero */
+  .fg-ch1{--in:0px;--band:calc(100vw*562/3085)}
+  .fg-ch2{--out:40px;--band:calc(100vw*534/4096)}
+  .fg-ch2 .fg-ground img{-webkit-mask:linear-gradient(#000 62%,transparent);mask:linear-gradient(#000 62%,transparent)}
+  .fg-ch3{--in:40px;--ground:var(--paperA);--band:calc(100vw*837/2410)}
+  .fg-ch3 .fg-ground img{-webkit-mask:linear-gradient(transparent,#000 30%);mask:linear-gradient(transparent,#000 30%)}
+  .fg-ch7{--out:0px;padding-bottom:calc(72px + clamp(58px,9vw,132px))}
 
   /* chapter 1 */
-  .fg-dock{padding-top:52px}
-  .fg-icon{width:58px;height:34px}
   .fg-fishing .fg-svgicon{width:18px;height:24px}
   .fg-binos{width:34px;height:26px}
   .fg-item{column-gap:14px}
@@ -227,10 +306,10 @@
   .fg-species{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
   .fg-species .fg-slot{width:64px;height:60px}
 
-  /* map: a pannable sheet */
-  .fg-mapscroll{display:block;overflow-x:auto;margin:0 -22px;padding:6px 22px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  /* map: the painted map, pannable */
+  .fg-mapscroll{display:block;overflow-x:auto;margin:0 calc(-1*var(--pad));padding:6px var(--pad) 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .fg-mapscroll::-webkit-scrollbar{display:none}
-  .fg-map.fg-a{width:640px;height:calc(640px*205/435)}
+  .fg-map{position:relative;width:640px;height:calc(640px*205/435)}
   .fg-mapbase{-webkit-mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(transparent,#000 8%,#000 92%,transparent);
     -webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
   .fg-pins a{font-size:12px;gap:4px}
@@ -242,23 +321,27 @@
   .fg-notepines{height:50px}
 
   /* swipeable print rows */
-  .fg-prints{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -22px;padding:14px 22px 26px;scrollbar-width:none}
+  .fg-prints{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1*var(--pad));padding:14px var(--pad) 26px;scrollbar-width:none}
   .fg-prints::-webkit-scrollbar{display:none}
   .fg-prints .fg-print{flex:0 0 min(70%,300px);width:auto;scroll-snap-align:center}
   .fg-center{text-align:left}
-  .fg-close{height:auto;padding-bottom:calc(72px + clamp(58px,9vw,132px))}
   .fg-h2-big{white-space:normal}
   .fg-call,.fg-book{min-height:66px;width:100%;max-width:420px}
   .fg-book{padding:14px 20px}
 }
 @media (min-width:700px) and (max-width:1099px){
-  .fg-sec{--pad:6vw;padding-left:var(--pad);padding-right:var(--pad)}
-  .fg-dock{grid-template-columns:1fr 1fr;align-items:start}
-  .fg-dock>.fg-head,.fg-dock>.fg-around{grid-column:1/-1}
+  .fg-ch{--pad:6vw}
+  .fg-ch1 .fg-c{grid-template-columns:1fr 1fr;align-items:start}
+  .fg-ch1 .fg-head,.fg-ch1 .fg-around{grid-column:1/-1}
   .fg-species{grid-template-columns:repeat(4,minmax(0,1fr))}
   .fg-prints .fg-print{flex-basis:min(42%,300px)}
-  .fg-close{grid-template-columns:1fr 1fr}
-  .fg-close>.fg-head,.fg-close>.fg-p{grid-column:1/-1}
+  .fg-ch7 .fg-c{grid-template-columns:1fr 1fr}
+  .fg-ch7 .fg-head,.fg-ch7 .fg-para{grid-column:1/-1}
+}
+@media (max-width:699px){
+  .fg-ch1{--band:calc(100vw*562/1966)}
+  .fg-ch2{--band:calc(100vw*562/2023)}
+  .fg-ch3{--band:calc(100vw*837/2023)}
 }
 @media (prefers-reduced-motion:reduce){.fg *{transition:none!important}}
 
@@ -276,20 +359,10 @@
 }
 @keyframes fg-rise{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
 
-@media (min-width:1100px){
-  /* the hero grew from Phase 1's 238 to 309 reference px */
-  .fg-trail{top:calc(85*var(--rp))}
-}
 @media (min-width:1100px) and (max-width:1279px){
   /* small laptops: the intro wraps in a narrower column so it stays on the sky, clear of the far shore and the boat */
   .fg-hero .fg-lede{width:calc(190*var(--rp))}
   .fg-hero .fg-lede span{display:inline;white-space:normal}
-  /* body text stops shrinking at 14px here, so a few blocks over Painting A get wider columns to keep their
-     length, and chapter 2 moves up clear of the waterfall */
-  .fg-canoes{--w:150!important}
-  .fg-birds{--w:172!important}
-  .fg-farther-head{--y:56!important}
-  .fg-farther-p{--x:36!important;--y:94!important;--w:128!important}
 }
 @media (min-width:1921px){
   /* very wide screens: the guide stops growing at 1920 px and sits centred, like a sheet on the table */

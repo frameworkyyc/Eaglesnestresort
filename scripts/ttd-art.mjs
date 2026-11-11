@@ -1,6 +1,6 @@
 // Things To Do, Painting A: responsive images cut from the raw master (no generation, no change to the art).
 // Run when the master changes:  node scripts/ttd-art.mjs
-// Writes src/ttd/art/, which Eleventy copies to /assets/ttd/art/.
+// Writes src/ttd/art/, which Eleventy copies to /assets/ttd/art/. Every chapter's ground comes from here.
 //
 // The master is 4096 x 4096 and covers 729 x 729 reference px: page x 0..729, page y -25..704
 // (page y 0 = the bottom of the hero). Its top 25 px continue the hero's lake.
@@ -22,8 +22,11 @@ const region = (x0, x1, y0, y1) => {
   return { left, top, width: Math.min(m.width, Math.round(x1 * s)) - left, height: Math.min(m.height, Math.round((y1 + 25) * s)) - top };
 };
 const cuts = {
-  // desktop: the whole painting behind chapters 1-3
-  "paint-a": { r: null, widths: [960, 1440, 1920, 2560, 3200] },
+  // desktop: one crop per chapter, at the hero's scale (full width = 729 reference px).
+  // Chapter 1 starts 25 px up, on the hero's own lake; crops overlap where the chapters do.
+  "ch1": { r: region(0, 729, -25, 250), widths: [1280, 1920, 2560, 3200] },
+  "ch2": { r: region(0, 729, 228, 556), widths: [1280, 1920, 2560, 3200] },
+  "ch3": { r: region(0, 729, 516, 704), widths: [1280, 1920, 2560, 3200] },
   // tablets and phones: bands matched to the hero's own crops (tablet hero shows x 165.6-714.6, phone hero x 379.1-729)
   "shore-tablet": { r: region(165.6, 714.6, 0, 100), widths: [900, 1400, 2000] },
   "shore-phone": { r: region(379.1, 729, 0, 100), widths: [480, 780, 1170] },
