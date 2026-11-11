@@ -1,0 +1,237 @@
+<title>Cinematic Chapters Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Roboto+Serif:opsz,wdth,wght@8..144,50..100,600..800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================================================
+   Things To Do, cinematic chapters: PROTOTYPE (chapters 4 and 5 only). Not part of the website.
+
+   How it works
+   - Each chapter is a full-screen scene. Its STAGE (the painting, cut into back / mid / front layers that
+     recombine into the exact approved painting at rest) is sticky: it stays pinned while the chapter's
+     content scrolls over it.
+   - Each chapter ends with a RUN of one screen. The next chapter overlaps that run (negative margin), so it
+     rises over the pinned painting: its back layer emerges out of mist at scroll speed, its mid layer
+     (forest, lake) rises faster and its foreground (near spruce, rock) fastest, and its sky fills in last.
+     Meanwhile the outgoing chapter's foreground lifts away faster than its background.
+   - Content never shares a moving layer: it scrolls normally, sits above the scenery and fades in only once
+     the new scene has settled. Animated assets (hiker, snowmobile) get slots inside the layer they stand on.
+   - Scroll-driven CSS animations (view timelines) on transform and opacity only: no scripts, no scroll-
+     jacking. Reduced motion, or a browser without scroll-driven animations, gets the same scenes stacked
+     statically with soft edges.
+   ===================================================================================================== */
+@font-face{font-family:"Roboto Serif Cond";src:url(fonts/roboto-serif-cond.woff2) format("woff2");
+  font-weight:500 800;font-stretch:50% 72%;font-display:swap}
+:root{
+  --ink:#1F3327; --paper:#F3EEE1; --print:#F2EADB; --gold:#C08E2E; --deep:#16261C; --soft:#4A6350;
+  --dusk:#3A4763; --mist4:#E3D3C0; --sky5:#E4E3DC; --guide:#D9622B;
+  --serif:"Roboto Serif Cond","Roboto Serif",Georgia,serif;
+  --label:"Oswald","Arial Narrow",Arial,sans-serif;
+  --body:"Lora",Georgia,serif;
+  --run:100svh;                /* scroll length of each takeover */
+  color-scheme:light;
+}
+html,body{margin:0;background:var(--mist4);color:var(--ink)}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+
+.journey{timeline-scope:--s4,--s5,--s6;overflow-x:clip}
+.scene{position:relative;z-index:var(--z)}
+.scene + .scene{margin-top:calc(-1*var(--run))}
+.s4{view-timeline:--s4 block}
+.s5{view-timeline:--s5 block}
+.s6{view-timeline:--s6 block}
+
+/* ---------- the stage: one painting, three layers, all sharing one box ---------- */
+.stage{position:sticky;top:0;height:100svh;overflow:hidden;container-type:size;z-index:0}
+.skygrp{position:absolute;inset:0}
+.sky{position:absolute;inset:0;background:linear-gradient(transparent,var(--top) 30cqh)}   /* soft top while it rises */
+.cap{position:absolute;inset:0 0 auto;height:31cqh;background:var(--top)}                /* solid once at rest */
+.ly{position:absolute;bottom:0;
+  --ph:max(calc(100cqw / var(--ar)), var(--pmin, 72cqh));     /* painting height: full width, or 72% of the screen */
+  --pw:calc(var(--ph) * var(--ar));
+  width:var(--pw);height:var(--ph);
+  left:clamp(calc(100cqw - var(--pw)), calc(50cqw - var(--fx) * var(--pw)), 0px);   /* centred on the chapter's focus */
+  will-change:transform;transform-origin:50% 100%}
+.ly img{display:block;width:100%;height:100%}
+.slot{position:absolute;left:calc(var(--sx)*100%);top:calc(var(--sy)*100%);width:calc(var(--sw)*100%);
+  height:calc(var(--sh)*100%);translate:-50% -100%;display:none}
+.dusk-edge{position:absolute;inset:0;background:linear-gradient(transparent,var(--dusk) 34cqh)}
+
+/* ---------- content: always above the scenery, never on a moving layer ---------- */
+.content{position:relative;z-index:3;min-height:100svh;margin-top:-100svh;
+  padding:13svh max(16px,env(safe-area-inset-right,0px),5.5vw) 8svh max(16px,env(safe-area-inset-left,0px),6vw);
+  display:grid;grid-template-columns:minmax(0,29fr) minmax(0,63fr);column-gap:4.5vw;align-content:start}
+.run{height:var(--run)}
+.s6 .run{display:none}
+
+.head{display:flex;align-items:flex-start;gap:14px}
+.num{flex:none;display:grid;place-items:center;width:clamp(36px,3.6vw,54px);aspect-ratio:1;border-radius:50%;margin-top:2px;
+  background:var(--gold);color:var(--paper);font:700 clamp(19px,1.9vw,28px)/1 var(--serif);font-stretch:60%;
+  box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 3.5px rgba(243,238,225,.92),0 1px 2px rgba(0,0,0,.25)}
+.num.dark{background:var(--deep);box-shadow:inset 0 0 0 2px var(--deep),inset 0 0 0 3.5px rgba(243,238,225,.92),0 1px 2px rgba(0,0,0,.3)}
+.kicker{margin:0 0 6px;font:500 clamp(12px,.82vw,14px)/1 var(--label);letter-spacing:.06em;text-transform:uppercase}
+h2{margin:0;font-family:var(--serif);font-weight:700;font-stretch:50%;font-size:clamp(34px,3.4vw,60px);
+  line-height:.96;letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance}
+.lede{margin:18px 0 0;max-width:30ch;font:400 clamp(15px,1.1vw,19px)/1.6 var(--body)}
+.prints{display:flex;gap:2.2vw;align-items:flex-start;justify-content:flex-end;padding-top:1svh}
+.print{margin:0;flex:1 1 0;max-width:15.5vw;padding:8px 8px 12px;background:var(--print);rotate:calc(var(--rot)*1deg);
+  box-shadow:0 4px 14px rgba(22,30,24,.42),0 0 0 1px rgba(70,55,30,.14)}
+.print img,.tocome{display:block;width:100%;height:clamp(140px,21svh,240px);object-fit:cover}
+.tocome{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#DCD3C1 0 6px,#E6DECD 6px 12px);
+  font:500 11px/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.print figcaption{padding-top:10px;text-align:center}
+.print h3{margin:0;font:700 clamp(15px,1.15vw,20px)/1.05 var(--serif);font-stretch:52%;text-transform:uppercase}
+.print p{margin:5px 0 0;font:400 clamp(12px,.82vw,14px)/1.4 var(--body)}
+.end-c{display:grid;place-items:center;align-content:center;text-align:center;color:#E9E6F0}
+.end-c p{margin:0;font:500 13px/1.6 var(--label);letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+
+/* ---------- prototype controls ---------- */
+.bar{position:fixed;z-index:20;left:max(12px,env(safe-area-inset-left,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;gap:10px;padding:7px 8px 7px 12px;border-radius:999px;background:rgba(22,38,28,.82);color:#F3EEE1;
+  font:500 12px/1 var(--label);letter-spacing:.08em;text-transform:uppercase}
+.bar button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:rgba(243,238,225,.14);
+  border:1px solid rgba(243,238,225,.35);border-radius:999px;padding:6px 10px;cursor:pointer}
+.bar button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.guides .ly{outline:2px dashed var(--guide);outline-offset:-2px}
+.guides .ly::after{content:attr(data-name);position:absolute;left:12px;bottom:calc(100% - 26px);font:600 11px/1 var(--label);
+  letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--guide);padding:4px 6px}
+.guides .ly.mid::after{left:auto;right:12px}
+.guides .ly.peaks::after{left:40%}
+.guides .ly.front::after{bottom:auto;top:auto;left:45%;bottom:20px}
+.guides .slot{display:block;border:2px dashed #fff;background:rgba(217,98,43,.35)}
+.guides .slot::after{content:attr(data-label);position:absolute;left:50%;top:-22px;translate:-50% 0;white-space:nowrap;
+  font:600 10px/1 var(--label);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--guide);padding:3px 5px}
+
+/* ---------- phones: same journey, recomposed ---------- */
+@media (max-width:760px){
+  :root{--run:85svh}
+  .ly{--pmin:80cqh}
+  .content{display:flex;flex-direction:column;gap:20px;padding:9svh 0 6svh}
+  .text{margin:0 16px;padding:16px 18px 18px;background:rgba(243,238,225,.9);box-shadow:0 2px 10px rgba(22,30,24,.18)}
+  .lede{margin-top:12px}
+  .prints{justify-content:flex-start;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 16px;scrollbar-width:none}
+  .print{flex:0 0 58vw;max-width:none;scroll-snap-align:center}
+  .print img,.tocome{height:22svh}
+}
+
+/* ---------- the motion (only where scroll-driven animations exist, and motion is welcome) ---------- */
+@keyframes sky-in{from{opacity:0}to{opacity:1}}
+@keyframes content-in{from{opacity:0;translate:0 4svh}to{opacity:1;translate:0 0}}
+@keyframes rise-peaks{from{translate:0 4cqh}to{translate:0 0}}
+@keyframes rise-mid{from{translate:0 16cqh}to{translate:0 0}}
+@keyframes rise-front{from{translate:0 34cqh}to{translate:0 0}}
+@keyframes lift-back{to{transform:scale(1.04)}}
+@keyframes lift-peaks{to{transform:translateY(-3cqh)}}
+@keyframes lift-mid{to{transform:translateY(-9cqh)}}
+@keyframes lift-front{to{transform:translateY(-24cqh)}}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    /* chapter 5 rises over chapter 4: its far peaks first, then forest and lake, then the near spruce;
+       its sky fills in behind the ridges, soft-topped while moving and solid once settled */
+    .s5 .skygrp{animation:sky-in linear both;animation-timeline:--s5;animation-range:entry 40% entry 90%}
+    .s5 .cap{animation:sky-in linear both;animation-timeline:--s5;animation-range:entry 88% entry 100%}
+    .s5 .content{animation:content-in linear both;animation-timeline:--s5;animation-range:entry 72% entry 100%}
+    .s5 .back{animation:lift-back linear both;animation-timeline:--s6;animation-range:entry 0% entry 100%}
+    .s5 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
+    .s5 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
+    .s5 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
+    /* chapter 4's own layers part as it is overtaken: the nearer, the faster */
+    .s4 .back{animation:lift-back linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
+    .s4 .peaks{animation:lift-peaks linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
+    .s4 .mid{animation:lift-mid linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
+    .s4 .front{animation:lift-front linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
+    /* the dusk that chapter 6 will start from */
+    .s6 .skygrp{animation:sky-in linear both;animation-timeline:--s6;animation-range:entry 30% entry 90%}
+    .s6 .cap{animation:sky-in linear both;animation-timeline:--s6;animation-range:entry 88% entry 100%}
+    .s6 .content{animation:content-in linear both;animation-timeline:--s6;animation-range:entry 70% entry 100%}
+  }
+}
+/* without the motion: the same scenes stacked, each fading in over the last */
+@media (prefers-reduced-motion:reduce){
+  :root{--run:14svh}
+  .stage{position:absolute;inset:0;height:auto;min-height:100svh;
+    -webkit-mask:linear-gradient(transparent,#000 var(--run));mask:linear-gradient(transparent,#000 var(--run))}
+  .s4 .stage{-webkit-mask:none;mask:none}
+  .content{margin-top:0;padding-top:calc(13svh + var(--run))}
+  .s4 .content{padding-top:13svh}
+  .run{display:none}
+}
+@supports not (animation-timeline:view()){
+  :root{--run:14svh}
+  .stage{position:absolute;inset:0;height:auto;min-height:100svh;
+    -webkit-mask:linear-gradient(transparent,#000 var(--run));mask:linear-gradient(transparent,#000 var(--run))}
+  .s4 .stage{-webkit-mask:none;mask:none}
+  .content{margin-top:0;padding-top:calc(13svh + var(--run))}
+  .s4 .content{padding-top:13svh}
+  .run{display:none}
+}
+</style>
+
+<main class="journey">
+
+  <!-- 4 · Find a trail -->
+  <section class="scene s4" id="trail" aria-labelledby="h-trail" style="--z:1;--top:var(--mist4)">
+    <div class="stage" aria-hidden="true" style="--ar:2.8413;--fx:.43">
+      <div class="skygrp"><div class="sky"></div><div class="cap"></div>
+        <div class="ly back" data-name="back · sky"><img src="layers/p4-back-2560.webp" srcset="layers/p4-back-1440.webp 1440w, layers/p4-back-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async"></div></div>
+      <div class="ly peaks" data-name="far ranges"><img src="layers/p4-peaks-2560.webp" srcset="layers/p4-peaks-1440.webp 1440w, layers/p4-peaks-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async"></div>
+      <div class="ly mid" data-name="mid · forested mountain, cliffs"><img src="layers/p4-mid-2560.webp" srcset="layers/p4-mid-1440.webp 1440w, layers/p4-mid-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async"></div>
+      <div class="ly front" data-name="front · outcrop and cloud"><img src="layers/p4-front-2560.webp" srcset="layers/p4-front-1440.webp 1440w, layers/p4-front-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async">
+        <div class="slot" data-label="Hiker asset" style="--sx:.165;--sy:.648;--sw:.05;--sh:.22"></div></div>
+    </div>
+    <div class="content">
+      <div class="text">
+        <div class="head"><span class="num" aria-hidden="true">4</span><h2 id="h-trail">Find a trail</h2></div>
+        <p class="lede">Hike through forests, valleys and alpine country. Adventure in every direction.</p>
+      </div>
+      <div class="prints">
+        <figure class="print" style="--rot:-2"><img src="photos/rainbow-range.webp" alt="The Rainbow Range at evening, its volcanic slopes streaked orange, gold and rust." width="640" height="542"><figcaption><h3>The Rainbow Range</h3></figcaption></figure>
+        <figure class="print" style="--rot:-1"><img src="photos/beef-trail.webp" alt="A rock canyon on the Beef Trail, still green water running between shelves of stone." width="640" height="984"><figcaption><h3>The Beef Trail</h3></figcaption></figure>
+        <figure class="print" style="--rot:1.5"><img src="photos/lake-out-front.webp" alt="Anahim Lake from the shore at Eagle's Nest Resort, spruce on the point and the far shore beyond." width="640" height="426"><figcaption><h3>Ask about local trails</h3></figcaption></figure>
+      </div>
+    </div>
+    <div class="run" aria-hidden="true"></div>
+  </section>
+
+  <!-- 5 · Winter -->
+  <section class="scene s5" id="winter" aria-labelledby="h-winter" style="--z:2;--top:var(--sky5)">
+    <div class="stage" aria-hidden="true" style="--ar:2.3363;--fx:.36">
+      <div class="skygrp"><div class="sky"></div><div class="cap"></div>
+        <div class="ly back" data-name="back · sky"><img src="layers/p5-back-2560.webp" srcset="layers/p5-back-1440.webp 1440w, layers/p5-back-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async"></div></div>
+      <div class="ly peaks" data-name="snowy peaks"><img src="layers/p5-peaks-2560.webp" srcset="layers/p5-peaks-1440.webp 1440w, layers/p5-peaks-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async"></div>
+      <div class="ly mid" data-name="mid · forest, lake, snowfield"><img src="layers/p5-mid-2560.webp" srcset="layers/p5-mid-1440.webp 1440w, layers/p5-mid-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async">
+        <div class="slot" data-label="Snowmobile asset" style="--sx:.29;--sy:.74;--sw:.075;--sh:.12"></div></div>
+      <div class="ly front" data-name="front · near spruce"><img src="layers/p5-front-2560.webp" srcset="layers/p5-front-1440.webp 1440w, layers/p5-front-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async"></div>
+    </div>
+    <div class="content">
+      <div class="text">
+        <div class="head"><span class="num dark" aria-hidden="true">5</span>
+          <div><p class="kicker">When the lake freezes&hellip;</p><h2 id="h-winter">Winter doesn&rsquo;t shut the place down.</h2></div></div>
+        <p class="lede">A whole new way to experience Anahim Lake and the Chilcotin.</p>
+      </div>
+      <div class="prints">
+        <figure class="print" style="--rot:-1.5"><div class="tocome" role="img" aria-label="Snowmobile photograph to come"><span>Photo to come</span></div><figcaption><h3>Snowmobile</h3><p>Miles of backcountry once the snow is down.</p></figcaption></figure>
+        <figure class="print" style="--rot:.5"><img src="photos/winter-lodge.webp" alt="The lodge seen across the frozen lake in winter, a line of footprints crossing the snow." width="640" height="382"><figcaption><h3>Ice fish</h3><p>Drill a hole, set up and wait it out. Check the ice before you walk on it.</p></figcaption></figure>
+        <figure class="print" style="--rot:1.5"><img src="photos/winter-lake.webp" alt="The lodge and its stone garden walls under deep snow, smoke rising from the chimney and the frozen lake beyond." width="640" height="404"><figcaption><h3>Skate the lake</h3><p>When conditions permit, there&rsquo;s nothing quite like skating out on a frozen lake.</p></figcaption></figure>
+      </div>
+    </div>
+    <div class="run" aria-hidden="true"></div>
+  </section>
+
+  <!-- the dusk chapter 6 will start from (its painting doesn't exist yet) -->
+  <section class="scene s6" style="--z:3;--top:var(--dusk)">
+    <div class="stage" aria-hidden="true"><div class="skygrp"><div class="sky"></div><div class="cap"></div></div><div class="dusk-edge"></div></div>
+    <div class="content end-c"><p>End of prototype · chapter 6 begins in this dusk blue</p></div>
+  </section>
+</main>
+
+<div class="bar"><span>Prototype · chapters 4–5</span><button type="button" id="guides" aria-pressed="false">Show layers</button></div>
+<script>
+  const b = document.getElementById('guides');
+  b.addEventListener('click', () => {
+    const on = document.documentElement.classList.toggle('guides');
+    b.setAttribute('aria-pressed', on); b.textContent = on ? 'Hide layers' : 'Show layers';
+  });
+</script>
