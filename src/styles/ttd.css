@@ -4,8 +4,9 @@
    pixels: the reference is 729 px wide, so 1 ref px = --rp. Every --x/--y/--w/--h
    in the markup is read straight off the reference. Below 1100px the page is
    recomposed for phones, not scaled.
-   Colours: brand palette for everything coded. Until each chapter's engraved
-   illustration exists, chapters are plain parchment joined by torn-paper edges.
+   Colours: brand palette for everything coded. Chapters 1-3 sit on Painting A
+   (one engraved illustration, used exactly as generated); chapters 4-7 are plain
+   parchment joined by torn-paper edges until their illustrations exist.
    Namespaced .fg-* so it cannot touch the existing site.css components.
    ========================================================================== */
 @font-face{font-family:"Roboto Serif Cond";src:url(/assets/fonts/roboto-serif-cond.woff2) format("woff2");
@@ -50,6 +51,26 @@
 .fg-paper::before{z-index:1;top:calc(-1*var(--tear));background:inherit}
 .fg-paper::after{z-index:0;top:calc(-1*var(--tear) - 1.5px);background:rgba(84,64,34,.30)}
 .fg{--tear:calc(10*var(--rp))}
+
+/* ---------- Painting A: chapters 1-3 ---------- */
+/* desktop: one painting behind the three chapters, page y -25..704. Its top 25 reference px repeat the
+   hero's lake and fade into it, so the lake runs straight on. Sections carry no ground of their own. */
+.fg-painted{background:#F6E8D8}          /* the painting's own paper, for tablets and phones */
+.fg-art-a{position:absolute;z-index:0;left:0;top:calc((309 - 25)*var(--rp));width:calc(729*var(--rp));aspect-ratio:1;pointer-events:none;
+  -webkit-mask:linear-gradient(transparent,#000 calc(25*var(--rp)));mask:linear-gradient(transparent,#000 calc(25*var(--rp)))}
+.fg-art-a picture,.fg-art-a img{display:block;width:100%;height:100%;max-width:none}
+.fg-band,.fg-road{display:none}
+.fg-mapbase img{display:block;width:100%;height:100%;max-width:none}
+/* text over the painting: a soft paper halo where the ground is hatched, a dark one over the forest */
+.fg-halo,.fg-pins a,.fg-lakename,.fg-mapcap{text-shadow:0 0 calc(1.2*var(--rp)) rgba(246,232,216,.95),0 0 calc(3.5*var(--rp)) rgba(246,232,216,.9),0 0 calc(7*var(--rp)) rgba(246,232,216,.7)}
+.fg .fg-num{text-shadow:none}
+.fg-pins a,.fg-mapcap{text-shadow:0 0 1px rgba(246,232,216,1),0 0 calc(1.2*var(--rp)) rgba(246,232,216,.95),0 0 calc(3.5*var(--rp)) rgba(246,232,216,.9),0 0 calc(7*var(--rp)) rgba(246,232,216,.7)}
+@media (min-width:1100px){
+  .fg-painted{background:none}
+  .fg-mapbase{display:none}
+  .fg .fg-mapcap{color:var(--ink)}
+  .fg-falls>.fg-head,.fg-falls>.fg-p{color:var(--paper);text-shadow:0 0 calc(2*var(--rp)) rgba(14,26,18,.55),0 0 calc(6*var(--rp)) rgba(14,26,18,.45)}
+}
 
 /* ---------- type ---------- */
 .fg-h1{margin:0;color:var(--ink)}
@@ -167,7 +188,7 @@
   .fg-trail,.fg-margin,.fg-compass,.fg-close .fg-slot,.fg-falls>.fg-slot,.fg-night .fg-slot,.fg-winter>.fg-slot,.fg-trails>.fg-slot{display:none}
   .fg-br{display:none}
   .fg{--tear:13px}
-  .fg-sec{height:auto;display:grid;gap:26px;padding:60px max(22px,env(safe-area-inset-left,0px)) 68px}
+  .fg-sec{--pad:max(22px,env(safe-area-inset-left,0px));height:auto;display:grid;gap:26px;padding:60px var(--pad) 68px}
   .fg-a{position:relative;left:auto;top:auto;width:auto;z-index:3}
   .fg-a[style*="--hh"]{height:auto}
   .fg-h1-main{font-size:clamp(46px,13vw,72px)}
@@ -179,6 +200,15 @@
 
   .fg-lede span{display:inline;white-space:normal}
   .fg-lede{max-width:34ch}
+
+  /* Painting A on tablets and phones: a band of it opens each chapter, edge to edge.
+     The shore band continues the hero plate's own crop, so the lake runs on from the hero. */
+  .fg-art-a{display:none}
+  .fg-band{display:block;grid-column:1/-1;margin:-60px calc(-1*var(--pad)) 0}
+  .fg-band img{display:block;width:100%;height:auto}
+  .fg-band-shore{margin-top:-52px}
+  .fg-band-peaks{-webkit-mask:linear-gradient(#000 62%,transparent);mask:linear-gradient(#000 62%,transparent)}
+  .fg-band-moose{-webkit-mask:linear-gradient(transparent,#000 30%);mask:linear-gradient(transparent,#000 30%)}
 
   /* chapter 1 */
   .fg-dock{padding-top:52px}
@@ -200,7 +230,9 @@
   /* map: a pannable sheet */
   .fg-mapscroll{display:block;overflow-x:auto;margin:0 -22px;padding:6px 22px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .fg-mapscroll::-webkit-scrollbar{display:none}
-  .fg-map.fg-a{width:640px;height:309px}
+  .fg-map.fg-a{width:640px;height:calc(640px*205/435)}
+  .fg-mapbase{-webkit-mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(transparent,#000 8%,#000 92%,transparent);
+    -webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
   .fg-pins a{font-size:12px;gap:4px}
   .fg-pin{width:9px;height:9px}
   .fg-lodgevig{width:64px;height:46px}
@@ -220,7 +252,7 @@
   .fg-book{padding:14px 20px}
 }
 @media (min-width:700px) and (max-width:1099px){
-  .fg-sec{padding-left:6vw;padding-right:6vw}
+  .fg-sec{--pad:6vw;padding-left:var(--pad);padding-right:var(--pad)}
   .fg-dock{grid-template-columns:1fr 1fr;align-items:start}
   .fg-dock>.fg-head,.fg-dock>.fg-around{grid-column:1/-1}
   .fg-species{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -245,14 +277,19 @@
 @keyframes fg-rise{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
 
 @media (min-width:1100px){
-  /* the hero grew from Phase 1's 238 to 309 reference px and chapter 1 moved 14 px clear of the torn edge */
+  /* the hero grew from Phase 1's 238 to 309 reference px */
   .fg-trail{top:calc(85*var(--rp))}
-  .fg-dock>.fg-a{translate:0 calc(14*var(--rp))}
 }
 @media (min-width:1100px) and (max-width:1279px){
   /* small laptops: the intro wraps in a narrower column so it stays on the sky, clear of the far shore and the boat */
   .fg-hero .fg-lede{width:calc(190*var(--rp))}
   .fg-hero .fg-lede span{display:inline;white-space:normal}
+  /* body text stops shrinking at 14px here, so a few blocks over Painting A get wider columns to keep their
+     length, and chapter 2 moves up clear of the waterfall */
+  .fg-canoes{--w:150!important}
+  .fg-birds{--w:172!important}
+  .fg-farther-head{--y:56!important}
+  .fg-farther-p{--x:36!important;--y:94!important;--w:128!important}
 }
 @media (min-width:1921px){
   /* very wide screens: the guide stops growing at 1920 px and sits centred, like a sheet on the table */
