@@ -30,7 +30,7 @@ only the stage (the layered painting) and the motion are new.
 
 | Path | What it is |
 |---|---|
-| `cut-layers.py` | Cuts the layers: `python3 art-masters/things-to-do/cinematic-prototype/cut-layers.py a1 a2 a3 p4 p5` from the repository root. `a1`-`a3` are Painting A's bands for chapters 1-3, `p4` and `p5` the approved paintings 4 and 5. Writes `work/` (full PNG layers and review sheets) and `prototype/layers/`. Prints each band's at-rest recombination error (0.0-0.69 levels out of 255). |
+| `cut-layers.py` | Cuts the layers: `python3 art-masters/things-to-do/cinematic-prototype/cut-layers.py a1 a2 p3 p4 p5` from the repository root. `a1` and `a2` are Painting A's bands for chapters 1 and 2 (`a3`, its old chapter 3 band, can still be cut for reference), `p3`-`p5` the approved paintings 3, 4 and 5. Writes `work/` (full PNG layers and review sheets) and `prototype/layers/`. Prints each band's at-rest recombination error (0.0-0.69 levels out of 255). |
 | `guides.json` | The hand guide lines, boxes and cut-out rules for each band's seams and layers. |
 | `build-prototype.py` | Assembles `prototype/index.html` from `public/things-to-do.html` (run `npm run build` first if `src/` changed) and `prototype-template.html`, and copies the site assets it uses into `prototype/assets/`. Never writes to `public/` or `src/`. |
 | `prototype-template.html` | The stage, motion and fallback rules around the site's content. |
@@ -38,3 +38,12 @@ only the stage (the layered painting) and the motion are new.
 | `capture/` | Playwright scripts (`.cjs`, because the repository is an ES module package): `rest.cjs` (each chapter at rest and each transition's midpoint), `journey.cjs` (the complete scroll, frame by frame), and the earlier `stills.cjs`, `rec.cjs`, `frames.cjs`. They expect the prototype served at `http://127.0.0.1:8771/local.html`, a copy of `index.html` with a `<!doctype html>` head added. |
 
 Nothing here is part of the website: Eleventy reads `src/`, the Worker serves `public/`.
+
+## Chapter 3: painting 3 (2026-11-12)
+Chapter 3 now uses the approved painting 3 (`painting-3/round-1/corrected/painting-3-final.png`) instead of Painting
+A's forest band: four layers (sky; the pale far treelines; the misty middle forest; the tall near spruce, cut out),
+the same motion as chapters 4 and 5, its sky the painting's parchment `#F2DFCC`. For this painting the layers beneath
+the near trees are filled to the trees' full outline (`cover` 0.4 in guides.json) so no tree-shaped outlines show while
+the layers part; at rest 0.42% of pixels, all on tree edges, differ by more than 8 levels. Painting A's chapter 3 band
+(`a3`) is no longer used. Tablets and phones now take each chapter's own crop (the inline value became `--fxd`, so the
+media rules can override it). `capture/transitions.cjs` records the chapter 2 -> 3 -> 4 scroll.

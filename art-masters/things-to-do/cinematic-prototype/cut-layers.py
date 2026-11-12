@@ -8,8 +8,8 @@ Each painting is cut into four layers that recombine into the exact painting at 
 Seams are dynamic-programming paths that snap to the painting's own edges inside a band around a hand guide line
 (guides.json). Hidden areas behind each layer get a soft mist fill, seen only while the layers move apart.
 
-Run from the repository root:  python3 art-masters/things-to-do/cinematic-prototype/cut-layers.py a1 a2 a3 p4 p5
-(a1-a3 are Painting A's bands for chapters 1-3; p4, p5 the approved paintings 4 and 5)
+Run from the repository root:  python3 art-masters/things-to-do/cinematic-prototype/cut-layers.py a1 a2 p3 p4 p5
+(a1-a3 are Painting A's bands for chapters 1-2 (a3 is kept for reference); p3, p4, p5 the approved paintings 3, 4 and 5)
 Reads the approved finals in art-masters/, writes work/ (full PNG layers and review sheets, not committed) and
 prototype/layers/ (the WebP files the prototype loads).
 """
@@ -17,7 +17,8 @@ import sys, os, json, numpy as np, cv2
 from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 W = HERE + '/'
-FINALS = {'p4': 'art-masters/things-to-do/painting-4/round-1/corrected/painting-4-final.png',
+FINALS = {'p3': 'art-masters/things-to-do/painting-3/round-1/corrected/painting-3-final.png',
+          'p4': 'art-masters/things-to-do/painting-4/round-1/corrected/painting-4-final.png',
           'p5': 'art-masters/things-to-do/painting-5/round-1/corrected/painting-5-final.png'}
 
 PAINTING_A = 'art-masters/things-to-do/painting-a/round-1/painting-a-raw-nano-banana-2-1.png'
@@ -235,19 +236,23 @@ def build_general(name, s):
         names.append(L['name']); alphas.append(a.astype(np.float32))
     mist = np.array(s['mist'][::-1], np.float32)
     layers = []
+    ct = s.get('cover', 0.99)                # how opaque a layer above must be for the area beneath it to count as hidden
     for i in range(len(alphas)):
-        core = [cv2.erode((alphas[j] > 0.99).astype(np.uint8), np.ones((5, 5), np.uint8)) for j in range(i + 1, len(alphas))]
+        if ct >= 0.99: core = [cv2.erode((alphas[j] > 0.99).astype(np.uint8), np.ones((5, 5), np.uint8)) for j in range(i + 1, len(alphas))]
+        else: core = [cv2.dilate((alphas[j] > ct).astype(np.uint8), np.ones((3, 3), np.uint8)) for j in range(i + 1, len(alphas))]
         cov = np.maximum.reduce(core).astype(np.float32) if core else np.zeros((H, Wd), np.float32)
         vis = (alphas[i] > 0.5) & (cov < 0.5)
         fill = cv2.GaussianBlur(pushpull(img, vis), (0, 0), 22)
         dist = cv2.distanceTransform((cov > 0.5).astype(np.uint8), cv2.DIST_L2, 5)
-        tt = np.clip(dist / 40, 0, 1); tt = (tt * tt * (3 - 2 * tt))[..., None]
+        tt = np.clip(dist / s.get('mist_dist', 40), 0, 1); tt = (tt * tt * (3 - 2 * tt))[..., None]
         fill = fill * (1 - tt) + mist * tt
         layers.append(img * (1 - cov[..., None]) + fill * cov[..., None])
     comp = img.copy()                          # where no layer covers, the stage sky shows instead (not compared)
     for i in range(len(layers)): comp = layers[i] * alphas[i][..., None] + comp * (1 - alphas[i][..., None])
     covered = np.maximum.reduce(alphas) > 0.99
-    print(name, 'recombined at rest: max error', round(float(np.abs(comp - img)[covered].max()), 2),
+    err = np.abs(comp - img).max(2)[covered]
+    print(name, 'recombined at rest: max error', round(float(err.max()), 2), '| mean', round(float(err.mean()), 3),
+          '| pixels off by more than 8 levels: %.3f%%' % (100 * (err > 8).mean()),
           '| layers', names)
     def checker(rgba):
         h, w = rgba.shape[:2]; c = ((np.indices((h, w)).sum(0) // 24) % 2 * 40 + 200).astype(np.float32)[..., None]

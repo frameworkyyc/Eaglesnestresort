@@ -38,14 +38,14 @@ chapters = {n: block(f'<section class="fg-ch fg-ch{n}', 'section') for n in rang
 STAGES = {  # aspect of the layer images, focal x, sky colour, layer names (back to front)
     1: dict(art='a1', ar=2560 / 966, fx=.5, sky='#F6E5D5', layers=['back', 'front']),
     2: dict(art='a2', ar=2560 / 1061, fx=.5, sky='#F4E3D2', layers=['back', 'peaks', 'mid', 'front']),
-    3: dict(art='a3', ar=2560 / 962, fx=.55, sky='#E4E3D8', layers=['peaks', 'front']),
+    3: dict(art='p3', ar=2560 / 1440, fx=.5, sky='#F2DFCC', layers=['back', 'peaks', 'mid', 'front']),
     4: dict(art='p4', ar=2560 / 901, fx=.43, sky='#E3D3C0', layers=['back', 'peaks', 'mid', 'front']),
     5: dict(art='p5', ar=2560 / 1096, fx=.36, sky='#E4E3DC', layers=['back', 'peaks', 'mid', 'front']),
 }
 LABELS = {
     1: ['back · parchment', 'front · the shore'],
     2: ['back · sky', 'peaks · snowy range', 'mid · the valley map', 'front · near spruce'],
-    3: ['far · misty forest', 'front · near spruce and the moose'],
+    3: ['back · sky', 'far · pale treelines', 'mid · misty forest', 'front · tall spruce'],
     4: ['back · sky', 'peaks · far ranges', 'mid · forested mountain', 'front · outcrop'],
     5: ['back · sky', 'peaks · snowy peaks', 'mid · forest, lake, snowfield', 'front · near spruce'],
 }
@@ -53,7 +53,7 @@ SLOTS = {(4, 'front'): '<div class="slot" data-label="Hiker asset" style="--sx:.
          (5, 'mid'): '<div class="slot" data-label="Snowmobile asset" style="--sx:.29;--sy:.74;--sw:.075;--sh:.12"></div>'}
 
 def stage(n, extra_mid=''):
-    s = STAGES[n]; out = [f'<div class="stage" style="--ar:{s["ar"]:.4f};--fx:{s["fx"]};--top:{s["sky"]}">']
+    s = STAGES[n]; out = [f'<div class="stage" style="--ar:{s["ar"]:.4f};--fxd:{s["fx"]};--top:{s["sky"]}">']
     out.append('<div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>')
     for nm, lab in zip(s['layers'], LABELS[n]):
         img = (f'<img src="layers/{s["art"]}-{nm}-2560.webp" srcset="layers/{s["art"]}-{nm}-1440.webp 1440w, '

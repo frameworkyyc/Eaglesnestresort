@@ -30,7 +30,7 @@ img{max-width:100%;display:block;height:auto}            /* the site's own base 
 .s5{view-timeline:--s5 block}.s6{view-timeline:--s6 block}
 
 /* ---------- the stage: one painting in depth layers, all sharing one box ---------- */
-.stage{position:sticky;top:0;height:100svh;overflow:hidden;container-type:size;z-index:0}
+.stage{position:sticky;top:0;height:100svh;overflow:hidden;container-type:size;z-index:0;--fx:var(--fxd,.5)}  /* desktop focus; tablets and phones override it below */
 .skygrp{position:absolute;inset:0}
 .sky{position:absolute;inset:0;background:linear-gradient(transparent,var(--top) 30cqh)}   /* soft top while rising */
 .cap{position:absolute;inset:0 0 auto;height:31cqh;background:var(--top)}                /* solid once at rest */
@@ -43,7 +43,6 @@ img{max-width:100%;display:block;height:auto}            /* the site's own base 
 .ly img{display:block;width:100%;height:100%;max-width:none}
 .slot{position:absolute;left:calc(var(--sx)*100%);top:calc(var(--sy)*100%);width:calc(var(--sw)*100%);
   height:calc(var(--sh)*100%);translate:-50% -100%;display:none}
-.s3 .ly{--pmin:58cqh}
 
 /* chapter 1: no takeover. Its painting hangs from the top: the shore continues the hero's lake exactly as the
    approved page does (desktop: 25 reference px of overlap, faded; tablets and phones: the hero's own crop) */
@@ -80,7 +79,7 @@ img{max-width:100%;display:block;height:auto}            /* the site's own base 
   .pinmap{display:none}
   .s2 .ly.peaks,.s2 .ly.mid,.s2 .ly.front{display:none}   /* the pannable map card is chapter 2's scene here */
   .ly{--pmin:65cqh}
-  .s3 .ly{--pmin:55cqh}
+  .s3 .stage{--fx:.72}
   .content{padding-top:7svh}
   .card{display:block;background:rgba(243,238,225,.93);padding:18px 20px 20px;box-shadow:0 2px 10px rgba(22,30,24,.18)}
   .s1 .fg-c{background:rgba(243,238,225,.93);padding-block:22px;margin-inline:12px;box-shadow:0 2px 10px rgba(22,30,24,.14)}
@@ -90,8 +89,7 @@ img{max-width:100%;display:block;height:auto}            /* the site's own base 
 }
 @media (max-width:699px){
   .ly{--pmin:80cqh}
-  .s3 .ly{--pmin:70cqh}
-  .s2 .stage{--fx:.5}.s3 .stage{--fx:.82}.s4 .stage{--fx:.17}.s5 .stage{--fx:.3}
+  .s2 .stage{--fx:.5}.s3 .stage{--fx:.86}.s4 .stage{--fx:.17}.s5 .stage{--fx:.3}
   /* phones: the hero shows page x 379.1..729 */
   .s1 .ly{--ph:calc(100cqw*729/349.9/var(--ar));left:calc(-100cqw*379.1/349.9);top:calc(-25*100cqw/349.9)}
   .s1 .content{padding-top:calc(100vw*92/349.9 + 16px)}
@@ -142,11 +140,13 @@ img{max-width:100%;display:block;height:auto}            /* the site's own base 
     .s2 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
     .s2 .pinmap{animation:pins-in linear both;animation-timeline:--s2;animation-range:entry 86% entry 100%}
     .s2 .pinmap .fg-map{animation:pins-out linear both;animation-timeline:--s3;animation-range:entry 0% entry 18%}
-    /* 3: into the forest; the moose and the near spruce come fastest */
+    /* 3: into the forest (painting 3): the pale far treelines first, then the misty forest, the tall spruce fastest */
     .s3 .skygrp{animation:sky-in linear both;animation-timeline:--s3;animation-range:entry 40% entry 90%}
     .s3 .cap{animation:sky-in linear both;animation-timeline:--s3;animation-range:entry 88% entry 100%}
     .s3 .content{animation:content-in linear both;animation-timeline:--s3;animation-range:entry 72% entry 100%}
-    .s3 .peaks{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
+    .s3 .back{animation:lift-back linear both;animation-timeline:--s4;animation-range:entry 0% entry 100%}
+    .s3 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
+    .s3 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
     .s3 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
     /* 4: above the cloud */
     .s4 .skygrp{animation:sky-in linear both;animation-timeline:--s4;animation-range:entry 40% entry 90%}
