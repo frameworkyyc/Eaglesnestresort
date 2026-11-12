@@ -8,7 +8,8 @@ Each painting is cut into four layers that recombine into the exact painting at 
 Seams are dynamic-programming paths that snap to the painting's own edges inside a band around a hand guide line
 (guides.json). Hidden areas behind each layer get a soft mist fill, seen only while the layers move apart.
 
-Run from the repository root:  python3 art-masters/things-to-do/cinematic-prototype/cut-layers.py p4 p5
+Run from the repository root:  python3 art-masters/things-to-do/cinematic-prototype/cut-layers.py a1 a2 a3 p4 p5
+(a1-a3 are Painting A's bands for chapters 1-3; p4, p5 the approved paintings 4 and 5)
 Reads the approved finals in art-masters/, writes work/ (full PNG layers and review sheets, not committed) and
 prototype/layers/ (the WebP files the prototype loads).
 """
@@ -19,9 +20,17 @@ W = HERE + '/'
 FINALS = {'p4': 'art-masters/things-to-do/painting-4/round-1/corrected/painting-4-final.png',
           'p5': 'art-masters/things-to-do/painting-5/round-1/corrected/painting-5-final.png'}
 
+PAINTING_A = 'art-masters/things-to-do/painting-a/round-1/painting-a-raw-nano-banana-2-1.png'
+A_BANDS = {'a1': (-25, 250), 'a2': (228, 530), 'a3': (430, 704)}   # page rows (reference px; 0 = the hero's foot)
+
 def source(name):
-    """The approved final at 2560 px wide, the working size for cutting."""
+    """The approved painting (or Painting A's band for a chapter) at 2560 px wide, the working size for cutting."""
     os.makedirs(W + 'work', exist_ok=True)
+    if name in A_BANDS:
+        r0, r1 = A_BANDS[name]; k = 2560 / 729       # Painting A: 729 x 729 reference px, page rows -25..704
+        a = Image.open(PAINTING_A).convert('RGB').resize((2560, 2560), Image.LANCZOS)
+        a.crop((0, round((r0 + 25) * k), 2560, round((r1 + 25) * k))).save(W + f'work/{name}-2560.png')
+        return
     im = Image.open(FINALS[name]).convert('RGB')
     im.resize((2560, round(2560 * im.height / im.width)), Image.LANCZOS).save(W + f'work/{name}-2560.png')
 
@@ -113,6 +122,37 @@ def cutout(img, boxes, thr, exclude=()):
     m = cv2.erode(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)))   # the score is blurred: pull back to the ink
     return cv2.GaussianBlur(m.astype(np.float32), (0, 0), 1.2)
 
+def cutout_parts(img, parts):
+    """Silhouettes by tone instead of ink density, for dense painting where every box is full of ink:
+    'dark' keeps the darkest shapes (near trees against mist), 'tint' keeps one warm-coloured shape (the moose)."""
+    lab = cv2.cvtColor(img.astype(np.uint8), cv2.COLOR_BGR2LAB).astype(np.float32)
+    L = cv2.GaussianBlur(lab[..., 0], (0, 0), 3) * 100 / 255; bb = cv2.GaussianBlur(lab[..., 2], (0, 0), 3) - 128
+    m = np.zeros(L.shape, np.uint8)
+    for p in parts:
+        x0, y0, x1, y1 = p['box']
+        if p['mode'] == 'grabcut':          # one distinct object inside a rectangle (the moose)
+            rx0, ry0, rx1, ry1 = p['rect']; gm = np.zeros((y1 - y0, x1 - x0), np.uint8)
+            bg, fg = np.zeros((1, 65), np.float64), np.zeros((1, 65), np.float64)
+            cv2.grabCut(img[y0:y1, x0:x1].astype(np.uint8), gm, (rx0 - x0, ry0 - y0, rx1 - rx0, ry1 - ry0), bg, fg, 8, cv2.GC_INIT_WITH_RECT)
+            sub = ((gm == cv2.GC_FGD) | (gm == cv2.GC_PR_FGD)).astype(np.uint8)
+        else:
+            sub = (L[y0:y1, x0:x1] < p['thr']) if p['mode'] == 'dark' else (bb[y0:y1, x0:x1] > p['thr'])
+        sub = cv2.morphologyEx(sub.astype(np.uint8), cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (p.get('close', 9),) * 2))
+        n, lb, st, _ = cv2.connectedComponentsWithStats(sub)
+        keep = np.zeros_like(sub)
+        if p.get('largest') and n > 1: keep[lb == 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))] = 1
+        else:
+            for i in range(1, n):
+                if st[i, cv2.CC_STAT_AREA] > p.get('min_area', 1500): keep[lb == i] = 1
+        # fill enclosed holes smaller than a few trees' worth (mist gaps inside a dense stand)
+        inv = (1 - keep).astype(np.uint8); n2, lb2, st2, _ = cv2.connectedComponentsWithStats(inv)
+        for i in range(1, n2):
+            x, y, w, h, a = st2[i]
+            if a < p.get('hole', 6000) and x > 0 and y > 0 and x + w < keep.shape[1] and y + h < keep.shape[0]: keep[lb2 == i] = 1
+        m[y0:y1, x0:x1] = np.maximum(m[y0:y1, x0:x1], keep)
+    m = cv2.erode(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)))
+    return cv2.GaussianBlur(m.astype(np.float32), (0, 0), 1.2)
+
 def pushpull(img, valid):
     levels = []; a = img * valid[..., None]; w = valid.astype(np.float32)
     while min(w.shape) > 4:
@@ -167,7 +207,78 @@ def build(name, s):
     cv2.imwrite(W + f'work/{name}-layers.jpg', sheet, [cv2.IMWRITE_JPEG_QUALITY, 86])
     json.dump({'b1': [round(float(v), 1) for v in b1]}, open(W + f'work/{name}-b1.json', 'w'))
 
+def build_general(name, s):
+    """Layers listed back to front. Each layer's alpha is 'full', 'below' or 'above' a seam, or a 'cutout'
+    (optionally joined to a ground band). A band that starts with a 'below' layer has no full back layer:
+    above that seam it is transparent, and the stage's own sky colour shows (chapter 3)."""
+    img = cv2.imread(W + f'work/{name}-2560.png').astype(np.float32); H, Wd = img.shape[:2]
+    lab = cv2.cvtColor(cv2.GaussianBlur(img, (0, 0), 2).astype(np.uint8), cv2.COLOR_BGR2LAB).astype(np.float32)
+    seams = {}
+    def get_seam(key):
+        if key not in seams:
+            g = s['seams'][key]
+            y = seam_sky(img, g['pts'], g['band'], g['beta']) if g.get('texture') else seam(lab, g['pts'], g['band'], g['beta'])
+            seams[key] = cv2.GaussianBlur(y.reshape(1, -1), (0, 0), g.get('smooth', 1.0)).ravel()
+        return seams[key]
+    names, alphas = [], []
+    for L in s['layers']:
+        t = L['type']
+        if t == 'full': a = np.ones((H, Wd), np.float32)
+        elif t in ('below', 'above'):
+            a = below(get_seam(L['seam']), H, np.full(Wd, L.get('feather', 1.6), np.float32))
+            if t == 'above': a = 1 - a
+        else:
+            a = cutout_parts(img, L['parts']) if 'parts' in L else cutout(img, L['boxes'], L['thr'], L.get('exclude', []))
+            if L.get('ground'): a = np.maximum(a, ramp(H, Wd, *L['ground']))
+            if L.get('clip'):      # never above the band's own soft top (chapter 3's forest line)
+                a = a * below(get_seam(L['clip']) - L.get('clip_lift', 0), H, np.full(Wd, L.get('clip_feather', 30), np.float32))
+        names.append(L['name']); alphas.append(a.astype(np.float32))
+    mist = np.array(s['mist'][::-1], np.float32)
+    layers = []
+    for i in range(len(alphas)):
+        core = [cv2.erode((alphas[j] > 0.99).astype(np.uint8), np.ones((5, 5), np.uint8)) for j in range(i + 1, len(alphas))]
+        cov = np.maximum.reduce(core).astype(np.float32) if core else np.zeros((H, Wd), np.float32)
+        vis = (alphas[i] > 0.5) & (cov < 0.5)
+        fill = cv2.GaussianBlur(pushpull(img, vis), (0, 0), 22)
+        dist = cv2.distanceTransform((cov > 0.5).astype(np.uint8), cv2.DIST_L2, 5)
+        tt = np.clip(dist / 40, 0, 1); tt = (tt * tt * (3 - 2 * tt))[..., None]
+        fill = fill * (1 - tt) + mist * tt
+        layers.append(img * (1 - cov[..., None]) + fill * cov[..., None])
+    comp = img.copy()                          # where no layer covers, the stage sky shows instead (not compared)
+    for i in range(len(layers)): comp = layers[i] * alphas[i][..., None] + comp * (1 - alphas[i][..., None])
+    covered = np.maximum.reduce(alphas) > 0.99
+    print(name, 'recombined at rest: max error', round(float(np.abs(comp - img)[covered].max()), 2),
+          '| layers', names)
+    def checker(rgba):
+        h, w = rgba.shape[:2]; c = ((np.indices((h, w)).sum(0) // 24) % 2 * 40 + 200).astype(np.float32)[..., None]
+        a = rgba[..., 3:4] / 255.0; return (rgba[..., :3] * a + c * (1 - a)).astype(np.uint8)
+    tiles = []
+    for i, nm in enumerate(names):
+        rgba = np.dstack([np.clip(layers[i], 0, 255).astype(np.uint8), np.clip(alphas[i] * 255, 0, 255).astype(np.uint8)])
+        cv2.imwrite(W + f'work/{name}-{nm}.png', rgba); tiles.append(checker(rgba))
+    ov = img.astype(np.uint8).copy()
+    for key, col in zip(seams, ((255, 60, 200), (0, 140, 255), (40, 200, 40))):
+        cv2.polylines(ov, [np.stack([np.arange(Wd), seams[key]], 1).astype(np.int32)], False, col, 2, cv2.LINE_AA)
+    sheet = np.vstack([cv2.resize(t, (1200, round(1200 * H / Wd)), interpolation=cv2.INTER_AREA) for t in [ov] + tiles])
+    cv2.imwrite(W + f'work/{name}-layers.jpg', sheet, [cv2.IMWRITE_JPEG_QUALITY, 86])
+    return names
+
+def export_general(name, names, soft_top=()):
+    os.makedirs(W + 'prototype/layers', exist_ok=True)
+    for nm in names:
+        im = Image.open(W + f'work/{name}-{nm}.png').convert('RGBA')
+        if nm in soft_top:
+            a = np.asarray(im).copy(); H = a.shape[0]; t = np.clip(np.arange(H) / (0.16 * H), 0, 1); t = t * t * (3 - 2 * t)
+            a[..., 3] = (a[..., 3] * t[:, None]).astype(np.uint8); im = Image.fromarray(a)
+        for w in (2560, 1440):
+            r = im if w == im.width else im.resize((w, round(w * im.height / im.width)), Image.LANCZOS)
+            r.save(W + f'prototype/layers/{name}-{nm}-{w}.webp', 'WEBP', quality=80, method=6)
+
 if __name__ == '__main__':
     spec = json.load(open(W + 'guides.json'))
     for name in sys.argv[1:]:
-        source(name); build(name, spec[name]); export(name)
+        source(name)
+        if 'layers' in spec[name]:
+            names = build_general(name, spec[name]); export_general(name, names, spec[name].get('soft_top', []))
+        else:
+            build(name, spec[name]); export(name)

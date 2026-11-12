@@ -1,0 +1,211 @@
+<title>Cinematic Chapters Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ttd.css">
+<style>
+/* =====================================================================================================
+   Things To Do, cinematic chapters: PROTOTYPE, hero to chapter 5. Not part of the website.
+
+   The hero and every chapter's content are the site's own markup and stylesheet (assets/ttd.css), copied
+   by build-prototype.py. This file adds only the cinematic layer:
+   - each chapter is a scene: its STAGE (the painting in depth layers that recombine into the exact approved
+     painting at rest) stays pinned while its content scrolls over it;
+   - the next chapter overlaps the last screen of the one before, so it rises over the pinned stage: far layers
+     at scroll speed, near layers faster, while the outgoing chapter's layers part, near ones fastest;
+   - content never sits on a moving layer and fades in once its scene has settled. Chapter 2's map pins sit on
+     the painted valley (desktop) and are only clickable at rest;
+   - scroll-driven CSS on transform and opacity (and one short mask move at the hero join), no scripts.
+   Reduced motion, browsers without scroll-driven animations, and short screens (landscape phones) get the
+   same scenes stacked statically, each fading softly into the next.
+   ===================================================================================================== */
+:root{--run:100svh;--dusk:#3A4763;--guide:#D9622B;color-scheme:light}
+html,body{margin:0;background:#F0DECE;color:#1F3327}
+img{max-width:100%;display:block;height:auto}            /* the site's own base rule (legacy/css/site.css) */
+.cine{timeline-scope:--s2,--s3,--s4,--s5,--s6}
+.scene{position:relative;z-index:var(--z);--pad:max(22px,env(safe-area-inset-left,0px))}
+.s1{--z:2}.s2{--z:3}.s3{--z:4}.s4{--z:5}.s5{--z:6}.s6{--z:7}
+.scene + .scene{margin-top:calc(-1*var(--run))}
+.s2{view-timeline:--s2 block}.s3{view-timeline:--s3 block}.s4{view-timeline:--s4 block}
+.s5{view-timeline:--s5 block}.s6{view-timeline:--s6 block}
+
+/* ---------- the stage: one painting in depth layers, all sharing one box ---------- */
+.stage{position:sticky;top:0;height:100svh;overflow:hidden;container-type:size;z-index:0}
+.skygrp{position:absolute;inset:0}
+.sky{position:absolute;inset:0;background:linear-gradient(transparent,var(--top) 30cqh)}   /* soft top while rising */
+.cap{position:absolute;inset:0 0 auto;height:31cqh;background:var(--top)}                /* solid once at rest */
+.ly{position:absolute;bottom:0;
+  --ph:max(calc(100cqw / var(--ar)), var(--pmin,72cqh));     /* full width, or a minimum share of the screen */
+  --pw:calc(var(--ph) * var(--ar));
+  width:var(--pw);height:var(--ph);
+  left:clamp(calc(100cqw - var(--pw)), calc(50cqw - var(--fx) * var(--pw)), 0px);   /* centred on the focal point */
+  transform-origin:50% 100%}
+.ly img{display:block;width:100%;height:100%;max-width:none}
+.slot{position:absolute;left:calc(var(--sx)*100%);top:calc(var(--sy)*100%);width:calc(var(--sw)*100%);
+  height:calc(var(--sh)*100%);translate:-50% -100%;display:none}
+.s3 .ly{--pmin:58cqh}
+
+/* chapter 1: no takeover. Its painting hangs from the top: the shore continues the hero's lake exactly as the
+   approved page does (desktop: 25 reference px of overlap, faded; tablets and phones: the hero's own crop) */
+.s1 .ly{top:0;bottom:auto;--pmin:0px}
+.s1 .sky{background:var(--top)}
+@media (min-width:1100px){
+  .s1{margin-top:calc(-25*var(--rp))}
+  .s1 .stage{-webkit-mask:linear-gradient(transparent,#000 calc(25*var(--rp))) 0 0/100% calc(100% + 25*var(--rp)) no-repeat;
+    mask:linear-gradient(transparent,#000 calc(25*var(--rp))) 0 0/100% calc(100% + 25*var(--rp)) no-repeat}
+}
+
+/* chapter 2: on desktop the map sits on the painted valley (page 175..610 x 311..516 in this crop's 228..530) */
+.pinmap{position:absolute;left:calc(175/729*100%);top:calc(83/302*100%);width:calc(435/729*100%);height:calc(205/302*100%)}
+.pinmap .fg-map{position:absolute;inset:0;width:100%;height:100%}
+
+/* ---------- content: the site's own, always above the scenery, never on a moving layer ---------- */
+.content{position:relative;z-index:3;min-height:100svh;margin-top:-100svh;padding-top:13svh;padding-bottom:6svh;pointer-events:none}
+.content .fg-c,.content .card{pointer-events:none}
+.content .fg-c>*,.content .card>*{pointer-events:auto}
+.card{display:contents}
+.s1 .content{padding-top:calc(101*var(--rp))}
+.scene.fg-ch3 .fg-head,.scene.fg-ch3 .fg-para{color:var(--ink);text-shadow:none}   /* chapter 3's words now sit in the mist */
+.run{height:var(--run)}
+.s6 .run{display:none}
+.end-c{display:grid;place-items:center;text-align:center;color:#E9E6F0;padding-inline:var(--pad)}
+.end-c p{margin:0;font:500 13px/1.6 Oswald,"Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+@media (min-width:1100px){
+  .content .fg-mapscroll{display:none}
+  /* the site's grid places its heading and paragraph as direct children; the card wrapper is transparent here */
+  .content .card>.fg-head{grid-area:head;justify-self:start;padding-left:calc(37*var(--rp))}
+  .content .card>.fg-para{grid-area:para}
+}
+@media (max-width:1099px){
+  .pinmap{display:none}
+  .s2 .ly.peaks,.s2 .ly.mid,.s2 .ly.front{display:none}   /* the pannable map card is chapter 2's scene here */
+  .ly{--pmin:65cqh}
+  .s3 .ly{--pmin:55cqh}
+  .content{padding-top:7svh}
+  .card{display:block;background:rgba(243,238,225,.93);padding:18px 20px 20px;box-shadow:0 2px 10px rgba(22,30,24,.18)}
+  .s1 .fg-c{background:rgba(243,238,225,.93);padding-block:22px;margin-inline:12px;box-shadow:0 2px 10px rgba(22,30,24,.14)}
+  /* tablets: the hero shows page x 165.6..714.6, so the shore does too */
+  .s1 .ly{--ph:calc(100cqw*729/549/var(--ar));left:calc(-100cqw*165.6/549);top:calc(-25*100cqw/549)}
+  .s1 .content{padding-top:calc(100vw*92/549 + 20px)}
+}
+@media (max-width:699px){
+  .ly{--pmin:80cqh}
+  .s3 .ly{--pmin:70cqh}
+  .s2 .stage{--fx:.5}.s3 .stage{--fx:.82}.s4 .stage{--fx:.17}.s5 .stage{--fx:.3}
+  /* phones: the hero shows page x 379.1..729 */
+  .s1 .ly{--ph:calc(100cqw*729/349.9/var(--ar));left:calc(-100cqw*379.1/349.9);top:calc(-25*100cqw/349.9)}
+  .s1 .content{padding-top:calc(100vw*92/349.9 + 16px)}
+}
+
+/* ---------- prototype controls ---------- */
+.bar{position:fixed;z-index:20;left:max(12px,env(safe-area-inset-left,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;gap:10px;padding:7px 8px 7px 12px;border-radius:999px;background:rgba(22,38,28,.82);color:#F3EEE1;
+  font:500 12px/1 Oswald,"Arial Narrow",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.bar button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:rgba(243,238,225,.14);
+  border:1px solid rgba(243,238,225,.35);border-radius:999px;padding:6px 10px;cursor:pointer}
+.bar button:focus-visible{outline:2px solid #C08E2E;outline-offset:2px}
+.guides .ly{outline:2px dashed var(--guide);outline-offset:-2px}
+.guides .ly::after{content:attr(data-name);position:absolute;left:12px;bottom:calc(100% - 26px);font:600 11px/1 Oswald,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--guide);padding:4px 6px;z-index:2}
+.guides .ly.peaks::after{left:34%}.guides .ly.mid::after{left:auto;right:12px}.guides .ly.front::after{left:58%;bottom:24px}
+.guides .slot{display:block;border:2px dashed #fff;background:rgba(217,98,43,.35)}
+.guides .slot::after{content:attr(data-label);position:absolute;left:50%;top:-22px;translate:-50% 0;white-space:nowrap;
+  font:600 10px/1 Oswald,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--guide);padding:3px 5px}
+
+/* ---------- the motion: only with scroll-driven animations, motion welcome, and room to pin ---------- */
+@keyframes sky-in{from{opacity:0}to{opacity:1}}
+@keyframes content-in{from{opacity:0;translate:0 4svh}to{opacity:1;translate:0 0}}
+@keyframes rise-peaks{from{translate:0 4cqh}to{translate:0 0}}
+@keyframes rise-mid{from{translate:0 16cqh}to{translate:0 0}}
+@keyframes rise-front{from{translate:0 34cqh}to{translate:0 0}}
+@keyframes lift-back{to{transform:scale(1.04)}}
+@keyframes lift-peaks{to{transform:translateY(-3cqh)}}
+@keyframes lift-mid{to{transform:translateY(-9cqh)}}
+@keyframes lift-front{to{transform:translateY(-24cqh)}}
+@keyframes pins-in{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}
+@keyframes pins-out{to{opacity:0;visibility:hidden}}
+@keyframes hero-join{to{-webkit-mask-position:0 calc(-25*var(--rp));mask-position:0 calc(-25*var(--rp))}}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference) and (min-height:561px){
+    /* the hero join: the shore's fade over the hero's lake clears once the hero has gone */
+    .s1 .stage{animation:hero-join linear both;animation-timeline:scroll(root);animation-range:calc(200*var(--rp)) calc(284*var(--rp))}
+    /* 1: the dock's shore lifts away as the mountains rise */
+    .s1 .back{animation:lift-back linear both;animation-timeline:--s2;animation-range:entry 0% entry 100%}
+    .s1 .front{animation:lift-front linear both;animation-timeline:--s2;animation-range:entry 0% entry 100%}
+    /* 2: the mountains rise; the valley follows; pins appear once it has settled and leave before chapter 3 */
+    .s2 .skygrp{animation:sky-in linear both;animation-timeline:--s2;animation-range:entry 40% entry 90%}
+    .s2 .cap{animation:sky-in linear both;animation-timeline:--s2;animation-range:entry 88% entry 100%}
+    .s2 .content{animation:content-in linear both;animation-timeline:--s2;animation-range:entry 72% entry 100%}
+    .s2 .back{animation:lift-back linear both;animation-timeline:--s3;animation-range:entry 0% entry 100%}
+    .s2 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
+    .s2 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
+    .s2 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
+    .s2 .pinmap{animation:pins-in linear both;animation-timeline:--s2;animation-range:entry 86% entry 100%}
+    .s2 .pinmap .fg-map{animation:pins-out linear both;animation-timeline:--s3;animation-range:entry 0% entry 18%}
+    /* 3: into the forest; the moose and the near spruce come fastest */
+    .s3 .skygrp{animation:sky-in linear both;animation-timeline:--s3;animation-range:entry 40% entry 90%}
+    .s3 .cap{animation:sky-in linear both;animation-timeline:--s3;animation-range:entry 88% entry 100%}
+    .s3 .content{animation:content-in linear both;animation-timeline:--s3;animation-range:entry 72% entry 100%}
+    .s3 .peaks{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
+    .s3 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
+    /* 4: above the cloud */
+    .s4 .skygrp{animation:sky-in linear both;animation-timeline:--s4;animation-range:entry 40% entry 90%}
+    .s4 .cap{animation:sky-in linear both;animation-timeline:--s4;animation-range:entry 88% entry 100%}
+    .s4 .content{animation:content-in linear both;animation-timeline:--s4;animation-range:entry 72% entry 100%}
+    .s4 .back{animation:lift-back linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
+    .s4 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s4,--s5;animation-range:entry 0% entry 100%}
+    .s4 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s4,--s5;animation-range:entry 0% entry 100%}
+    .s4 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s4,--s5;animation-range:entry 0% entry 100%}
+    /* 5: into winter (the baseline, as first prototyped) */
+    .s5 .skygrp{animation:sky-in linear both;animation-timeline:--s5;animation-range:entry 40% entry 90%}
+    .s5 .cap{animation:sky-in linear both;animation-timeline:--s5;animation-range:entry 88% entry 100%}
+    .s5 .content{animation:content-in linear both;animation-timeline:--s5;animation-range:entry 72% entry 100%}
+    .s5 .back{animation:lift-back linear both;animation-timeline:--s6;animation-range:entry 0% entry 100%}
+    .s5 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
+    .s5 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
+    .s5 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
+    /* the dusk chapter 6 will start from */
+    .s6 .skygrp{animation:sky-in linear both;animation-timeline:--s6;animation-range:entry 30% entry 90%}
+    .s6 .cap{animation:sky-in linear both;animation-timeline:--s6;animation-range:entry 88% entry 100%}
+    .s6 .content{animation:content-in linear both;animation-timeline:--s6;animation-range:entry 70% entry 100%}
+  }
+}
+/* the static version: reduced motion, no scroll-driven animations, or too short to pin */
+@media (prefers-reduced-motion:reduce),(max-height:560px){
+  :root{--run:14svh}
+  .stage{position:absolute;inset:0;height:auto;min-height:100%;
+    -webkit-mask:linear-gradient(transparent,#000 var(--run));mask:linear-gradient(transparent,#000 var(--run))}
+  .content{margin-top:0;padding-top:calc(7svh + var(--run))}
+  .run{display:none}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:1099px),(max-height:560px) and (max-width:1099px){
+  .s1 .stage{-webkit-mask:none;mask:none}       /* tablets and phones: the shore meets the hero edge to edge */
+}
+@supports not (animation-timeline:view()){
+  :root{--run:14svh}
+  .stage{position:absolute;inset:0;height:auto;min-height:100%;
+    -webkit-mask:linear-gradient(transparent,#000 var(--run));mask:linear-gradient(transparent,#000 var(--run))}
+  .content{margin-top:0;padding-top:calc(7svh + var(--run))}
+  .run{display:none}
+  @media (max-width:1099px){.s1 .stage{-webkit-mask:none;mask:none}}
+}
+</style>
+
+<main id="main" class="fg cine">
+
+  <!--CHAPTERS-->
+
+  <section class="scene s6" style="--top:var(--dusk)">
+    <div class="stage"><div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div></div>
+    <div class="content end-c"><p>End of prototype · chapter 6 begins in this dusk blue</p></div>
+  </section>
+</main>
+
+<div class="bar"><span>Prototype · hero to chapter 5</span><button type="button" id="guides" aria-pressed="false">Show layers</button></div>
+<script>
+  const b = document.getElementById('guides');
+  b.addEventListener('click', () => {
+    const on = document.documentElement.classList.toggle('guides');
+    b.setAttribute('aria-pressed', on); b.textContent = on ? 'Hide layers' : 'Show layers';
+  });
+</script>

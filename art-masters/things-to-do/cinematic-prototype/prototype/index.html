@@ -1,122 +1,118 @@
 <title>Cinematic Chapters Prototype</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Roboto+Serif:opsz,wdth,wght@8..144,50..100,600..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/ttd.css">
 <style>
 /* =====================================================================================================
-   Things To Do, cinematic chapters: PROTOTYPE (chapters 4 and 5 only). Not part of the website.
+   Things To Do, cinematic chapters: PROTOTYPE, hero to chapter 5. Not part of the website.
 
-   How it works
-   - Each chapter is a full-screen scene. Its STAGE (the painting, cut into back / mid / front layers that
-     recombine into the exact approved painting at rest) is sticky: it stays pinned while the chapter's
-     content scrolls over it.
-   - Each chapter ends with a RUN of one screen. The next chapter overlaps that run (negative margin), so it
-     rises over the pinned painting: its back layer emerges out of mist at scroll speed, its mid layer
-     (forest, lake) rises faster and its foreground (near spruce, rock) fastest, and its sky fills in last.
-     Meanwhile the outgoing chapter's foreground lifts away faster than its background.
-   - Content never shares a moving layer: it scrolls normally, sits above the scenery and fades in only once
-     the new scene has settled. Animated assets (hiker, snowmobile) get slots inside the layer they stand on.
-   - Scroll-driven CSS animations (view timelines) on transform and opacity only: no scripts, no scroll-
-     jacking. Reduced motion, or a browser without scroll-driven animations, gets the same scenes stacked
-     statically with soft edges.
+   The hero and every chapter's content are the site's own markup and stylesheet (assets/ttd.css), copied
+   by build-prototype.py. This file adds only the cinematic layer:
+   - each chapter is a scene: its STAGE (the painting in depth layers that recombine into the exact approved
+     painting at rest) stays pinned while its content scrolls over it;
+   - the next chapter overlaps the last screen of the one before, so it rises over the pinned stage: far layers
+     at scroll speed, near layers faster, while the outgoing chapter's layers part, near ones fastest;
+   - content never sits on a moving layer and fades in once its scene has settled. Chapter 2's map pins sit on
+     the painted valley (desktop) and are only clickable at rest;
+   - scroll-driven CSS on transform and opacity (and one short mask move at the hero join), no scripts.
+   Reduced motion, browsers without scroll-driven animations, and short screens (landscape phones) get the
+   same scenes stacked statically, each fading softly into the next.
    ===================================================================================================== */
-@font-face{font-family:"Roboto Serif Cond";src:url(fonts/roboto-serif-cond.woff2) format("woff2");
-  font-weight:500 800;font-stretch:50% 72%;font-display:swap}
-:root{
-  --ink:#1F3327; --paper:#F3EEE1; --print:#F2EADB; --gold:#C08E2E; --deep:#16261C; --soft:#4A6350;
-  --dusk:#3A4763; --mist4:#E3D3C0; --sky5:#E4E3DC; --guide:#D9622B;
-  --serif:"Roboto Serif Cond","Roboto Serif",Georgia,serif;
-  --label:"Oswald","Arial Narrow",Arial,sans-serif;
-  --body:"Lora",Georgia,serif;
-  --run:100svh;                /* scroll length of each takeover */
-  color-scheme:light;
-}
-html,body{margin:0;background:var(--mist4);color:var(--ink)}
-body{font-family:var(--body);-webkit-font-smoothing:antialiased}
-*,*::before,*::after{box-sizing:border-box}
-
-.journey{timeline-scope:--s4,--s5,--s6;overflow-x:clip}
-.scene{position:relative;z-index:var(--z)}
+:root{--run:100svh;--dusk:#3A4763;--guide:#D9622B;color-scheme:light}
+html,body{margin:0;background:#F0DECE;color:#1F3327}
+img{max-width:100%;display:block;height:auto}            /* the site's own base rule (legacy/css/site.css) */
+.cine{timeline-scope:--s2,--s3,--s4,--s5,--s6}
+.scene{position:relative;z-index:var(--z);--pad:max(22px,env(safe-area-inset-left,0px))}
+.s1{--z:2}.s2{--z:3}.s3{--z:4}.s4{--z:5}.s5{--z:6}.s6{--z:7}
 .scene + .scene{margin-top:calc(-1*var(--run))}
-.s4{view-timeline:--s4 block}
-.s5{view-timeline:--s5 block}
-.s6{view-timeline:--s6 block}
+.s2{view-timeline:--s2 block}.s3{view-timeline:--s3 block}.s4{view-timeline:--s4 block}
+.s5{view-timeline:--s5 block}.s6{view-timeline:--s6 block}
 
-/* ---------- the stage: one painting, three layers, all sharing one box ---------- */
+/* ---------- the stage: one painting in depth layers, all sharing one box ---------- */
 .stage{position:sticky;top:0;height:100svh;overflow:hidden;container-type:size;z-index:0}
 .skygrp{position:absolute;inset:0}
-.sky{position:absolute;inset:0;background:linear-gradient(transparent,var(--top) 30cqh)}   /* soft top while it rises */
+.sky{position:absolute;inset:0;background:linear-gradient(transparent,var(--top) 30cqh)}   /* soft top while rising */
 .cap{position:absolute;inset:0 0 auto;height:31cqh;background:var(--top)}                /* solid once at rest */
 .ly{position:absolute;bottom:0;
-  --ph:max(calc(100cqw / var(--ar)), var(--pmin, 72cqh));     /* painting height: full width, or 72% of the screen */
+  --ph:max(calc(100cqw / var(--ar)), var(--pmin,72cqh));     /* full width, or a minimum share of the screen */
   --pw:calc(var(--ph) * var(--ar));
   width:var(--pw);height:var(--ph);
-  left:clamp(calc(100cqw - var(--pw)), calc(50cqw - var(--fx) * var(--pw)), 0px);   /* centred on the chapter's focus */
-  will-change:transform;transform-origin:50% 100%}
-.ly img{display:block;width:100%;height:100%}
+  left:clamp(calc(100cqw - var(--pw)), calc(50cqw - var(--fx) * var(--pw)), 0px);   /* centred on the focal point */
+  transform-origin:50% 100%}
+.ly img{display:block;width:100%;height:100%;max-width:none}
 .slot{position:absolute;left:calc(var(--sx)*100%);top:calc(var(--sy)*100%);width:calc(var(--sw)*100%);
   height:calc(var(--sh)*100%);translate:-50% -100%;display:none}
-.dusk-edge{position:absolute;inset:0;background:linear-gradient(transparent,var(--dusk) 34cqh)}
+.s3 .ly{--pmin:58cqh}
 
-/* ---------- content: always above the scenery, never on a moving layer ---------- */
-.content{position:relative;z-index:3;min-height:100svh;margin-top:-100svh;
-  padding:13svh max(16px,env(safe-area-inset-right,0px),5.5vw) 8svh max(16px,env(safe-area-inset-left,0px),6vw);
-  display:grid;grid-template-columns:minmax(0,29fr) minmax(0,63fr);column-gap:4.5vw;align-content:start}
+/* chapter 1: no takeover. Its painting hangs from the top: the shore continues the hero's lake exactly as the
+   approved page does (desktop: 25 reference px of overlap, faded; tablets and phones: the hero's own crop) */
+.s1 .ly{top:0;bottom:auto;--pmin:0px}
+.s1 .sky{background:var(--top)}
+@media (min-width:1100px){
+  .s1{margin-top:calc(-25*var(--rp))}
+  .s1 .stage{-webkit-mask:linear-gradient(transparent,#000 calc(25*var(--rp))) 0 0/100% calc(100% + 25*var(--rp)) no-repeat;
+    mask:linear-gradient(transparent,#000 calc(25*var(--rp))) 0 0/100% calc(100% + 25*var(--rp)) no-repeat}
+}
+
+/* chapter 2: on desktop the map sits on the painted valley (page 175..610 x 311..516 in this crop's 228..530) */
+.pinmap{position:absolute;left:calc(175/729*100%);top:calc(83/302*100%);width:calc(435/729*100%);height:calc(205/302*100%)}
+.pinmap .fg-map{position:absolute;inset:0;width:100%;height:100%}
+
+/* ---------- content: the site's own, always above the scenery, never on a moving layer ---------- */
+.content{position:relative;z-index:3;min-height:100svh;margin-top:-100svh;padding-top:13svh;padding-bottom:6svh;pointer-events:none}
+.content .fg-c,.content .card{pointer-events:none}
+.content .fg-c>*,.content .card>*{pointer-events:auto}
+.card{display:contents}
+.s1 .content{padding-top:calc(101*var(--rp))}
+.scene.fg-ch3 .fg-head,.scene.fg-ch3 .fg-para{color:var(--ink);text-shadow:none}   /* chapter 3's words now sit in the mist */
 .run{height:var(--run)}
 .s6 .run{display:none}
-
-.head{display:flex;align-items:flex-start;gap:14px}
-.num{flex:none;display:grid;place-items:center;width:clamp(36px,3.6vw,54px);aspect-ratio:1;border-radius:50%;margin-top:2px;
-  background:var(--gold);color:var(--paper);font:700 clamp(19px,1.9vw,28px)/1 var(--serif);font-stretch:60%;
-  box-shadow:inset 0 0 0 2px var(--gold),inset 0 0 0 3.5px rgba(243,238,225,.92),0 1px 2px rgba(0,0,0,.25)}
-.num.dark{background:var(--deep);box-shadow:inset 0 0 0 2px var(--deep),inset 0 0 0 3.5px rgba(243,238,225,.92),0 1px 2px rgba(0,0,0,.3)}
-.kicker{margin:0 0 6px;font:500 clamp(12px,.82vw,14px)/1 var(--label);letter-spacing:.06em;text-transform:uppercase}
-h2{margin:0;font-family:var(--serif);font-weight:700;font-stretch:50%;font-size:clamp(34px,3.4vw,60px);
-  line-height:.96;letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance}
-.lede{margin:18px 0 0;max-width:30ch;font:400 clamp(15px,1.1vw,19px)/1.6 var(--body)}
-.prints{display:flex;gap:2.2vw;align-items:flex-start;justify-content:flex-end;padding-top:1svh}
-.print{margin:0;flex:1 1 0;max-width:15.5vw;padding:8px 8px 12px;background:var(--print);rotate:calc(var(--rot)*1deg);
-  box-shadow:0 4px 14px rgba(22,30,24,.42),0 0 0 1px rgba(70,55,30,.14)}
-.print img,.tocome{display:block;width:100%;height:clamp(140px,21svh,240px);object-fit:cover}
-.tocome{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#DCD3C1 0 6px,#E6DECD 6px 12px);
-  font:500 11px/1 var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
-.print figcaption{padding-top:10px;text-align:center}
-.print h3{margin:0;font:700 clamp(15px,1.15vw,20px)/1.05 var(--serif);font-stretch:52%;text-transform:uppercase}
-.print p{margin:5px 0 0;font:400 clamp(12px,.82vw,14px)/1.4 var(--body)}
-.end-c{display:grid;place-items:center;align-content:center;text-align:center;color:#E9E6F0}
-.end-c p{margin:0;font:500 13px/1.6 var(--label);letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.end-c{display:grid;place-items:center;text-align:center;color:#E9E6F0;padding-inline:var(--pad)}
+.end-c p{margin:0;font:500 13px/1.6 Oswald,"Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+@media (min-width:1100px){
+  .content .fg-mapscroll{display:none}
+  /* the site's grid places its heading and paragraph as direct children; the card wrapper is transparent here */
+  .content .card>.fg-head{grid-area:head;justify-self:start;padding-left:calc(37*var(--rp))}
+  .content .card>.fg-para{grid-area:para}
+}
+@media (max-width:1099px){
+  .pinmap{display:none}
+  .s2 .ly.peaks,.s2 .ly.mid,.s2 .ly.front{display:none}   /* the pannable map card is chapter 2's scene here */
+  .ly{--pmin:65cqh}
+  .s3 .ly{--pmin:55cqh}
+  .content{padding-top:7svh}
+  .card{display:block;background:rgba(243,238,225,.93);padding:18px 20px 20px;box-shadow:0 2px 10px rgba(22,30,24,.18)}
+  .s1 .fg-c{background:rgba(243,238,225,.93);padding-block:22px;margin-inline:12px;box-shadow:0 2px 10px rgba(22,30,24,.14)}
+  /* tablets: the hero shows page x 165.6..714.6, so the shore does too */
+  .s1 .ly{--ph:calc(100cqw*729/549/var(--ar));left:calc(-100cqw*165.6/549);top:calc(-25*100cqw/549)}
+  .s1 .content{padding-top:calc(100vw*92/549 + 20px)}
+}
+@media (max-width:699px){
+  .ly{--pmin:80cqh}
+  .s3 .ly{--pmin:70cqh}
+  .s2 .stage{--fx:.5}.s3 .stage{--fx:.82}.s4 .stage{--fx:.17}.s5 .stage{--fx:.3}
+  /* phones: the hero shows page x 379.1..729 */
+  .s1 .ly{--ph:calc(100cqw*729/349.9/var(--ar));left:calc(-100cqw*379.1/349.9);top:calc(-25*100cqw/349.9)}
+  .s1 .content{padding-top:calc(100vw*92/349.9 + 16px)}
+}
 
 /* ---------- prototype controls ---------- */
 .bar{position:fixed;z-index:20;left:max(12px,env(safe-area-inset-left,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));
   display:flex;align-items:center;gap:10px;padding:7px 8px 7px 12px;border-radius:999px;background:rgba(22,38,28,.82);color:#F3EEE1;
-  font:500 12px/1 var(--label);letter-spacing:.08em;text-transform:uppercase}
+  font:500 12px/1 Oswald,"Arial Narrow",sans-serif;letter-spacing:.08em;text-transform:uppercase}
 .bar button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:rgba(243,238,225,.14);
   border:1px solid rgba(243,238,225,.35);border-radius:999px;padding:6px 10px;cursor:pointer}
-.bar button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.bar button:focus-visible{outline:2px solid #C08E2E;outline-offset:2px}
 .guides .ly{outline:2px dashed var(--guide);outline-offset:-2px}
-.guides .ly::after{content:attr(data-name);position:absolute;left:12px;bottom:calc(100% - 26px);font:600 11px/1 var(--label);
-  letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--guide);padding:4px 6px}
-.guides .ly.mid::after{left:auto;right:12px}
-.guides .ly.peaks::after{left:40%}
-.guides .ly.front::after{bottom:auto;top:auto;left:45%;bottom:20px}
+.guides .ly::after{content:attr(data-name);position:absolute;left:12px;bottom:calc(100% - 26px);font:600 11px/1 Oswald,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--guide);padding:4px 6px;z-index:2}
+.guides .ly.peaks::after{left:34%}.guides .ly.mid::after{left:auto;right:12px}.guides .ly.front::after{left:58%;bottom:24px}
 .guides .slot{display:block;border:2px dashed #fff;background:rgba(217,98,43,.35)}
 .guides .slot::after{content:attr(data-label);position:absolute;left:50%;top:-22px;translate:-50% 0;white-space:nowrap;
-  font:600 10px/1 var(--label);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--guide);padding:3px 5px}
+  font:600 10px/1 Oswald,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--guide);padding:3px 5px}
 
-/* ---------- phones: same journey, recomposed ---------- */
-@media (max-width:760px){
-  :root{--run:85svh}
-  .ly{--pmin:80cqh}
-  .content{display:flex;flex-direction:column;gap:20px;padding:9svh 0 6svh}
-  .text{margin:0 16px;padding:16px 18px 18px;background:rgba(243,238,225,.9);box-shadow:0 2px 10px rgba(22,30,24,.18)}
-  .lede{margin-top:12px}
-  .prints{justify-content:flex-start;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 16px;scrollbar-width:none}
-  .print{flex:0 0 58vw;max-width:none;scroll-snap-align:center}
-  .print img,.tocome{height:22svh}
-}
-
-/* ---------- the motion (only where scroll-driven animations exist, and motion is welcome) ---------- */
+/* ---------- the motion: only with scroll-driven animations, motion welcome, and room to pin ---------- */
 @keyframes sky-in{from{opacity:0}to{opacity:1}}
 @keyframes content-in{from{opacity:0;translate:0 4svh}to{opacity:1;translate:0 0}}
 @keyframes rise-peaks{from{translate:0 4cqh}to{translate:0 0}}
@@ -126,10 +122,41 @@ h2{margin:0;font-family:var(--serif);font-weight:700;font-stretch:50%;font-size:
 @keyframes lift-peaks{to{transform:translateY(-3cqh)}}
 @keyframes lift-mid{to{transform:translateY(-9cqh)}}
 @keyframes lift-front{to{transform:translateY(-24cqh)}}
+@keyframes pins-in{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}
+@keyframes pins-out{to{opacity:0;visibility:hidden}}
+@keyframes hero-join{to{-webkit-mask-position:0 calc(-25*var(--rp));mask-position:0 calc(-25*var(--rp))}}
 @supports (animation-timeline:view()){
-  @media (prefers-reduced-motion:no-preference){
-    /* chapter 5 rises over chapter 4: its far peaks first, then forest and lake, then the near spruce;
-       its sky fills in behind the ridges, soft-topped while moving and solid once settled */
+  @media (prefers-reduced-motion:no-preference) and (min-height:561px){
+    /* the hero join: the shore's fade over the hero's lake clears once the hero has gone */
+    .s1 .stage{animation:hero-join linear both;animation-timeline:scroll(root);animation-range:calc(200*var(--rp)) calc(284*var(--rp))}
+    /* 1: the dock's shore lifts away as the mountains rise */
+    .s1 .back{animation:lift-back linear both;animation-timeline:--s2;animation-range:entry 0% entry 100%}
+    .s1 .front{animation:lift-front linear both;animation-timeline:--s2;animation-range:entry 0% entry 100%}
+    /* 2: the mountains rise; the valley follows; pins appear once it has settled and leave before chapter 3 */
+    .s2 .skygrp{animation:sky-in linear both;animation-timeline:--s2;animation-range:entry 40% entry 90%}
+    .s2 .cap{animation:sky-in linear both;animation-timeline:--s2;animation-range:entry 88% entry 100%}
+    .s2 .content{animation:content-in linear both;animation-timeline:--s2;animation-range:entry 72% entry 100%}
+    .s2 .back{animation:lift-back linear both;animation-timeline:--s3;animation-range:entry 0% entry 100%}
+    .s2 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
+    .s2 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
+    .s2 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s2,--s3;animation-range:entry 0% entry 100%}
+    .s2 .pinmap{animation:pins-in linear both;animation-timeline:--s2;animation-range:entry 86% entry 100%}
+    .s2 .pinmap .fg-map{animation:pins-out linear both;animation-timeline:--s3;animation-range:entry 0% entry 18%}
+    /* 3: into the forest; the moose and the near spruce come fastest */
+    .s3 .skygrp{animation:sky-in linear both;animation-timeline:--s3;animation-range:entry 40% entry 90%}
+    .s3 .cap{animation:sky-in linear both;animation-timeline:--s3;animation-range:entry 88% entry 100%}
+    .s3 .content{animation:content-in linear both;animation-timeline:--s3;animation-range:entry 72% entry 100%}
+    .s3 .peaks{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
+    .s3 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s3,--s4;animation-range:entry 0% entry 100%}
+    /* 4: above the cloud */
+    .s4 .skygrp{animation:sky-in linear both;animation-timeline:--s4;animation-range:entry 40% entry 90%}
+    .s4 .cap{animation:sky-in linear both;animation-timeline:--s4;animation-range:entry 88% entry 100%}
+    .s4 .content{animation:content-in linear both;animation-timeline:--s4;animation-range:entry 72% entry 100%}
+    .s4 .back{animation:lift-back linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
+    .s4 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s4,--s5;animation-range:entry 0% entry 100%}
+    .s4 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s4,--s5;animation-range:entry 0% entry 100%}
+    .s4 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s4,--s5;animation-range:entry 0% entry 100%}
+    /* 5: into winter (the baseline, as first prototyped) */
     .s5 .skygrp{animation:sky-in linear both;animation-timeline:--s5;animation-range:entry 40% entry 90%}
     .s5 .cap{animation:sky-in linear both;animation-timeline:--s5;animation-range:entry 88% entry 100%}
     .s5 .content{animation:content-in linear both;animation-timeline:--s5;animation-range:entry 72% entry 100%}
@@ -137,97 +164,300 @@ h2{margin:0;font-family:var(--serif);font-weight:700;font-stretch:50%;font-size:
     .s5 .peaks{animation:rise-peaks linear both,lift-peaks linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
     .s5 .mid{animation:rise-mid linear both,lift-mid linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
     .s5 .front{animation:rise-front linear both,lift-front linear both;animation-timeline:--s5,--s6;animation-range:entry 0% entry 100%}
-    /* chapter 4's own layers part as it is overtaken: the nearer, the faster */
-    .s4 .back{animation:lift-back linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
-    .s4 .peaks{animation:lift-peaks linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
-    .s4 .mid{animation:lift-mid linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
-    .s4 .front{animation:lift-front linear both;animation-timeline:--s5;animation-range:entry 0% entry 100%}
-    /* the dusk that chapter 6 will start from */
+    /* the dusk chapter 6 will start from */
     .s6 .skygrp{animation:sky-in linear both;animation-timeline:--s6;animation-range:entry 30% entry 90%}
     .s6 .cap{animation:sky-in linear both;animation-timeline:--s6;animation-range:entry 88% entry 100%}
     .s6 .content{animation:content-in linear both;animation-timeline:--s6;animation-range:entry 70% entry 100%}
   }
 }
-/* without the motion: the same scenes stacked, each fading in over the last */
-@media (prefers-reduced-motion:reduce){
+/* the static version: reduced motion, no scroll-driven animations, or too short to pin */
+@media (prefers-reduced-motion:reduce),(max-height:560px){
   :root{--run:14svh}
-  .stage{position:absolute;inset:0;height:auto;min-height:100svh;
+  .stage{position:absolute;inset:0;height:auto;min-height:100%;
     -webkit-mask:linear-gradient(transparent,#000 var(--run));mask:linear-gradient(transparent,#000 var(--run))}
-  .s4 .stage{-webkit-mask:none;mask:none}
-  .content{margin-top:0;padding-top:calc(13svh + var(--run))}
-  .s4 .content{padding-top:13svh}
+  .content{margin-top:0;padding-top:calc(7svh + var(--run))}
   .run{display:none}
+}
+@media (prefers-reduced-motion:reduce) and (max-width:1099px),(max-height:560px) and (max-width:1099px){
+  .s1 .stage{-webkit-mask:none;mask:none}       /* tablets and phones: the shore meets the hero edge to edge */
 }
 @supports not (animation-timeline:view()){
   :root{--run:14svh}
-  .stage{position:absolute;inset:0;height:auto;min-height:100svh;
+  .stage{position:absolute;inset:0;height:auto;min-height:100%;
     -webkit-mask:linear-gradient(transparent,#000 var(--run));mask:linear-gradient(transparent,#000 var(--run))}
-  .s4 .stage{-webkit-mask:none;mask:none}
-  .content{margin-top:0;padding-top:calc(13svh + var(--run))}
-  .s4 .content{padding-top:13svh}
+  .content{margin-top:0;padding-top:calc(7svh + var(--run))}
   .run{display:none}
+  @media (max-width:1099px){.s1 .stage{-webkit-mask:none;mask:none}}
 }
 </style>
 
-<main class="journey">
+<main id="main" class="fg cine">
 
-  <!-- 4 · Find a trail -->
-  <section class="scene s4" id="trail" aria-labelledby="h-trail" style="--z:1;--top:var(--mist4)">
-    <div class="stage" aria-hidden="true" style="--ar:2.8413;--fx:.43">
-      <div class="skygrp"><div class="sky"></div><div class="cap"></div>
-        <div class="ly back" data-name="back · sky"><img src="layers/p4-back-2560.webp" srcset="layers/p4-back-1440.webp 1440w, layers/p4-back-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async"></div></div>
-      <div class="ly peaks" data-name="far ranges"><img src="layers/p4-peaks-2560.webp" srcset="layers/p4-peaks-1440.webp 1440w, layers/p4-peaks-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async"></div>
-      <div class="ly mid" data-name="mid · forested mountain, cliffs"><img src="layers/p4-mid-2560.webp" srcset="layers/p4-mid-1440.webp 1440w, layers/p4-mid-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async"></div>
-      <div class="ly front" data-name="front · outcrop and cloud"><img src="layers/p4-front-2560.webp" srcset="layers/p4-front-1440.webp 1440w, layers/p4-front-2560.webp 2560w" sizes="(max-width:760px) 180vh, 120vw" alt="" decoding="async">
-        <div class="slot" data-label="Hiker asset" style="--sx:.165;--sy:.648;--sw:.05;--sh:.22"></div></div>
-    </div>
-    <div class="content">
-      <div class="text">
-        <div class="head"><span class="num" aria-hidden="true">4</span><h2 id="h-trail">Find a trail</h2></div>
-        <p class="lede">Hike through forests, valleys and alpine country. Adventure in every direction.</p>
+  <header class="fg-sec fg-hero" id="top" style="--h:309">
+  <picture class="fg-hero-art">
+    <source media="(max-width:699px)" type="image/avif" width="3045" height="2688" sizes="100vw"
+      srcset="assets/ttd/hero/phone-480.avif 480w, assets/ttd/hero/phone-780.avif 780w, assets/ttd/hero/phone-1170.avif 1170w">
+    <source media="(max-width:699px)" type="image/webp" width="3045" height="2688" sizes="100vw"
+      srcset="assets/ttd/hero/phone-480.webp 480w, assets/ttd/hero/phone-780.webp 780w, assets/ttd/hero/phone-1170.webp 1170w">
+    <source type="image/avif" sizes="100vw"
+      srcset="assets/ttd/hero/scene-960.avif 960w, assets/ttd/hero/scene-1440.avif 1440w, assets/ttd/hero/scene-1920.avif 1920w, assets/ttd/hero/scene-2560.avif 2560w, assets/ttd/hero/scene-3200.avif 3200w">
+    <source type="image/webp" sizes="100vw"
+      srcset="assets/ttd/hero/scene-960.webp 960w, assets/ttd/hero/scene-1440.webp 1440w, assets/ttd/hero/scene-1920.webp 1920w, assets/ttd/hero/scene-2560.webp 2560w, assets/ttd/hero/scene-3200.webp 3200w">
+    <img src="assets/ttd/hero/scene-1920.jpg" width="6344" height="2688" fetchpriority="high" decoding="async"
+      alt="Engraved illustration of Eagle&rsquo;s Nest Resort at sunrise: the lodge&rsquo;s glass gable among spruce and aspen above a rocky shore, a wooden dock with a person fishing from a small boat, and geese flying over Anahim Lake.">
+  </picture>
+  <h1 class="fg-a fg-h1" style="--x:47;--y:26;--w:320">
+    <span class="fg-eyebrow">Anahim Lake <span aria-hidden="true">•</span> West Chilcotin</span>
+    <span class="fg-h1-main">There&rsquo;s a<br> lot out here.</span>
+  </h1>
+  <p class="fg-a fg-lede" style="--x:47;--y:133;--w:270">
+    <span>Paddle out from the dock. Watch the pelicans come in.</span>
+    <span>Cast a line, find a trail or head farther into the Chilcotin.</span>
+    <span>And when the lake freezes, come back and do it all differently.</span>
+  </p>
+</header>
+
+  <section class="scene s1 fg-ch1" id="dock" aria-labelledby="h-dock">
+      <div class="stage" style="--ar:2.6501;--fx:0.5;--top:#F6E5D5">
+      <div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>
+      <div class="ly back" data-name="back · parchment"><img src="layers/a1-back-2560.webp" srcset="layers/a1-back-1440.webp 1440w, layers/a1-back-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"></div>
+      <div class="ly front" data-name="front · the shore"><img src="layers/a1-front-2560.webp" srcset="layers/a1-front-1440.webp 1440w, layers/a1-front-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"></div>
       </div>
-      <div class="prints">
-        <figure class="print" style="--rot:-2"><img src="photos/rainbow-range.webp" alt="The Rainbow Range at evening, its volcanic slopes streaked orange, gold and rust." width="640" height="542"><figcaption><h3>The Rainbow Range</h3></figcaption></figure>
-        <figure class="print" style="--rot:-1"><img src="photos/beef-trail.webp" alt="A rock canyon on the Beef Trail, still green water running between shelves of stone." width="640" height="984"><figcaption><h3>The Beef Trail</h3></figcaption></figure>
-        <figure class="print" style="--rot:1.5"><img src="photos/lake-out-front.webp" alt="Anahim Lake from the shore at Eagle's Nest Resort, spruce on the point and the far shore beyond." width="640" height="426"><figcaption><h3>Ask about local trails</h3></figcaption></figure>
+    <div class="content"><svg class="fg-trailseg" viewBox="0 0 40 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M20 0C6 22 30 38 22 60S12 88 20 100"/></svg><div class="fg-c">
+    <div class="fg-head">
+      <span class="fg-num" aria-hidden="true">1</span>
+      <h2 class="fg-h2" id="h-dock">Start at<br class="fg-br"> the dock</h2>
+    </div>
+
+    <div class="fg-item fg-canoes">
+      <span class="fg-slot fg-icon" data-art="C1 canoe" aria-hidden="true"></span>
+      <div>
+        <h3 class="fg-h3">Canoes &amp;<br class="fg-br"> pedal boats</h3>
+        <p class="fg-p">Grab a paddle and head out from the dock. Canoes and pedal boats are available for guests.</p>
       </div>
     </div>
+    <figure class="fg-print fg-p1" style="--ph:102;--rot:-3">
+      <picture><source type="image/avif" srcset="assets/img/qq93sKGtaY-320.avif 320w, assets/img/qq93sKGtaY-640.avif 640w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/qq93sKGtaY-320.webp 320w, assets/img/qq93sKGtaY-640.webp 640w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/qq93sKGtaY-320.jpeg" alt="A green canoe pulled up on the dock at Eagle's Nest Resort, with Anahim Lake and the far shore behind it." loading="lazy" decoding="async" class="" width="640" height="960" srcset="assets/img/qq93sKGtaY-320.jpeg 320w, assets/img/qq93sKGtaY-640.jpeg 640w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+    </figure>
+
+    <div class="fg-item fg-fishing">
+      <svg class="fg-svgicon" viewBox="0 0 24 32" aria-hidden="true"><path d="M14 2v18a6 6 0 0 1-12 0v-3l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="2.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      <div>
+        <h3 class="fg-h3">Fishing</h3>
+        <p class="fg-sub">See what&rsquo;s biting.</p>
+      </div>
+      <div class="fg-fishbox">
+        <h4 class="fg-boxtitle">Anahim Lake fish</h4>
+        <ul><li>Rainbow trout</li><li>Cuttbow</li></ul>
+        <span class="fg-slot fg-trout" data-art="C2 trout" aria-hidden="true"></span>
+        <p class="fg-regs">Licences, limits and seasons change. Check the <a href="https://www2.gov.bc.ca/gov/content/sports-culture/recreation/fishing-hunting/fishing/fishing-regulations" target="_blank" rel="noopener noreferrer">B.C. freshwater fishing regulations</a> before you go.</p>
+      </div>
+    </div>
+    <figure class="fg-print fg-p2" style="--ph:102;--rot:3.5">
+      <picture><source type="image/avif" srcset="assets/img/vkH7CSVHbq-320.avif 320w, assets/img/vkH7CSVHbq-640.avif 640w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/vkH7CSVHbq-320.webp 320w, assets/img/vkH7CSVHbq-640.webp 640w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/vkH7CSVHbq-320.jpeg" alt="The dock at Eagle's Nest Resort reaching out into calm water on Anahim Lake." loading="lazy" decoding="async" class="" width="640" height="960" srcset="assets/img/vkH7CSVHbq-320.jpeg 320w, assets/img/vkH7CSVHbq-640.jpeg 640w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+    </figure>
+
+    <div class="fg-item fg-birds fg-halo">
+      <svg class="fg-svgicon fg-binos" viewBox="0 0 32 24" aria-hidden="true"><path d="M5 9 8 3h5l1 6M27 9l-3-6h-5l-1 6M14 9h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8.5" cy="15" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="23.5" cy="15" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <div>
+        <h3 class="fg-h3">Bird watching</h3>
+        <p class="fg-p">Pelicans on the lake in the warmer months, and birds on the water all summer. Most of it turns up without being looked for.</p>
+      </div>
+    </div>
+
+    <div class="fg-around">
+      <h3 class="fg-h3 fg-around-title">Who&rsquo;s<br class="fg-br"> around?</h3>
+      <ul class="fg-species">
+        <li><span class="fg-slot" data-art="S1 pelican" aria-hidden="true"></span><h4>American white pelican</h4></li>
+        <li><span class="fg-slot" data-art="S2 eagle" aria-hidden="true"></span><h4>Bald eagle</h4></li>
+        <li><span class="fg-slot" data-art="S3 osprey" aria-hidden="true"></span><h4>Osprey</h4></li>
+        <li><span class="fg-slot" data-art="S4 owl" aria-hidden="true"></span><h4>Great grey owl</h4></li>
+      </ul>
+    </div>
+  </div></div>
     <div class="run" aria-hidden="true"></div>
   </section>
 
-  <!-- 5 · Winter -->
-  <section class="scene s5" id="winter" aria-labelledby="h-winter" style="--z:2;--top:var(--sky5)">
-    <div class="stage" aria-hidden="true" style="--ar:2.3363;--fx:.36">
-      <div class="skygrp"><div class="sky"></div><div class="cap"></div>
-        <div class="ly back" data-name="back · sky"><img src="layers/p5-back-2560.webp" srcset="layers/p5-back-1440.webp 1440w, layers/p5-back-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async"></div></div>
-      <div class="ly peaks" data-name="snowy peaks"><img src="layers/p5-peaks-2560.webp" srcset="layers/p5-peaks-1440.webp 1440w, layers/p5-peaks-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async"></div>
-      <div class="ly mid" data-name="mid · forest, lake, snowfield"><img src="layers/p5-mid-2560.webp" srcset="layers/p5-mid-1440.webp 1440w, layers/p5-mid-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async">
-        <div class="slot" data-label="Snowmobile asset" style="--sx:.29;--sy:.74;--sw:.075;--sh:.12"></div></div>
-      <div class="ly front" data-name="front · near spruce"><img src="layers/p5-front-2560.webp" srcset="layers/p5-front-1440.webp 1440w, layers/p5-front-2560.webp 2560w" sizes="(max-width:760px) 150vh, 120vw" alt="" decoding="async"></div>
-    </div>
-    <div class="content">
-      <div class="text">
-        <div class="head"><span class="num dark" aria-hidden="true">5</span>
-          <div><p class="kicker">When the lake freezes&hellip;</p><h2 id="h-winter">Winter doesn&rsquo;t shut the place down.</h2></div></div>
-        <p class="lede">A whole new way to experience Anahim Lake and the Chilcotin.</p>
+  <section class="scene s2 fg-ch2" id="farther" aria-labelledby="h-farther">
+      <div class="stage" style="--ar:2.4128;--fx:0.5;--top:#F4E3D2">
+      <div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>
+      <div class="ly back" data-name="back · sky"><img src="layers/a2-back-2560.webp" srcset="layers/a2-back-1440.webp 1440w, layers/a2-back-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"></div>
+      <div class="ly peaks" data-name="peaks · snowy range"><img src="layers/a2-peaks-2560.webp" srcset="layers/a2-peaks-1440.webp 1440w, layers/a2-peaks-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"></div>
+      <div class="ly mid" data-name="mid · the valley map"><img src="layers/a2-mid-2560.webp" srcset="layers/a2-mid-1440.webp 1440w, layers/a2-mid-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"><div class="pinmap"><figure class="fg-map" aria-labelledby="map-cap-d">
+        <picture class="fg-mapbase" aria-hidden="true">
+          <source media="(min-width:1100px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+          <source type="image/avif" sizes="640px" srcset="assets/ttd/art/map-640.avif 640w, assets/ttd/art/map-1280.avif 1280w, assets/ttd/art/map-1920.avif 1920w">
+          <source type="image/webp" sizes="640px" srcset="assets/ttd/art/map-640.webp 640w, assets/ttd/art/map-1280.webp 1280w, assets/ttd/art/map-1920.webp 1920w">
+          <img src="assets/ttd/art/map-1280.jpg" srcset="assets/ttd/art/map-640.jpg 640w, assets/ttd/art/map-1280.jpg 1280w, assets/ttd/art/map-1920.jpg 1920w" sizes="640px" width="2444" height="1152" alt="" loading="lazy" decoding="async">
+        </picture>
+        <svg class="fg-mapdraw" viewBox="0 0 435 210" aria-hidden="true" focusable="false">
+          <g transform="translate(372 150)"><path d="M-7-8h14v9c0 5-4 7-7 9-3-2-7-4-7-9z" fill="#F3EEE1" stroke="#1F3327" stroke-width="1"/><text x="0" y="1.5" text-anchor="middle" font-size="7" font-family="Oswald,sans-serif" font-weight="600" fill="#1F3327">20</text></g>
+        </svg>
+        <svg class="fg-compass" viewBox="-30 -36 60 72" aria-hidden="true" focusable="false">
+          <circle r="20" fill="none" stroke="#1F3327" stroke-width="1"/><circle r="16" fill="none" stroke="#1F3327" stroke-width=".5"/>
+          <path d="M0-30 4-4 30 0 4 4 0 30-4 4-30 0-4-4Z" fill="#F3EEE1" stroke="#1F3327" stroke-width=".9"/>
+          <path d="M0-30 4-4 0 0Z M30 0 4 4 0 0Z M0 30-4 4 0 0Z M-30 0-4-4 0 0Z" fill="#1F3327"/>
+          <text y="-31.5" text-anchor="middle" font-size="7" font-family="Oswald,sans-serif" font-weight="600" fill="#1F3327">N</text>
+        </svg>
+        <span class="fg-lakename">Anahim Lake</span>
+        <ul class="fg-pins">
+          <li style="--px:222;--py:6"><a href="#trail"><span class="fg-pin" aria-hidden="true"></span>Rainbow Range</a></li>
+          <li style="--px:172;--py:32"><a href="#trail"><span class="fg-pin" aria-hidden="true"></span>Tweedsmuir<br>Provincial Park</a></li>
+          <li class="fg-pin-up" style="--px:100;--py:68"><a href="#waterfall"><span class="fg-pin" aria-hidden="true"></span>Hotnarko<br>Falls</a></li>
+          <li class="fg-pin-home" style="--px:40;--py:120"><a href="#farther"><span class="fg-slot fg-lodgevig" data-art="M2 lodge" aria-hidden="true"></span>Eagle&rsquo;s Nest<br>Resort</a></li>
+          <li style="--px:122;--py:160"><a href="#waterfall"><span class="fg-pin" aria-hidden="true"></span>Hunlen<br>Falls</a></li>
+        </ul>
+        <figcaption id="map-cap-d" class="fg-mapcap">Sketch map, not to scale. Ask Diane and Murray for directions.</figcaption>
+      </figure></div></div>
+      <div class="ly front" data-name="front · near spruce"><img src="layers/a2-front-2560.webp" srcset="layers/a2-front-1440.webp 1440w, layers/a2-front-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"></div>
       </div>
-      <div class="prints">
-        <figure class="print" style="--rot:-1.5"><div class="tocome" role="img" aria-label="Snowmobile photograph to come"><span>Photo to come</span></div><figcaption><h3>Snowmobile</h3><p>Miles of backcountry once the snow is down.</p></figcaption></figure>
-        <figure class="print" style="--rot:.5"><img src="photos/winter-lodge.webp" alt="The lodge seen across the frozen lake in winter, a line of footprints crossing the snow." width="640" height="382"><figcaption><h3>Ice fish</h3><p>Drill a hole, set up and wait it out. Check the ice before you walk on it.</p></figcaption></figure>
-        <figure class="print" style="--rot:1.5"><img src="photos/winter-lake.webp" alt="The lodge and its stone garden walls under deep snow, smoke rising from the chimney and the frozen lake beyond." width="640" height="404"><figcaption><h3>Skate the lake</h3><p>When conditions permit, there&rsquo;s nothing quite like skating out on a frozen lake.</p></figcaption></figure>
-      </div>
+    <div class="content"><svg class="fg-trailseg" viewBox="0 0 40 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M20 0C32 18 10 30 18 48S30 80 20 100"/></svg><div class="fg-c">
+    
+    <div class="card"><div class="fg-head fg-halo">
+      <span class="fg-num" aria-hidden="true">2</span>
+      <h2 class="fg-h2" id="h-farther">Go a little<br class="fg-br"> farther</h2>
+    </div><p class="fg-p fg-para fg-halo">Adventure is all around Anahim Lake. Use the map to explore some of our favourite places to go.</p></div>
+
+    <div class="fg-mapscroll">
+      
+      <figure class="fg-map" aria-labelledby="map-cap">
+        <picture class="fg-mapbase" aria-hidden="true">
+          <source media="(min-width:1100px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+          <source type="image/avif" sizes="640px" srcset="assets/ttd/art/map-640.avif 640w, assets/ttd/art/map-1280.avif 1280w, assets/ttd/art/map-1920.avif 1920w">
+          <source type="image/webp" sizes="640px" srcset="assets/ttd/art/map-640.webp 640w, assets/ttd/art/map-1280.webp 1280w, assets/ttd/art/map-1920.webp 1920w">
+          <img src="assets/ttd/art/map-1280.jpg" srcset="assets/ttd/art/map-640.jpg 640w, assets/ttd/art/map-1280.jpg 1280w, assets/ttd/art/map-1920.jpg 1920w" sizes="640px" width="2444" height="1152" alt="" loading="lazy" decoding="async">
+        </picture>
+        <svg class="fg-mapdraw" viewBox="0 0 435 210" aria-hidden="true" focusable="false">
+          <g transform="translate(372 150)"><path d="M-7-8h14v9c0 5-4 7-7 9-3-2-7-4-7-9z" fill="#F3EEE1" stroke="#1F3327" stroke-width="1"/><text x="0" y="1.5" text-anchor="middle" font-size="7" font-family="Oswald,sans-serif" font-weight="600" fill="#1F3327">20</text></g>
+        </svg>
+        <svg class="fg-compass" viewBox="-30 -36 60 72" aria-hidden="true" focusable="false">
+          <circle r="20" fill="none" stroke="#1F3327" stroke-width="1"/><circle r="16" fill="none" stroke="#1F3327" stroke-width=".5"/>
+          <path d="M0-30 4-4 30 0 4 4 0 30-4 4-30 0-4-4Z" fill="#F3EEE1" stroke="#1F3327" stroke-width=".9"/>
+          <path d="M0-30 4-4 0 0Z M30 0 4 4 0 0Z M0 30-4 4 0 0Z M-30 0-4-4 0 0Z" fill="#1F3327"/>
+          <text y="-31.5" text-anchor="middle" font-size="7" font-family="Oswald,sans-serif" font-weight="600" fill="#1F3327">N</text>
+        </svg>
+        <span class="fg-lakename">Anahim Lake</span>
+        <ul class="fg-pins">
+          <li style="--px:222;--py:6"><a href="#trail"><span class="fg-pin" aria-hidden="true"></span>Rainbow Range</a></li>
+          <li style="--px:172;--py:32"><a href="#trail"><span class="fg-pin" aria-hidden="true"></span>Tweedsmuir<br>Provincial Park</a></li>
+          <li class="fg-pin-up" style="--px:100;--py:68"><a href="#waterfall"><span class="fg-pin" aria-hidden="true"></span>Hotnarko<br>Falls</a></li>
+          <li class="fg-pin-home" style="--px:40;--py:120"><a href="#farther"><span class="fg-slot fg-lodgevig" data-art="M2 lodge" aria-hidden="true"></span>Eagle&rsquo;s Nest<br>Resort</a></li>
+          <li style="--px:122;--py:160"><a href="#waterfall"><span class="fg-pin" aria-hidden="true"></span>Hunlen<br>Falls</a></li>
+        </ul>
+        <figcaption id="map-cap" class="fg-mapcap">Sketch map, not to scale. Ask Diane and Murray for directions.</figcaption>
+      </figure>
     </div>
+
+    <aside class="fg-note" style="--rot:1.5" aria-labelledby="h-more">
+      <span class="fg-notepin" aria-hidden="true"></span>
+      <h3 class="fg-notetitle" id="h-more">More to explore</h3>
+      <p>Countless trails, valleys and backcountry roads await in every direction.</p>
+      <span class="fg-slot fg-notepines" data-art="M3 pines" aria-hidden="true"></span>
+    </aside>
+  </div></div>
     <div class="run" aria-hidden="true"></div>
   </section>
 
-  <!-- the dusk chapter 6 will start from (its painting doesn't exist yet) -->
-  <section class="scene s6" style="--z:3;--top:var(--dusk)">
-    <div class="stage" aria-hidden="true"><div class="skygrp"><div class="sky"></div><div class="cap"></div></div><div class="dusk-edge"></div></div>
+  <section class="scene s3 fg-ch3" id="waterfall" aria-labelledby="h-falls">
+      <div class="stage" style="--ar:2.6611;--fx:0.55;--top:#E4E3D8">
+      <div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>
+      <div class="ly peaks" data-name="far · misty forest"><img src="layers/a3-peaks-2560.webp" srcset="layers/a3-peaks-1440.webp 1440w, layers/a3-peaks-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      <div class="ly front" data-name="front · near spruce and the moose"><img src="layers/a3-front-2560.webp" srcset="layers/a3-front-1440.webp 1440w, layers/a3-front-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      </div>
+    <div class="content"><svg class="fg-trailseg" viewBox="0 0 40 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M20 0C10 16 30 26 22 44S8 78 20 100"/></svg><div class="fg-c">
+    
+    <div class="card"><div class="fg-head">
+      <span class="fg-num" aria-hidden="true">3</span>
+      <h2 class="fg-h2" id="h-falls">Chase a<br class="fg-br"> waterfall</h2>
+    </div><p class="fg-p fg-para">Scenic drives lead to some incredible places.</p></div>
+    <div class="fg-prints">
+      <figure class="fg-print fg-cap fg-pa" style="--ph:84;--rot:-1">
+        <picture><source type="image/avif" srcset="assets/img/hCFJLC1Bfs-320.avif 320w, assets/img/hCFJLC1Bfs-570.avif 570w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/hCFJLC1Bfs-320.webp 320w, assets/img/hCFJLC1Bfs-570.webp 570w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/hCFJLC1Bfs-320.jpeg" alt="Hotnarko Falls dropping through a canyon of dark basalt, with spruce on either side." loading="lazy" decoding="async" class="" width="570" height="850" srcset="assets/img/hCFJLC1Bfs-320.jpeg 320w, assets/img/hCFJLC1Bfs-570.jpeg 570w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">Hotnarko Falls</h3><p>The river drops off the Precipice into a canyon walled in basalt.</p></figcaption>
+      </figure>
+      <figure class="fg-print fg-cap fg-pb" style="--ph:86;--rot:6">
+        <picture><source type="image/avif" srcset="assets/img/agZ3Q7ALi2-320.avif 320w, assets/img/agZ3Q7ALi2-570.avif 570w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/agZ3Q7ALi2-320.webp 320w, assets/img/agZ3Q7ALi2-570.webp 570w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/agZ3Q7ALi2-320.jpeg" alt="Hunlen Falls seen from the air, a single long drop off a forested plateau into the canyon below." loading="lazy" decoding="async" class="" width="570" height="850" srcset="assets/img/agZ3Q7ALi2-320.jpeg 320w, assets/img/agZ3Q7ALi2-570.jpeg 570w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">Hunlen Falls</h3><p>Farther into Tweedsmuir Park, and a longer day than the others.</p></figcaption>
+      </figure>
+    </div>
+  </div></div>
+    <div class="run" aria-hidden="true"></div>
+  </section>
+
+  <section class="scene s4 fg-ch4" id="trail" aria-labelledby="h-trail">
+      <div class="stage" style="--ar:2.8413;--fx:0.43;--top:#E3D3C0">
+      <div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>
+      <div class="ly back" data-name="back · sky"><img src="layers/p4-back-2560.webp" srcset="layers/p4-back-1440.webp 1440w, layers/p4-back-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      <div class="ly peaks" data-name="peaks · far ranges"><img src="layers/p4-peaks-2560.webp" srcset="layers/p4-peaks-1440.webp 1440w, layers/p4-peaks-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      <div class="ly mid" data-name="mid · forested mountain"><img src="layers/p4-mid-2560.webp" srcset="layers/p4-mid-1440.webp 1440w, layers/p4-mid-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      <div class="ly front" data-name="front · outcrop"><img src="layers/p4-front-2560.webp" srcset="layers/p4-front-1440.webp 1440w, layers/p4-front-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"><div class="slot" data-label="Hiker asset" style="--sx:.165;--sy:.648;--sw:.05;--sh:.22"></div></div>
+      </div>
+    <div class="content"><svg class="fg-trailseg" viewBox="0 0 40 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M20 0C30 20 12 34 20 50S28 82 20 100"/></svg><div class="fg-c">
+    
+    <div class="card"><div class="fg-head">
+      <span class="fg-num" aria-hidden="true">4</span>
+      <h2 class="fg-h2" id="h-trail">Find a trail</h2>
+    </div><p class="fg-p fg-para">Hike through forests, valleys and alpine country. Adventure in every direction.</p></div>
+    <div class="fg-prints">
+      <figure class="fg-print fg-cap fg-pa" style="--ph:80;--rot:-2">
+        <picture><source type="image/avif" srcset="assets/img/vcT4ccQ305-320.avif 320w, assets/img/vcT4ccQ305-520.avif 520w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/vcT4ccQ305-320.webp 320w, assets/img/vcT4ccQ305-520.webp 520w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/vcT4ccQ305-320.jpeg" alt="The Rainbow Range at evening, its volcanic slopes streaked orange, gold and rust." loading="lazy" decoding="async" class="" width="520" height="440" srcset="assets/img/vcT4ccQ305-320.jpeg 320w, assets/img/vcT4ccQ305-520.jpeg 520w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">The Rainbow Range</h3></figcaption>
+      </figure>
+      <figure class="fg-print fg-cap fg-pb" style="--ph:80;--rot:-1">
+        <picture><source type="image/avif" srcset="assets/img/jBvOpWJno3-320.avif 320w, assets/img/jBvOpWJno3-540.avif 540w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/jBvOpWJno3-320.webp 320w, assets/img/jBvOpWJno3-540.webp 540w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/jBvOpWJno3-320.jpeg" alt="A rock canyon on the Beef Trail, still green water running between shelves of stone." loading="lazy" decoding="async" class="" width="540" height="830" srcset="assets/img/jBvOpWJno3-320.jpeg 320w, assets/img/jBvOpWJno3-540.jpeg 540w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">The Beef Trail</h3></figcaption>
+      </figure>
+      <figure class="fg-print fg-cap fg-pc" style="--ph:78;--rot:1.5">
+        <picture><source type="image/avif" srcset="assets/img/Pwlse56WAm-320.avif 320w, assets/img/Pwlse56WAm-640.avif 640w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/Pwlse56WAm-320.webp 320w, assets/img/Pwlse56WAm-640.webp 640w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/Pwlse56WAm-320.jpeg" alt="Anahim Lake from the shore at Eagle's Nest Resort, spruce on the point and the far shore beyond." loading="lazy" decoding="async" class="" width="640" height="426" srcset="assets/img/Pwlse56WAm-320.jpeg 320w, assets/img/Pwlse56WAm-640.jpeg 640w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">Ask about local trails</h3></figcaption>
+      </figure>
+    </div>
+  </div></div>
+    <div class="run" aria-hidden="true"></div>
+  </section>
+
+  <section class="scene s5 fg-ch5" id="winter" aria-labelledby="h-winter">
+      <div class="stage" style="--ar:2.3358;--fx:0.36;--top:#E4E3DC">
+      <div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>
+      <div class="ly back" data-name="back · sky"><img src="layers/p5-back-2560.webp" srcset="layers/p5-back-1440.webp 1440w, layers/p5-back-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      <div class="ly peaks" data-name="peaks · snowy peaks"><img src="layers/p5-peaks-2560.webp" srcset="layers/p5-peaks-1440.webp 1440w, layers/p5-peaks-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      <div class="ly mid" data-name="mid · forest, lake, snowfield"><img src="layers/p5-mid-2560.webp" srcset="layers/p5-mid-1440.webp 1440w, layers/p5-mid-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"><div class="slot" data-label="Snowmobile asset" style="--sx:.29;--sy:.74;--sw:.075;--sh:.12"></div></div>
+      <div class="ly front" data-name="front · near spruce"><img src="layers/p5-front-2560.webp" srcset="layers/p5-front-1440.webp 1440w, layers/p5-front-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async" loading="lazy"></div>
+      </div>
+    <div class="content"><svg class="fg-trailseg" viewBox="0 0 40 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path vector-effect="non-scaling-stroke" d="M20 0C10 18 28 36 20 52S12 84 20 100"/></svg><div class="fg-c">
+    
+    <div class="card"><div class="fg-head fg-head-tall">
+      <span class="fg-num fg-num-dark" aria-hidden="true">5</span>
+      <div>
+        <p class="fg-kicker">When the lake freezes&hellip;</p>
+        <h2 class="fg-h2 fg-h2-big" id="h-winter">Winter doesn&rsquo;t<br class="fg-br"> shut the place down.</h2>
+      </div>
+    </div><p class="fg-p fg-para fg-center">A whole new way to experience Anahim Lake and the Chilcotin.</p></div>
+    <div class="fg-prints">
+      <figure class="fg-print fg-cap fg-pa" style="--ph:72;--rot:-1.5">
+        <div class="fg-tocome" role="img" aria-label="Snowmobile photograph to come"><span>Photo to come</span></div>
+        <figcaption><h3 class="fg-caph">Snowmobile</h3><p>Miles of backcountry once the snow is down.</p></figcaption>
+      </figure>
+      <figure class="fg-print fg-cap fg-pb" style="--ph:72;--rot:.5">
+        <picture><source type="image/avif" srcset="assets/img/dsZfSqvWPS-320.avif 320w, assets/img/dsZfSqvWPS-640.avif 640w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/dsZfSqvWPS-320.webp 320w, assets/img/dsZfSqvWPS-640.webp 640w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/dsZfSqvWPS-320.jpeg" alt="The lodge seen across the frozen lake in winter, a line of footprints crossing the snow." loading="lazy" decoding="async" class="" width="640" height="381" srcset="assets/img/dsZfSqvWPS-320.jpeg 320w, assets/img/dsZfSqvWPS-640.jpeg 640w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">Ice fish</h3><p>Drill a hole, set up and wait it out. Check the ice before you walk on it.</p></figcaption>
+      </figure>
+      <figure class="fg-print fg-cap fg-pc" style="--ph:72;--rot:1.5">
+        <picture><source type="image/avif" srcset="assets/img/kWGzRiwEeR-320.avif 320w, assets/img/kWGzRiwEeR-640.avif 640w" sizes="(min-width:1100px) 17vw, 62vw"><source type="image/webp" srcset="assets/img/kWGzRiwEeR-320.webp 320w, assets/img/kWGzRiwEeR-640.webp 640w" sizes="(min-width:1100px) 17vw, 62vw"><img src="assets/img/kWGzRiwEeR-320.jpeg" alt="The lodge and its stone garden walls under deep snow, smoke rising from the chimney and the frozen lake beyond." loading="lazy" decoding="async" class="" width="640" height="404" srcset="assets/img/kWGzRiwEeR-320.jpeg 320w, assets/img/kWGzRiwEeR-640.jpeg 640w" sizes="(min-width:1100px) 17vw, 62vw"></picture>
+        <figcaption><h3 class="fg-caph">Skate the lake</h3><p>When conditions permit, there&rsquo;s nothing quite like skating out on a frozen lake.</p></figcaption>
+      </figure>
+    </div>
+  </div></div>
+    <div class="run" aria-hidden="true"></div>
+  </section>
+
+  <section class="scene s6" style="--top:var(--dusk)">
+    <div class="stage"><div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div></div>
     <div class="content end-c"><p>End of prototype · chapter 6 begins in this dusk blue</p></div>
   </section>
 </main>
 
-<div class="bar"><span>Prototype · chapters 4–5</span><button type="button" id="guides" aria-pressed="false">Show layers</button></div>
+<div class="bar"><span>Prototype · hero to chapter 5</span><button type="button" id="guides" aria-pressed="false">Show layers</button></div>
 <script>
   const b = document.getElementById('guides');
   b.addEventListener('click', () => {
