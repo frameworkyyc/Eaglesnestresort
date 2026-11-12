@@ -28,3 +28,4 @@ generated, with nothing composited or corrected.
 - Scenery only: no people, figures, animals, birds, vehicles, buildings or signs. Two tiny saplings in the mist at the
   bottom centre.
 - Palette: greyer and more monochrome than Painting A's forest (grey-green spruce, warm parchment sky).
+- TEXT: 20 OCR FAIL boxes, all inspected by eye: branch edges, stipple, hatching and trunks. No text.
