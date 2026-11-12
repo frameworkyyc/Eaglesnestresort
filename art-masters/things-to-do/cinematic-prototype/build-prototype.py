@@ -54,10 +54,12 @@ SLOTS = {(4, 'front'): '<div class="slot" data-label="Hiker asset" style="--sx:.
 
 def stage(n, extra_mid=''):
     s = STAGES[n]; out = [f'<div class="stage" style="--ar:{s["ar"]:.4f};--fxd:{s["fx"]};--top:{s["sky"]}">']
+    # the painting's width on a 16:10 desktop: the screen's width, or 72% of its height times the painting's aspect
+    dw = max(100, -(-int(45 * s['ar'] * 100) // 100))
     out.append('<div class="skygrp" aria-hidden="true"><div class="sky"></div><div class="cap"></div></div>')
     for nm, lab in zip(s['layers'], LABELS[n]):
         img = (f'<img src="layers/{s["art"]}-{nm}-2560.webp" srcset="layers/{s["art"]}-{nm}-1440.webp 1440w, '
-               f'layers/{s["art"]}-{nm}-2560.webp 2560w" sizes="(max-width:1099px) 300vw, 125vw" alt="" aria-hidden="true" decoding="async"'
+               f'layers/{s["art"]}-{nm}-2560.webp 2560w" sizes="(max-width:1099px) 300vw, {dw}vw" alt="" aria-hidden="true" decoding="async"'
                + (' loading="lazy"' if n > 2 else '') + '>')
         extra = SLOTS.get((n, nm), '') + (extra_mid if nm == 'mid' else '')
         out.append(f'<div class="ly {nm}" data-name="{lab}">{img}{extra}</div>')

@@ -123,10 +123,18 @@ img{max-width:100%;display:block;height:auto}            /* the site's own base 
 @keyframes pins-in{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}
 @keyframes pins-out{to{opacity:0;visibility:hidden}}
 @keyframes hero-join{to{-webkit-mask-position:0 calc(-25*var(--rp));mask-position:0 calc(-25*var(--rp))}}
+@keyframes stage-off{to{visibility:hidden}}
 @supports (animation-timeline:view()){
   @media (prefers-reduced-motion:no-preference) and (min-height:561px){
     /* the hero join: the shore's fade over the hero's lake clears once the hero has gone */
-    .s1 .stage{animation:hero-join linear both;animation-timeline:scroll(root);animation-range:calc(200*var(--rp)) calc(284*var(--rp))}
+    .s1 .stage{animation:hero-join linear both,stage-off linear both;animation-timeline:scroll(root),--s2;
+      animation-range:calc(200*var(--rp)) calc(284*var(--rp)),entry 99% entry 100%}
+    /* a scene is hidden once the next one fully covers it (that scene's sky is opaque from entry 100%), so only one
+       chapter's layers are painted at a time; scrolling back shows it again */
+    .s2 .stage{animation:stage-off linear both;animation-timeline:--s3;animation-range:entry 99% entry 100%}
+    .s3 .stage{animation:stage-off linear both;animation-timeline:--s4;animation-range:entry 99% entry 100%}
+    .s4 .stage{animation:stage-off linear both;animation-timeline:--s5;animation-range:entry 99% entry 100%}
+    .s5 .stage{animation:stage-off linear both;animation-timeline:--s6;animation-range:entry 99% entry 100%}
     /* 1: the dock's shore lifts away as the mountains rise */
     .s1 .back{animation:lift-back linear both;animation-timeline:--s2;animation-range:entry 0% entry 100%}
     .s1 .front{animation:lift-front linear both;animation-timeline:--s2;animation-range:entry 0% entry 100%}

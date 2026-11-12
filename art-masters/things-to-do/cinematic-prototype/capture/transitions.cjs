@@ -15,6 +15,9 @@ const { chromium } = require('playwright');
   // warm-up: visit every chapter and decode every image, so the frame-by-frame capture never shows an undecoded layer
   for (const y of g.rest) { await p.evaluate(v => scrollTo(0, v), y); await p.waitForTimeout(400); }
   await p.evaluate(() => Promise.race([Promise.all([...document.querySelectorAll('.ly img')].map(i => i.decode().catch(() => {}))), new Promise(r => setTimeout(r, 8000))]));
+  // and paint each chapter at rest once more, so every layer has been drawn at its display size before recording
+  for (const y of g.rest) { await p.evaluate(v => scrollTo(0, v), y); await p.waitForTimeout(700);
+    await p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))); }
   const [r2, r3, r4] = [g.rest[1], g.rest[2], g.rest[3]];
   for (let k = 1; k <= 10; k++) { await p.evaluate(v => scrollTo(0, v), Math.round(r2 * k / 10)); await p.waitForTimeout(30); }
   await p.waitForTimeout(500);

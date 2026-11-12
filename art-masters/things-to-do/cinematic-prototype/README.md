@@ -47,3 +47,8 @@ the near trees are filled to the trees' full outline (`cover` 0.4 in guides.json
 the layers part; at rest 0.42% of pixels, all on tree edges, differ by more than 8 levels. Painting A's chapter 3 band
 (`a3`) is no longer used. Tablets and phones now take each chapter's own crop (the inline value became `--fxd`, so the
 media rules can override it). `capture/transitions.cjs` records the chapter 2 -> 3 -> 4 scroll.
+
+Performance: once a chapter's scene is fully covered by the next (its sky is opaque from the end of the takeover), it
+is hidden, so only one chapter's layers are painted at a time; scrolling back shows it again. Each chapter's layer
+images declare their real desktop width in `sizes` (100-128vw), so the browser picks the 1440 or 2560 px file that
+fits.
