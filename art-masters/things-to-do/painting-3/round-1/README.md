@@ -1,4 +1,4 @@
-# Things To Do, painting 3 (chapter 3, "Chase a waterfall"), round 1 (2026-11-12): raw output (awaiting the client's assessment)
+# Things To Do, painting 3 (chapter 3, "Chase a waterfall"), round 1 (2026-11-12): approved, with two local touch-ups
 
 Chapter 3's own painting, replacing chapter 3's band of Painting A in the cinematic design: a deep, misty spruce forest,
 scenery only, composed for full-screen parallax. Painting A is unchanged and keeps chapters 1 and 2.
@@ -29,3 +29,32 @@ generated, with nothing composited or corrected.
   bottom centre.
 - Palette: greyer and more monochrome than Painting A's forest (grey-green spruce, warm parchment sky).
 - TEXT: 20 OCR FAIL boxes, all inspected by eye: branch edges, stipple, hatching and trunks. No text.
+
+## Approved, with two local touch-ups (2026-11-12)
+The client approved painting 3 and asked for two local corrections, made without any new generation or credits. The
+raw output above stays byte-identical; the corrected painting is a separate file.
+
+| File | What it is |
+|---|---|
+| `corrected/painting-3-final.png` | The painting to use: 6336 x 3564 (16:9), RGB. |
+| `corrected/correct.py` | The script that makes it from the raw file. It checks the raw checksum before and after, and rebuilds the final byte for byte. |
+
+1. **The top band.** The locked band (raw rows 0-75) is replaced with the painting's own parchment sky, and 876 rows of
+   the same sky are added above the picture so the clipped trees have room to finish: the canvas becomes 16:9, the
+   shape first requested. The sky is the painting's clean sky texture, mirrored to fill, toned per column to the sky
+   just below the band; its lightness runs smoothly from the top through the old band (no step). New top edge
+   `#F2DFCC`, within dE 1.9 of chapter 2's sky `#F4E3D2`; the bottom edge is unchanged, `#E3D1BE`, within dE 1.0 of
+   painting 4's top.
+2. **The two clipped treetops.**
+   - The tallest spruce (A, trunk at x 4983) was cut through a tier about 570 px wide. Its crown now continues upward as
+     its own crown (rows 76-252, ending in the gap between two tiers; only its dark ink, inside its own outline) at
+     0.9, 0.75, 0.6, 0.48 and 0.38 scale, each tier smaller than the one below, ending in the tip of the grey-green
+     spruce at x 5621 at 0.62 scale, toned to A's ink. Only shrinking is used, so the engraving stays crisp. Each
+     section's outer branch ends near its top taper to the next, and A's sliced branch ends at the old cut are trimmed
+     into sky. The new tip is at row 415.
+   - The far-right spruce (B, spine at x 6010) gets the tip of the spruce at x 4516, at 0.74 scale.
+
+Checks: no pixel of the original picture changed below its row 134 (the band, the two crowns and the blend just below
+them); the raw checksum is unchanged. At 1:1 both trees read as single spruces with one continuous trunk and no seam;
+a few pale strokes of about 15 px remain at the old joins of tree A, invisible at page size. TEXT on the edited top
+area (rows 0-1100): pass, no words.
